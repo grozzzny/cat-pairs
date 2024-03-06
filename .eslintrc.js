@@ -16,5 +16,19 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   rules: {
     '@typescript-eslint/ban-ts-comment': 1,
+    'no-console': 'warn',
+    'quotes': ['error', 'single'],
+    'jsx-quotes': ['error', 'prefer-single'],
+    'prefer-const': 'error',
+    'indent': ['error', 2],
+    'semi': ['error', 'always'],
+    'eol-last': ['error', 'always'],
+    'sort-imports': ['error', {
+      'ignoreCase': false,
+      'ignoreDeclarationSort': true,
+      'ignoreMemberSort': false,
+      'allowSeparatedGroups': false
+    }],
+    'object-curly-spacing': ['error', 'always'],
   },
-}
+};
