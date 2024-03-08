@@ -1,6 +1,9 @@
 import { ConfigProvider } from 'antd';
 import './App.css';
-import { PageWrapper } from './components';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { routes } from './routes';
+
+const router = createBrowserRouter(routes);
 
 function App() {
   return (
@@ -12,9 +15,7 @@ function App() {
           colorIcon: '#565A5D',
         },
       }}>
-      <PageWrapper>
-        <div>Welcome page</div>
-      </PageWrapper>
+      <RouterProvider router={router} />
     </ConfigProvider>
   );
 }

@@ -14,7 +14,7 @@ export const PageWrapper = (props: PageWrapperProps): JSX.Element => {
   return (
     <div className='page-wrapper' style={{ background: theme.colorPrimary }}>
       <img
-        src='src/assets/cat-background.png'
+        src='/src/assets/cat-background.png'
         alt='cat-background'
         className='page-wrapper__cat-background'
       />
