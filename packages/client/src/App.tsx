@@ -1,18 +1,22 @@
-import { useEffect } from 'react';
+import { ConfigProvider } from 'antd';
 import './App.css';
+import { PageWrapper } from './components';
 
 function App() {
-  useEffect(() => {
-    const fetchServerData = async () => {
-      const url = `http://localhost:${__SERVER_PORT__}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      console.log(data);
-    };
-
-    fetchServerData();
-  }, []);
-  return <div className='App'>Вот тут будет жить ваше приложение :)</div>;
+  return (
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#EFE5CC',
+          colorText: '#EFE5CC',
+          colorIcon: '#565A5D',
+        },
+      }}>
+      <PageWrapper>
+        <div>Welcome page</div>
+      </PageWrapper>
+    </ConfigProvider>
+  );
 }
 
 export default App;
