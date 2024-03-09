@@ -5,6 +5,7 @@ import {
   MessageTwoTone,
   PlayCircleTwoTone,
 } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 interface NavigationBarProps {
   className?: string;
@@ -13,33 +14,30 @@ interface NavigationBarProps {
 export const NavigationBar = (props: NavigationBarProps) => {
   const { className } = props;
   const { token: theme } = antdTheme.useToken();
+  const iconProps = {
+    twoToneColor: theme.colorIcon,
+    rev: null,
+    style: { fontSize: '30px' },
+  };
+  const navigate = useNavigate();
   return (
     <Flex gap={24} className={className}>
       <IconButton
         icon={
-          <MessageTwoTone
-            twoToneColor={theme.colorIcon}
-            rev={null}
-            style={{ fontSize: '30px' }}
-          />
+          <MessageTwoTone {...iconProps} onClick={() => navigate('/forum')} />
         }
       />
       <IconButton
         icon={
           <CrownTwoTone
-            twoToneColor={theme.colorIcon}
-            rev={null}
-            style={{ fontSize: '30px' }}
+            {...iconProps}
+            onClick={() => navigate('/leaderboard')}
           />
         }
       />
       <IconButton
         icon={
-          <PlayCircleTwoTone
-            twoToneColor={theme.colorIcon}
-            rev={null}
-            style={{ fontSize: '30px' }}
-          />
+          <PlayCircleTwoTone {...iconProps} onClick={() => navigate('/game')} />
         }
       />
     </Flex>
