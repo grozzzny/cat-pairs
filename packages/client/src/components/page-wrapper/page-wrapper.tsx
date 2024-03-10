@@ -1,6 +1,6 @@
 import { theme as antdTheme } from 'antd';
 import React from 'react';
-import { NavigationBar } from '..';
+import { NavigationBar } from '@/components';
 import './page-wrapper.css';
 
 interface PageWrapperProps {

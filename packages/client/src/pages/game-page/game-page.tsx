@@ -1,4 +1,4 @@
-import { PageWrapper } from '../../components';
+import { PageWrapper } from '@/components';
 
 export const GamePage = () => {
   return (

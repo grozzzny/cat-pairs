@@ -1,5 +1,5 @@
 import { Flex, theme as antdTheme } from 'antd';
-import { IconButton } from '..';
+import { IconButton } from '@/components';
 import {
   CrownTwoTone,
   MessageTwoTone,
