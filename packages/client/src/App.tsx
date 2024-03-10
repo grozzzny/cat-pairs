@@ -1,18 +1,23 @@
-import { useEffect } from 'react';
+import { ConfigProvider } from 'antd';
 import './App.css';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { routes } from './routes';
+
+const router = createBrowserRouter(routes);
 
 function App() {
-  useEffect(() => {
-    const fetchServerData = async () => {
-      const url = `http://localhost:${__SERVER_PORT__}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      console.log(data);
-    };
-
-    fetchServerData();
-  }, []);
-  return <div className='App'>Вот тут будет жить ваше приложение :)</div>;
+  return (
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#EFE5CC',
+          colorText: '#EFE5CC',
+          colorIcon: '#565A5D',
+        },
+      }}>
+      <RouterProvider router={router} />
+    </ConfigProvider>
+  );
 }
 
 export default App;
