@@ -1,14 +1,19 @@
-.exitContainer {
+.exit__container {
   display: flex;
-  width: 100%;
   justify-content: flex-end;
-  flex-direction: row;
-  align-items: center;
-  gap: 12px;
   margin-top: calc(100vh - 600px);
 }
 
-.exitText {
+.exit__link {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  text-decoration: none;
+}
+
+.exit__text {
   font-size: 12px;
   color: #565a5d;
 }

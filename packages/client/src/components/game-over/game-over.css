@@ -1,4 +1,4 @@
-.gameOverContainer {
+.gameover__container {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -6,19 +6,19 @@
   margin-top: 200px;
 }
 
-.gameOverTitle {
+.gameover__title {
   color: #565a5d;
   font-size: 40px;
   margin: 0;
 }
 
-.gameOverText {
+.gameover__text {
   color: #565a5d;
   font-size: 24px;
   margin: 11px 0 0 0;
 }
 
-.continueGameButton {
+.gameover__button {
   background-color: #565a5d;
   font-size: 24px;
   color: #efe5cc;

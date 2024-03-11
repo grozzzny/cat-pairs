@@ -11,11 +11,11 @@ interface GameOverProps {
 export const GameOver = ({ title, message, buttonText }: GameOverProps) => {
   const navigate = useNavigate();
   return (
-    <div className='gameOverContainer'>
-      <h1 className='gameOverTitle'>{title}</h1>
-      <p className='gameOverText'>{message}</p>
+    <div className='gameover__container'>
+      <h1 className='gameover__title'>{title}</h1>
+      <p className='gameover__text'>{message}</p>
       <Button
-        className='continueGameButton'
+        className='gameover__button'
         type='primary'
         onClick={() => {
           navigate('/game');

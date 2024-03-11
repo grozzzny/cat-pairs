@@ -7,7 +7,7 @@ import Confetti from 'react-confetti';
 import { Exit } from '@/components/exit';
 
 export const GameOverPage = () => {
-  const [isSuccess, setIsSuccess] = useState<boolean>(true);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
   return (
     <PageWrapper>
@@ -24,7 +24,7 @@ export const GameOverPage = () => {
         ) : (
           <GameOver
             title='Вы проиграли'
-            message='Попробуйте еще раз и у Вас все получится'
+            message='Попробуйте еще раз'
             buttonText='Играть'
           />
         )}
