@@ -1,0 +1,29 @@
+.gameOverContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 200px;
+}
+
+.gameOverTitle {
+  color: #565a5d;
+  font-size: 40px;
+  margin: 0;
+}
+
+.gameOverText {
+  color: #565a5d;
+  font-size: 24px;
+  margin: 11px 0 0 0;
+}
+
+.continueGameButton {
+  background-color: #565a5d;
+  font-size: 24px;
+  color: #efe5cc;
+  height: 60px;
+  width: 285px;
+  cursor: pointer;
+  margin-top: 100px;
+}

@@ -1,0 +1,8 @@
+.continueGameButton {
+  background-color: #565a5d;
+  font-size: 24px;
+  color: #efe5cc;
+  height: 60px;
+  width: 285px;
+  cursor: pointer;
+}
