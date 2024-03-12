@@ -1,4 +1,4 @@
-import { PageWrapper } from '@/components';
+import { Level, PageWrapper, Timer } from '@/components';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 const CARD_SIZE = 180;
@@ -26,6 +26,10 @@ export const GamePage = () => {
   const themeColor = useMemo(
     () => (THEME === 'light' ? '#565A5D' : '#EFE5CC'),
     [THEME]
+  );
+  const levelComponent = useMemo(
+    () => <Level level={level} color={themeColor} />,
+    [level]
   );
 
   useEffect(() => {
@@ -227,10 +231,10 @@ export const GamePage = () => {
   };
 
   const handleRestartGame = () => {
-    setPaused(false); // Отменяем паузу, если она была включена
-    setGameStatus('playing'); // Возвращаем статус игры к "playing"
-    setFoundPairs([]); // Сбрасываем найденные пары
-    initGame(); // Инициализируем новую игру
+    setPaused(false);
+    setGameStatus('playing');
+    setFoundPairs([]);
+    initGame();
   };
 
   const handleExitGame = () => {
@@ -285,9 +289,10 @@ export const GamePage = () => {
                 flexDirection: 'column',
                 justifyContent: 'start',
                 alignItems: 'center',
+                minWidth: '100px',
               }}>
-              <div>Level: {level}</div>
-              <div>Time left: {timeLeft}</div>
+              {levelComponent}
+              <Timer time={timeLeft} color={themeColor} />
             </div>
             <div
               style={{
