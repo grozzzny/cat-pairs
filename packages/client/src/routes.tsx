@@ -35,4 +35,8 @@ export const routes = [
     path: '/forum/:id',
     element: <Pages.ForumPage />,
   },
+  {
+    path: '/start',
+    element: <Pages.StartGamePage />,
+  },
 ];
