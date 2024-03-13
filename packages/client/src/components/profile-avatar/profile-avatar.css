@@ -1,0 +1,23 @@
+.profile-avatar__container {
+  min-width: 67px;
+  margin-top: 57px;
+  min-height: 67px;
+  background-color: #efe5cc;
+  border-radius: 33.5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.profile-avatar__img {
+  object-fit: cover;
+  border-radius: 33.5px;
+}
+
+.profile-avatar__text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #565a5d;
+}
