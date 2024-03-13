@@ -1,27 +1,15 @@
-import { Input as AntInput } from 'antd';
+import { Input as AntInput, InputProps as AntInputProps } from 'antd';
 import './input.css';
 
-interface InputProps {
-  label: string;
-  required?: boolean;
-  error?: string;
+interface InputProps extends AntInputProps {
   type?: InputType;
 }
 
 type InputType = 'password' | 'text';
 
-export const Input = ({
-  label,
-  required = false,
-  error,
-  type = 'text',
-}: InputProps) => {
-  const inputProps = {
-    placeholder: label,
-    required,
-    error,
-    className: 'input',
-  };
+export const Input = (props: InputProps) => {
+  const { type, ...restProps } = props;
+  const inputProps = { ...restProps, className: 'input' };
 
   if (type === 'text') {
     return <AntInput {...inputProps} />;
