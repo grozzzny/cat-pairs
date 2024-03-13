@@ -19,6 +19,7 @@ const CARD_BORDER_RADIUS = 8;
 const MAX_CARDS_LINE = 8;
 const GAME_FIELD_SIZE = 800;
 const THEME = 'light';
+const PAIR_CARDS = 2;
 
 export const GamePage = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -104,7 +105,7 @@ export const GamePage = () => {
 
   const initGame = () => {
     const numPairs = levelPairCounts[level] || 32;
-    const countCards = numPairs * 2;
+    const countCards = numPairs * PAIR_CARDS;
 
     const cardValues = Array.from(
       { length: numPairs },
@@ -259,7 +260,7 @@ export const GamePage = () => {
           card => card.flipped && !foundPairs.includes(card.value)
         );
 
-        if (flippedCards.length === 2) {
+        if (flippedCards.length === PAIR_CARDS) {
           setClickDisabled(true);
           setTimeout(() => {
             const [firstCard, secondCard] = flippedCards;
