@@ -1,23 +1,41 @@
-import { Level, PageWrapper, Timer } from '@/components';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Level, PageWrapper, Timer } from '@/components';
+import './game-page.css';
 
-const CARD_SIZE = 180;
-const CARD_SPACING = 20;
+enum Difficulty {
+  EASY = 'easy',
+  HARD = 'hard',
+}
+
+enum GameStatus {
+  PRE_GAME = 'pre-game',
+  PLAYING = 'playing',
+  WON = 'won',
+  LOST = 'lost',
+}
+
+const CARD_SPACING = 10;
 const CARD_BORDER_RADIUS = 8;
+const MAX_CARDS_LINE = 8;
+const GAME_FIELD_SIZE = 800;
 const THEME = 'light';
 
 export const GamePage = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [cards, setCards] = useState<{ value: number; flipped: boolean }[]>([]);
+  const [cards, setCards] = useState<
+    { value: number; flipped: boolean; x: number; y: number }[]
+  >([]);
   const [foundPairs, setFoundPairs] = useState<number[]>([]);
   const [level, setLevel] = useState<number>(1);
   const [initialLevel, setInitialLevel] = useState<number>(1);
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const [timerRunning, setTimerRunning] = useState<boolean>(false);
   const [clickDisabled, setClickDisabled] = useState<boolean>(false);
-  const [gameStatus, setGameStatus] = useState<string>('pre-game');
+  const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.PRE_GAME);
   const [paused, setPaused] = useState<boolean>(false);
-  const [selectedDifficulty, setSelectedDifficulty] = useState<string>('easy');
+  const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>(
+    Difficulty.EASY
+  );
 
   const cardBackImage = useMemo(
     () => (THEME === 'light' ? 'card-back-light.jpg' : 'card-back-dark.jpg'),
@@ -32,6 +50,23 @@ export const GamePage = () => {
     [level]
   );
 
+  const calculateCardSize = (numCards: number) => {
+    let columns = 2;
+    let rows = Math.ceil(numCards / columns);
+    while (rows > columns) {
+      columns += 2;
+      rows = Math.ceil(numCards / columns);
+    }
+
+    const totalSpacingHorizontal = (columns - 1) * CARD_SPACING;
+    const totalSpacingVertical = (rows - 1) * CARD_SPACING;
+    const availableWidth = GAME_FIELD_SIZE - totalSpacingHorizontal;
+    const availableHeight = GAME_FIELD_SIZE - totalSpacingVertical;
+    const cardWidth = availableWidth / columns;
+    const cardHeight = availableHeight / rows;
+    return Math.min(cardWidth, cardHeight);
+  };
+
   useEffect(() => {
     const savedLevel = localStorage.getItem('memory_game_level');
     if (savedLevel) {
@@ -41,7 +76,7 @@ export const GamePage = () => {
   }, []);
 
   useEffect(() => {
-    if (gameStatus === 'playing') {
+    if (gameStatus === GameStatus.PLAYING) {
       initGame();
     }
   }, [gameStatus]);
@@ -61,17 +96,36 @@ export const GamePage = () => {
     }
   }, [timeLeft, timerRunning]);
 
+  const levelPairCounts: { [key: number]: number } = {
+    1: 3,
+    2: 8,
+    3: 18,
+  };
+
   const initGame = () => {
-    const size = level * 2;
+    const numPairs = levelPairCounts[level] || 32;
+    const countCards = numPairs * 2;
+
     const cardValues = Array.from(
-      { length: size / 2 },
+      { length: numPairs },
       (_, index) => index + 1
     );
     const gameCards = cardValues.concat(cardValues);
     shuffleCards(gameCards);
-    setCards(gameCards.map(value => ({ value, flipped: false })));
+    setCards(
+      gameCards.map(value => ({
+        value,
+        flipped: false,
+        x: 0,
+        y: 0,
+      }))
+    );
 
-    const baseTime = size * (selectedDifficulty === 'easy' ? 4 : 3);
+    const baseTime =
+      level <= 4
+        ? countCards * (selectedDifficulty === Difficulty.EASY ? 4 : 3)
+        : countCards * (selectedDifficulty === Difficulty.EASY ? 4 : 3) -
+          10 * (level - 4);
     setTimeLeft(Math.round(baseTime / 10) * 10);
     setTimerRunning(true);
   };
@@ -105,7 +159,8 @@ export const GamePage = () => {
     ctx: CanvasRenderingContext2D,
     x: number,
     y: number,
-    imgSrc: string
+    imgSrc: string,
+    cardSize: number
   ) => {
     const img = new Image();
     img.src = imgSrc;
@@ -114,23 +169,23 @@ export const GamePage = () => {
       ctx.beginPath();
       ctx.moveTo(x + CARD_BORDER_RADIUS, y);
       ctx.arcTo(
-        x + CARD_SIZE,
+        x + cardSize,
         y,
-        x + CARD_SIZE,
-        y + CARD_SIZE,
+        x + cardSize,
+        y + cardSize,
         CARD_BORDER_RADIUS
       );
       ctx.arcTo(
-        x + CARD_SIZE,
-        y + CARD_SIZE,
+        x + cardSize,
+        y + cardSize,
         x,
-        y + CARD_SIZE,
+        y + cardSize,
         CARD_BORDER_RADIUS
       );
-      ctx.arcTo(x, y + CARD_SIZE, x, y, CARD_BORDER_RADIUS);
-      ctx.arcTo(x, y, x + CARD_SIZE, y, CARD_BORDER_RADIUS);
+      ctx.arcTo(x, y + cardSize, x, y, CARD_BORDER_RADIUS);
+      ctx.arcTo(x, y, x + cardSize, y, CARD_BORDER_RADIUS);
       ctx.clip();
-      ctx.drawImage(img, x, y, CARD_SIZE, CARD_SIZE);
+      ctx.drawImage(img, x, y, cardSize, cardSize);
       ctx.restore();
     };
   };
@@ -140,26 +195,39 @@ export const GamePage = () => {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    const numRows = Math.ceil(cards.length / level);
-    const canvasWidth = level * CARD_SIZE + (level - 1) * CARD_SPACING;
-    const canvasHeight = numRows * CARD_SIZE + (numRows - 1) * CARD_SPACING;
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
+
+    const numCards = cards.length;
+    const columns = Math.min(Math.ceil(Math.sqrt(numCards)), MAX_CARDS_LINE);
+    const rows = Math.ceil(numCards / columns);
+    const cardSize = calculateCardSize(numCards);
+
+    const totalWidth = columns * cardSize + (columns - 1) * CARD_SPACING;
+    const totalHeight = rows * cardSize + (rows - 1) * CARD_SPACING;
+    const offsetX = (GAME_FIELD_SIZE - totalWidth) / 2;
+    const offsetY = (GAME_FIELD_SIZE - totalHeight) / 2;
+
+    canvas.width = GAME_FIELD_SIZE;
+    canvas.height = GAME_FIELD_SIZE;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     cards.forEach((card, index) => {
-      const row = Math.floor(index / level);
-      const col = index % level;
-      const x = col * (CARD_SIZE + CARD_SPACING);
-      const y = row * (CARD_SIZE + CARD_SPACING);
+      const row = Math.floor(index / columns);
+      const col = index % columns;
+      const x = offsetX + col * (cardSize + CARD_SPACING);
+      const y = offsetY + row * (cardSize + CARD_SPACING);
+      cards[index].x = x;
+      cards[index].y = y;
+
       ctx.fillStyle = `${themeColor}`;
-      fillRoundedRect(ctx, x, y, CARD_SIZE, CARD_SIZE, CARD_BORDER_RADIUS);
+      fillRoundedRect(ctx, x, y, cardSize, cardSize, CARD_BORDER_RADIUS);
+
       if (!card.flipped && !foundPairs.includes(card.value)) {
-        drawCard(ctx, x, y, `images/cards/${cardBackImage}`);
+        drawCard(ctx, x, y, `images/cards/${cardBackImage}`, cardSize);
       } else if (card.flipped || foundPairs.includes(card.value)) {
         const imgSrc = card.flipped
           ? `images/cards/card-${card.value}.jpg`
           : `images/cards/${cardBackImage}`;
-        drawCard(ctx, x, y, imgSrc);
+        drawCard(ctx, x, y, imgSrc, cardSize);
       }
     });
   };
@@ -174,57 +242,53 @@ export const GamePage = () => {
     const mouseX = event.clientX - rect.left;
     const mouseY = event.clientY - rect.top;
 
-    // Находим индекс карточки по координатам клика
-    const col = Math.floor(mouseX / (CARD_SIZE + CARD_SPACING));
-    const row = Math.floor(mouseY / (CARD_SIZE + CARD_SPACING));
-    const clickedIndex = row * level + col;
+    cards.forEach((card, index) => {
+      if (
+        mouseX >= card.x &&
+        mouseX <= card.x + cardSize &&
+        mouseY >= card.y &&
+        mouseY <= card.y + cardSize
+      ) {
+        if (foundPairs.includes(card.value) || card.flipped) return;
 
-    // Если клик произошел в пределах отступа, игнорируем его
-    const withinCardAreaX =
-      mouseX >= col * (CARD_SIZE + CARD_SPACING) &&
-      mouseX <= (col + 1) * CARD_SIZE + col * CARD_SPACING;
-    const withinCardAreaY =
-      mouseY >= row * (CARD_SIZE + CARD_SPACING) &&
-      mouseY <= (row + 1) * CARD_SIZE + row * CARD_SPACING;
-    if (!withinCardAreaX || !withinCardAreaY) return;
-    if (foundPairs.includes(cards[clickedIndex].value)) {
-      return;
-    }
+        const newCards = [...cards];
+        newCards[index].flipped = true;
+        setCards(newCards);
 
-    const newCards = [...cards];
-    newCards[clickedIndex].flipped = true;
-    setCards(newCards);
+        const flippedCards = newCards.filter(
+          card => card.flipped && !foundPairs.includes(card.value)
+        );
 
-    const flippedCards = newCards.filter(
-      card => card.flipped && !foundPairs.includes(card.value)
-    );
-    if (flippedCards.length === 2) {
-      setClickDisabled(true);
-      setTimeout(() => {
-        const [firstCard, secondCard] = flippedCards;
-        if (firstCard.value === secondCard.value) {
-          setFoundPairs(prevPairs => [...prevPairs, firstCard.value]);
-          if (foundPairs.length + 1 === newCards.length / 2) {
-            handleGameWon();
-          }
-        } else {
-          newCards.forEach((card, i) => {
-            if (card.flipped && !foundPairs.includes(card.value)) {
-              newCards[i].flipped = false;
+        if (flippedCards.length === 2) {
+          setClickDisabled(true);
+          setTimeout(() => {
+            const [firstCard, secondCard] = flippedCards;
+            if (firstCard.value === secondCard.value) {
+              setFoundPairs(prevPairs => [...prevPairs, firstCard.value]);
+              if (foundPairs.length + 1 === newCards.length / 2) {
+                handleGameWon();
+              }
+            } else {
+              newCards.forEach((card, i) => {
+                if (card.flipped && !foundPairs.includes(card.value)) {
+                  newCards[i].flipped = false;
+                }
+              });
+              setCards(newCards);
             }
-          });
-          setCards(newCards);
+            setClickDisabled(false);
+          }, 500);
         }
-        setClickDisabled(false);
-      }, 1000);
-    }
+      }
+    });
   };
 
   const handleStartGame = () => {
-    setGameStatus('playing');
+    setGameStatus(GameStatus.PLAYING);
     setLevel(initialLevel);
     localStorage.setItem('memory_game_level', initialLevel.toString());
   };
+
   const handlePauseGame = () => {
     setPaused(prevPaused => !prevPaused);
     setTimerRunning(prevTimerRunning => !prevTimerRunning);
@@ -232,13 +296,13 @@ export const GamePage = () => {
 
   const handleRestartGame = () => {
     setPaused(false);
-    setGameStatus('playing');
+    setGameStatus(GameStatus.PLAYING);
     setFoundPairs([]);
     initGame();
   };
 
   const handleExitGame = () => {
-    setGameStatus('pre-game');
+    setGameStatus(GameStatus.PRE_GAME);
     setTimerRunning(false);
     setLevel(initialLevel);
     setTimeLeft(0);
@@ -246,7 +310,7 @@ export const GamePage = () => {
   };
 
   const handleGameWon = () => {
-    setGameStatus('won');
+    setGameStatus(GameStatus.WON);
     setTimerRunning(false);
     const newLevel = level + 1;
     setLevel(newLevel);
@@ -255,7 +319,7 @@ export const GamePage = () => {
   };
 
   const handleGameOver = () => {
-    setGameStatus('lost');
+    setGameStatus(GameStatus.LOST);
     setTimerRunning(false);
   };
 
@@ -263,49 +327,33 @@ export const GamePage = () => {
     drawCards();
   }, [cards, foundPairs]);
 
+  const cardSize = calculateCardSize(cards.length);
+
   return (
     <PageWrapper>
-      <div>
-        {gameStatus === 'pre-game' && (
+      <div className='game-page'>
+        {gameStatus === GameStatus.PRE_GAME && (
           <div>
             <h2>Choose Difficulty:</h2>
             <select
               value={selectedDifficulty}
-              onChange={e => setSelectedDifficulty(e.target.value)}>
-              <option value='easy'>Easy</option>
-              <option value='hard'>Hard</option>
+              onChange={e =>
+                setSelectedDifficulty(e.target.value as Difficulty)
+              }>
+              <option value={Difficulty.EASY}>Easy</option>
+              <option value={Difficulty.HARD}>Hard</option>
             </select>
             <button onClick={handleStartGame}>Start Game</button>
           </div>
         )}
-        {gameStatus === 'playing' && (
-          <div
-            style={{
-              display: 'flex',
-            }}>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'start',
-                alignItems: 'center',
-                minWidth: '100px',
-              }}>
+        {gameStatus === GameStatus.PLAYING && (
+          <div className='game'>
+            <div className='game__info-wrapper'>
               {levelComponent}
               <Timer time={timeLeft} color={themeColor} />
             </div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+            <div className='game__wrapper'>
+              <div className='game__controls-wrapper'>
                 <button onClick={handlePauseGame}>
                   {paused ? 'Resume' : 'Pause'}
                 </button>
@@ -314,22 +362,18 @@ export const GamePage = () => {
 
               <canvas ref={canvasRef} onClick={handleCardClick} />
             </div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'end',
-              }}>
+            <div className='game__exit-wrapper'>
               <button onClick={handleExitGame}>Exit Game</button>
             </div>
           </div>
         )}
-        {gameStatus === 'won' && (
+        {gameStatus === GameStatus.WON && (
           <div>
             <h2>Congratulations! You won!</h2>
             <button onClick={handleRestartGame}>Continue</button>
           </div>
         )}
-        {gameStatus === 'lost' && (
+        {gameStatus === GameStatus.LOST && (
           <div>
             <h2>Game Over!</h2>
             <button onClick={handleRestartGame}>Play Again</button>
