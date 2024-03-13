@@ -19,3 +19,7 @@
 .input::placeholder {
   color: var(--light);
 }
+
+.input > .ant-input-suffix > .anticon {
+  color: var(--light);
+}
