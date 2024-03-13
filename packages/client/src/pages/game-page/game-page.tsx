@@ -340,7 +340,8 @@ export const GamePage = () => {
               value={selectedDifficulty}
               onChange={e =>
                 setSelectedDifficulty(e.target.value as Difficulty)
-              }>
+              }
+            >
               <option value={Difficulty.EASY}>Easy</option>
               <option value={Difficulty.HARD}>Hard</option>
             </select>
