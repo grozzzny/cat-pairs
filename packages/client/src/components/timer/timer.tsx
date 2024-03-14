@@ -14,7 +14,7 @@ export const Timer = () => {
 
   return (
     <>
-      <p className='timer__count'>{time}</p>
+      <p className='timer'>{time}</p>
     </>
   );
 };

@@ -6,7 +6,7 @@ import { Timer } from '@/components';
 export const StartGamePage = () => {
   return (
     <PageWrapper>
-      <div className='start__container'>
+      <div className='start-page'>
         <Timer />
         <Loader />
       </div>
