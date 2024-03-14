@@ -17,7 +17,6 @@ export const ProfilePopup = ({
   const {
     register,
     handleSubmit,
-    getValues,
     reset,
     formState: { errors },
   } = useForm<ChengeAvatarForm>();
@@ -25,10 +24,9 @@ export const ProfilePopup = ({
   const popupClass = `popup  ${isPopupOpen ? 'popup_opened' : ''}`;
 
   const onSubmit = () => {
-    const avatar = getValues('file');
-    console.log(avatar);
     handleClosePopup();
     reset();
+    //const avatar = getValues('file');
     //const formData = new FormData();
     //formData.append('avatar', avatar);
     //установить в state и отправить на сервер

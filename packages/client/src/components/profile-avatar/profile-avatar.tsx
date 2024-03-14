@@ -6,7 +6,7 @@ interface ProfileAvatarProps {
 }
 export const ProfileAvatar = ({ handleOpenPopup }: ProfileAvatarProps) => {
   const [image, setImage] = useState('');
-  const [isPopupOpen, setIsPopupOpen] = useState(false); //  const isOpen = useSelector(state=>state.isPopupOpen)
+  //  const isOpen = useSelector(state=>state.isPopupOpen)
   useEffect(() => {
     //запрос на сервер '@/../../public/avatar.png'
     setImage('@/../../public/avatar.png');
