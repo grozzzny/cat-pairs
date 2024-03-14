@@ -1,10 +1,10 @@
-.profile__container {
+.profile-page {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   border-radius: 8px;
-  background-color: #565a5d;
+  background-color: var(--base-dark);
   min-width: 780px;
   max-height: 539px;
   margin-top: 110px;

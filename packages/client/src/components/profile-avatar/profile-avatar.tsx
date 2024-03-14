@@ -4,10 +4,7 @@ interface ProfileAvatarProps {
   handleOpenPopup: () => void;
   handleClosePopup: () => void;
 }
-export const ProfileAvatar = ({
-  handleOpenPopup,
-  handleClosePopup,
-}: ProfileAvatarProps) => {
+export const ProfileAvatar = ({ handleOpenPopup }: ProfileAvatarProps) => {
   const [image, setImage] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false); //  const isOpen = useSelector(state=>state.isPopupOpen)
   useEffect(() => {
@@ -15,11 +12,8 @@ export const ProfileAvatar = ({
     setImage('@/../../public/avatar.png');
   }, []);
 
-  const handleChangeAvatarFoto = () => {
-    handleClosePopup();
-  };
   return (
-    <div className='profile-avatar__container' onClick={handleOpenPopup}>
+    <div className='profile-avatar' onClick={handleOpenPopup}>
       {image ? (
         <img
           className='profile-avatar__img'

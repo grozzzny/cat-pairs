@@ -22,7 +22,7 @@ export const ProfilePage = () => {
         handleClosePopup={handleClosePopup}
       />
       <PageWrapper>
-        <div className='profile__container'>
+        <div className='profile-page'>
           <ProfileAvatar
             handleOpenPopup={handleOpenPopup}
             handleClosePopup={handleClosePopup}

@@ -1,8 +1,8 @@
-.profile-avatar__container {
+.profile-avatar {
   min-width: 67px;
   margin-top: 57px;
   min-height: 67px;
-  background-color: #efe5cc;
+  background-color: var(--base-light);
   border-radius: 33.5px;
   display: flex;
   flex-direction: column;
@@ -19,5 +19,5 @@
 .profile-avatar__text {
   font-size: 12px;
   font-weight: 600;
-  color: #565a5d;
+  color: var(--base-dark);
 }
