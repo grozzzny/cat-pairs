@@ -2,12 +2,12 @@ import { PageWrapper } from '@/components';
 import './gameover-page.css';
 
 import { useState } from 'react';
-import { GameOver } from '@/components';
+import { GameOverWrapper } from '@/components';
 import Confetti from 'react-confetti';
-import { Exit } from '@/components/exit';
+import { ExitButtom } from '@/components/exit-button';
 
 export const GameOverPage = () => {
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(true);
 
   return (
     <PageWrapper>
@@ -15,20 +15,20 @@ export const GameOverPage = () => {
         {isSuccess ? (
           <div>
             <Confetti />
-            <GameOver
+            <GameOverWrapper
               title='Поздравляем!'
               message='Вы перешли на следующий уровень'
               buttonText='Продолжить игру'
             />
           </div>
         ) : (
-          <GameOver
+          <GameOverWrapper
             title='Вы проиграли'
             message='Попробуйте еще раз'
             buttonText='Играть'
           />
         )}
-        <Exit />
+        <ExitButtom />
       </>
     </PageWrapper>
   );
