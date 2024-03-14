@@ -74,3 +74,6 @@
 
 Если вам понадобится только один сервис, просто уточните какой в команде
 `docker compose up {sevice_name}`, например `docker compose up server`
+
+## О проекте
+[Документация](docs/README.md)
