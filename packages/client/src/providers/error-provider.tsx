@@ -1,9 +1,18 @@
 import React, { ErrorInfo, ReactNode } from 'react';
 
+export interface ThemeProps {
+  token: {
+    colorPrimary: string;
+    colorText: string;
+    colorIcon: string;
+  };
+}
+
 interface ErrorProviderProps {
   children: ReactNode;
-  errorPage: React.ComponentType<{ error?: string }>;
+  errorPage: React.ComponentType<{ error?: string; theme: ThemeProps }>;
   onError?: (error: Error, errorInfo: ErrorInfo) => void;
+  theme: ThemeProps;
 }
 
 interface ErrorProviderState {
@@ -38,7 +47,9 @@ export class ErrorProvider extends React.Component<
   render() {
     if (this.state.hasError) {
       const ErrorPageComponent = this.props.errorPage;
-      return <ErrorPageComponent error={this.state.error} />;
+      return (
+        <ErrorPageComponent error={this.state.error} theme={this.props.theme} />
+      );
     }
 
     return this.props.children;

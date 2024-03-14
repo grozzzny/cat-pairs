@@ -1,0 +1,39 @@
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 14%;
+}
+
+.error__title {
+  margin: 0;
+  font-size: 96px;
+  line-height: 94px;
+}
+
+.error__subtitle {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.error__description {
+  font-size: 24px;
+  text-transform: lowercase;
+  margin-bottom: 40px;
+}
+
+.error__button {
+  width: 285px;
+  height: 60px;
+  background-color: var(--common-dark);
+  padding-top: 0;
+  color: var(--common-light);
+  font-size: 24px;
+}
+
+.error__button:hover {
+  background: var(--common-dark) !important;
+  color: var(--common-light) !important;
+  opacity: 0.8;
+}

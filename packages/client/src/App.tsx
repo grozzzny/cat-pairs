@@ -11,17 +11,17 @@ function App() {
     // eslint-disable-next-line no-console
     console.error('Error handled:', error, errorInfo);
   };
+  const theme = {
+    token: {
+      colorPrimary: '#EFE5CC',
+      colorText: '#EFE5CC',
+      colorIcon: '#565A5D',
+    },
+  };
 
   return (
-    <ErrorProvider errorPage={Page500} onError={handleError}>
-      <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: '#EFE5CC',
-            colorText: '#EFE5CC',
-            colorIcon: '#565A5D',
-          },
-        }}>
+    <ErrorProvider errorPage={Page500} onError={handleError} theme={theme}>
+      <ConfigProvider theme={theme}>
         <BrowserRouter>
           <Routes>
             {routes.map(route => (
