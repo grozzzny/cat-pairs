@@ -1,6 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Level, PageWrapper, Timer } from '@/components';
 import './game-page.css';
+import {
+  calculateCardSize,
+  loadImage,
+  shuffleCards,
+} from '@/utils/game-helpers';
 
 enum Difficulty {
   EASY = 'easy',
@@ -14,6 +19,13 @@ enum GameStatus {
   LOST = 'lost',
 }
 
+interface Card {
+  value: number;
+  flipped: boolean;
+  x: number;
+  y: number;
+}
+
 const CARD_SPACING = 10;
 const CARD_BORDER_RADIUS = 8;
 const MAX_CARDS_LINE = 8;
@@ -23,50 +35,29 @@ const PAIR_CARDS = 2;
 
 export const GamePage = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [cards, setCards] = useState<
-    { value: number; flipped: boolean; x: number; y: number }[]
-  >([]);
+  const [cards, setCards] = useState<Card[]>([]);
   const [foundPairs, setFoundPairs] = useState<number[]>([]);
-  const [level, setLevel] = useState<number>(1);
-  const [initialLevel, setInitialLevel] = useState<number>(1);
-  const [timeLeft, setTimeLeft] = useState<number>(0);
-  const [timerRunning, setTimerRunning] = useState<boolean>(false);
-  const [clickDisabled, setClickDisabled] = useState<boolean>(false);
+  const [level, setLevel] = useState(1);
+  const [initialLevel, setInitialLevel] = useState(1);
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [clickDisabled, setClickDisabled] = useState(false);
   const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.PRE_GAME);
-  const [paused, setPaused] = useState<boolean>(false);
+  const [paused, setPaused] = useState(false);
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>(
     Difficulty.EASY
   );
 
-  const cardBackImage = useMemo(
-    () => (THEME === 'light' ? 'card-back-light.jpg' : 'card-back-dark.jpg'),
-    [THEME]
-  );
-  const themeColor = useMemo(
-    () => (THEME === 'light' ? '#565A5D' : '#EFE5CC'),
-    [THEME]
-  );
+  const cardBackImage =
+    THEME === 'light' ? 'card-back-light.jpg' : 'card-back-dark.jpg';
+  const themeColor = THEME === 'light' ? '#565A5D' : '#EFE5CC';
   const levelComponent = useMemo(
     () => <Level level={level} color={themeColor} />,
     [level]
   );
 
-  const calculateCardSize = (numCards: number) => {
-    let columns = 2;
-    let rows = Math.ceil(numCards / columns);
-    while (rows > columns) {
-      columns += 2;
-      rows = Math.ceil(numCards / columns);
-    }
-
-    const totalSpacingHorizontal = (columns - 1) * CARD_SPACING;
-    const totalSpacingVertical = (rows - 1) * CARD_SPACING;
-    const availableWidth = GAME_FIELD_SIZE - totalSpacingHorizontal;
-    const availableHeight = GAME_FIELD_SIZE - totalSpacingVertical;
-    const cardWidth = availableWidth / columns;
-    const cardHeight = availableHeight / rows;
-    return Math.min(cardWidth, cardHeight);
-  };
+  const [cardBackImg, setCardBackImg] = useState<HTMLImageElement | null>(null);
+  const [cardImages, setCardImages] = useState<HTMLImageElement[]>([]);
 
   useEffect(() => {
     const savedLevel = localStorage.getItem('memory_game_level');
@@ -75,12 +66,6 @@ export const GamePage = () => {
       setLevel(parseInt(savedLevel));
     }
   }, []);
-
-  useEffect(() => {
-    if (gameStatus === GameStatus.PLAYING) {
-      initGame();
-    }
-  }, [gameStatus]);
 
   useEffect(() => {
     if (timerRunning && timeLeft === 0) {
@@ -103,104 +88,87 @@ export const GamePage = () => {
     3: 18,
   };
 
-  const initGame = () => {
+  const initGame = async () => {
     const numPairs = levelPairCounts[level] || 32;
     const countCards = numPairs * PAIR_CARDS;
 
-    const cardValues = Array.from(
-      { length: numPairs },
-      (_, index) => index + 1
-    );
-    const gameCards = cardValues.concat(cardValues);
-    shuffleCards(gameCards);
-    setCards(
-      gameCards.map(value => ({
-        value,
-        flipped: false,
-        x: 0,
-        y: 0,
-      }))
-    );
+    try {
+      const cardBackImagePromise = loadImage(`images/cards/${cardBackImage}`);
+      const cardImagesPromises = Array.from(
+        { length: numPairs },
+        (_, index) => {
+          return loadImage(`images/cards/card-${index + 1}.jpg`);
+        }
+      );
 
-    const baseTime =
-      level <= 4
-        ? countCards * (selectedDifficulty === Difficulty.EASY ? 4 : 3)
-        : countCards * (selectedDifficulty === Difficulty.EASY ? 4 : 3) -
-          10 * (level - 4);
-    setTimeLeft(Math.round(baseTime / 10) * 10);
-    setTimerRunning(true);
-  };
+      const [cardBackImg, ...cardImgs] = await Promise.all([
+        cardBackImagePromise,
+        ...cardImagesPromises,
+      ]);
 
-  const shuffleCards = (cards: number[]) => {
-    for (let i = cards.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [cards[i], cards[j]] = [cards[j], cards[i]];
+      setCardBackImg(cardBackImg);
+      setCardImages(cardImgs);
+
+      const gameCards = Array.from(
+        { length: numPairs },
+        (_, index) => index + 1
+      ).flatMap(value => [value, value]);
+      shuffleCards(gameCards);
+
+      setCards(
+        gameCards.map(value => ({
+          value,
+          flipped: false,
+          x: 0,
+          y: 0,
+        }))
+      );
+
+      const baseTime =
+        countCards * (selectedDifficulty === Difficulty.EASY ? 4 : 3) -
+        10 * Math.max(level - 4, 0);
+      setTimeLeft(Math.round(baseTime / 10) * 10);
+      setTimerRunning(true);
+    } catch (error) {
+      console.error('Failed to load images:', error);
     }
-  };
-
-  const fillRoundedRect = (
-    ctx: CanvasRenderingContext2D,
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    radius: number
-  ) => {
-    ctx.beginPath();
-    ctx.moveTo(x + radius, y);
-    ctx.arcTo(x + width, y, x + width, y + height, radius);
-    ctx.arcTo(x + width, y + height, x, y + height, radius);
-    ctx.arcTo(x, y + height, x, y, radius);
-    ctx.arcTo(x, y, x + width, y, radius);
-    ctx.closePath();
-    ctx.fill();
   };
 
   const drawCard = (
     ctx: CanvasRenderingContext2D,
     x: number,
     y: number,
-    imgSrc: string,
-    cardSize: number
+    img: HTMLImageElement,
+    cardSize: number,
+    flipped: boolean
   ) => {
-    const img = new Image();
-    img.src = imgSrc;
-    img.onload = () => {
-      ctx.save();
-      ctx.beginPath();
-      ctx.moveTo(x + CARD_BORDER_RADIUS, y);
-      ctx.arcTo(
-        x + cardSize,
-        y,
-        x + cardSize,
-        y + cardSize,
-        CARD_BORDER_RADIUS
-      );
-      ctx.arcTo(
-        x + cardSize,
-        y + cardSize,
-        x,
-        y + cardSize,
-        CARD_BORDER_RADIUS
-      );
-      ctx.arcTo(x, y + cardSize, x, y, CARD_BORDER_RADIUS);
-      ctx.arcTo(x, y, x + cardSize, y, CARD_BORDER_RADIUS);
-      ctx.clip();
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(x + CARD_BORDER_RADIUS, y);
+    ctx.arcTo(x + cardSize, y, x + cardSize, y + cardSize, CARD_BORDER_RADIUS);
+    ctx.arcTo(x + cardSize, y + cardSize, x, y + cardSize, CARD_BORDER_RADIUS);
+    ctx.arcTo(x, y + cardSize, x, y, CARD_BORDER_RADIUS);
+    ctx.arcTo(x, y, x + cardSize, y, CARD_BORDER_RADIUS);
+    ctx.clip();
+
+    if (!flipped && cardBackImg) {
+      ctx.drawImage(cardBackImg, x, y, cardSize, cardSize);
+    } else {
       ctx.drawImage(img, x, y, cardSize, cardSize);
-      ctx.restore();
-    };
+    }
+    ctx.restore();
   };
 
   const drawCards = () => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || !cardBackImg) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     const numCards = cards.length;
     const columns = Math.min(Math.ceil(Math.sqrt(numCards)), MAX_CARDS_LINE);
     const rows = Math.ceil(numCards / columns);
-    const cardSize = calculateCardSize(numCards);
+    const cardSize = calculateCardSize(numCards, CARD_SPACING, GAME_FIELD_SIZE);
 
     const totalWidth = columns * cardSize + (columns - 1) * CARD_SPACING;
     const totalHeight = rows * cardSize + (rows - 1) * CARD_SPACING;
@@ -219,21 +187,23 @@ export const GamePage = () => {
       cards[index].x = x;
       cards[index].y = y;
 
-      ctx.fillStyle = `${themeColor}`;
-      fillRoundedRect(ctx, x, y, cardSize, cardSize, CARD_BORDER_RADIUS);
-
-      if (!card.flipped && !foundPairs.includes(card.value)) {
-        drawCard(ctx, x, y, `images/cards/${cardBackImage}`, cardSize);
-      } else if (card.flipped || foundPairs.includes(card.value)) {
-        const imgSrc = card.flipped
-          ? `images/cards/card-${card.value}.jpg`
-          : `images/cards/${cardBackImage}`;
-        drawCard(ctx, x, y, imgSrc, cardSize);
-      }
+      drawCard(
+        ctx,
+        x,
+        y,
+        card.flipped ? cardImages[card.value - 1] : cardBackImg,
+        cardSize,
+        card.flipped
+      );
     });
   };
 
   const handleCardClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    const cardSize = calculateCardSize(
+      cards.length,
+      CARD_SPACING,
+      GAME_FIELD_SIZE
+    );
     if (clickDisabled || paused) return;
 
     const canvas = canvasRef.current;
@@ -270,15 +240,16 @@ export const GamePage = () => {
                 handleGameWon();
               }
             } else {
-              newCards.forEach((card, i) => {
+              const resetCards = newCards.map(card => {
                 if (card.flipped && !foundPairs.includes(card.value)) {
-                  newCards[i].flipped = false;
+                  return { ...card, flipped: false };
                 }
+                return card;
               });
-              setCards(newCards);
+              setCards(resetCards);
             }
             setClickDisabled(false);
-          }, 500);
+          }, 1000);
         }
       }
     });
@@ -288,6 +259,7 @@ export const GamePage = () => {
     setGameStatus(GameStatus.PLAYING);
     setLevel(initialLevel);
     localStorage.setItem('memory_game_level', initialLevel.toString());
+    initGame();
   };
 
   const handlePauseGame = () => {
@@ -328,8 +300,6 @@ export const GamePage = () => {
     drawCards();
   }, [cards, foundPairs]);
 
-  const cardSize = calculateCardSize(cards.length);
-
   return (
     <PageWrapper>
       <div className='game-page'>
@@ -340,8 +310,7 @@ export const GamePage = () => {
               value={selectedDifficulty}
               onChange={e =>
                 setSelectedDifficulty(e.target.value as Difficulty)
-              }
-            >
+              }>
               <option value={Difficulty.EASY}>Easy</option>
               <option value={Difficulty.HARD}>Hard</option>
             </select>
