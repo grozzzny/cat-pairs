@@ -13,15 +13,13 @@ type RegistrationFieldType = {
   password?: string;
 };
 
-const onFinish: FormProps<RegistrationFieldType>['onFinish'] = values => {
-  // eslint-disable-next-line no-console
-  console.log('Success:', values);
+const onFinish: FormProps<RegistrationFieldType>['onFinish'] = () => {
+  // code...
 };
 
 const onFinishFailed: FormProps<RegistrationFieldType>['onFinishFailed'] =
-  errorInfo => {
-    // eslint-disable-next-line no-console
-    console.log('Failed:', errorInfo);
+  () => {
+    // code...
   };
 
 export const RegistrationPage = () => {
