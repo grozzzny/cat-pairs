@@ -1,0 +1,36 @@
+.error-container {
+  padding-top: 14%;
+}
+
+.error-container__title {
+  margin: 0;
+  font-size: 96px;
+  line-height: 94px;
+}
+
+.error-container__subtitle {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.error-container__description {
+  font-size: 24px;
+  text-transform: lowercase;
+  margin-bottom: 40px;
+}
+
+.error-container__button {
+  width: 285px;
+  height: 60px;
+  background-color: var(--dark);
+  padding-top: 0;
+  color: var(--light);
+  font-size: 24px;
+}
+
+.error-container__button:hover {
+  background: var(--dark) !important;
+  color: var(--light) !important;
+  opacity: 0.8;
+}
