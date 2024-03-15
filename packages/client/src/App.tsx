@@ -5,7 +5,7 @@ import { routes } from './routes';
 import { ErrorProvider } from '@/providers';
 import React, { ErrorInfo } from 'react';
 import { Page500 } from '@/pages';
-import { THEME } from '@/helpers/constants/GLOBAL';
+import { THEME } from '@/helpers/constants/global';
 
 function App() {
   const handleError = (error: Error, errorInfo: ErrorInfo) => {

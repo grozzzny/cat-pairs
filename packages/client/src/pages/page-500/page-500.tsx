@@ -1,6 +1,6 @@
 import { ConfigProvider } from 'antd';
 import { PageWrapper } from '@/components';
-import { Error } from '@/components';
+import { ErrorContainer } from '@/components';
 import { ThemeProps } from '@/providers/error-provider';
 
 type Page500Props = {
@@ -15,7 +15,7 @@ export const Page500 = ({ error = 'ошибка сервера', theme }: Page50
   return (
     <ConfigProvider theme={theme}>
       <PageWrapper withMenu={withMenu}>
-        <Error code={errorCode} description={error} />
+        <ErrorContainer code={errorCode} description={error} />
       </PageWrapper>
     </ConfigProvider>
   );

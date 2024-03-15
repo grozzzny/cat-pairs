@@ -1,5 +1,5 @@
 import { PageWrapper } from '@/components';
-import { Error } from '@/components';
+import { ErrorContainer } from '@/components';
 
 export const Page404 = () => {
   const withMenu = false;
@@ -8,7 +8,7 @@ export const Page404 = () => {
 
   return (
     <PageWrapper withMenu={withMenu}>
-      <Error code={errorCode} description={errorDescription} />
+      <ErrorContainer code={errorCode} description={errorDescription} />
     </PageWrapper>
   );
 };
