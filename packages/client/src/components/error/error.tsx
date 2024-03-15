@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button, Flex } from 'antd';
 import './error.css';
 
 interface ErrorProps {
@@ -8,14 +8,14 @@ interface ErrorProps {
 
 export const Error = ({ code, description }: ErrorProps): JSX.Element => {
   return (
-    <div className='error'>
-      <h1 className='error__title'>{code}</h1>
-      <div className='error__subtitle'>Error</div>
-      <div className='error__description'>{description}</div>
+    <Flex className='http-error' vertical align='center'>
+      <h1 className='http-error__title'>{code}</h1>
+      <div className='http-error__subtitle'>Error</div>
+      <div className='http-error__description'>{description}</div>
       <Button
         type='primary'
         size='large'
-        className='error__button'
+        className='http-error__button'
         onClick={() => {
           // Здесь используем History API вместо useNavigate, так как ErrorProvider,
           // который возвращает страницу 500-й ошибки, подключается раньше, чем Router, и при
@@ -25,6 +25,6 @@ export const Error = ({ code, description }: ErrorProps): JSX.Element => {
         }}>
         Вернуться
       </Button>
-    </div>
+    </Flex>
   );
 };

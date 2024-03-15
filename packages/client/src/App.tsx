@@ -5,23 +5,17 @@ import { routes } from './routes';
 import { ErrorProvider } from '@/providers';
 import React, { ErrorInfo } from 'react';
 import { Page500 } from '@/pages';
+import { THEME } from '@/helpers/constants/GLOBAL';
 
 function App() {
   const handleError = (error: Error, errorInfo: ErrorInfo) => {
     // eslint-disable-next-line no-console
     console.error('Error handled:', error, errorInfo);
   };
-  const theme = {
-    token: {
-      colorPrimary: '#EFE5CC',
-      colorText: '#EFE5CC',
-      colorIcon: '#565A5D',
-    },
-  };
 
   return (
-    <ErrorProvider errorPage={Page500} onError={handleError} theme={theme}>
-      <ConfigProvider theme={theme}>
+    <ErrorProvider errorPage={Page500} onError={handleError} theme={THEME}>
+      <ConfigProvider theme={THEME}>
         <BrowserRouter>
           <Routes>
             {routes.map(route => (
