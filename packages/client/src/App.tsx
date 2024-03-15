@@ -5,6 +5,7 @@ import { routes } from './routes';
 import { ErrorProvider } from '@/providers';
 import React, { ErrorInfo } from 'react';
 import { Page500 } from '@/pages';
+import { Color } from '@/helpers';
 
 function App() {
   const handleError = (error: Error, errorInfo: ErrorInfo) => {
@@ -16,10 +17,15 @@ function App() {
     <ErrorProvider errorPage={Page500} onError={handleError}>
       <ConfigProvider
         theme={{
+          components: {
+            Form: {
+              marginLG: 12,
+            },
+          },
           token: {
-            colorPrimary: '#EFE5CC',
-            colorText: '#EFE5CC',
-            colorIcon: '#565A5D',
+            colorPrimary: Color.Light,
+            colorText: Color.Light,
+            colorIcon: Color.Dark,
           },
         }}>
         <BrowserRouter>
