@@ -1,0 +1,25 @@
+.input {
+  width: 280px;
+  height: 30px;
+  background-color: var(--dark);
+  color: var(--light);
+}
+
+.input input:hover,
+.input input:focus,
+.input:hover,
+.input:focus,
+.input input::placeholder,
+.input,
+.input::placeholder {
+  background: var(--dark) !important;
+  color: var(--light) !important;
+}
+
+.input::placeholder {
+  color: var(--light);
+}
+
+.input > .ant-input-suffix > .anticon {
+  color: var(--light);
+}
