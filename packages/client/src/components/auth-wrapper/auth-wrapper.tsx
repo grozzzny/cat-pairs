@@ -13,12 +13,12 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({
   children,
   darkTheme = false,
 }) => {
+  const authClassName = [
+    'auth-wrapper',
+    darkTheme ? 'auth-wrapper--dark' : null,
+  ].join(' ');
   return (
-    <Flex
-      justify='center'
-      className={['auth-wrapper', darkTheme ? 'auth-wrapper--dark' : null].join(
-        ' '
-      )}>
+    <Flex justify='center' className={authClassName}>
       <Flex className='auth-wrapper__container'>
         <Flex
           vertical
