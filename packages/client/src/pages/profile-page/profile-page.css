@@ -4,8 +4,8 @@
   justify-content: flex-start;
   align-items: center;
   border-radius: 8px;
-  background-color: var(--base-dark);
-  min-width: 780px;
+  background-color: var(--dark);
+  min-width: 539px;
   max-height: 539px;
   margin-top: 110px;
 }
@@ -13,5 +13,5 @@
 .profile-page__change-password {
   cursor: pointer;
   font-size: 14px;
-  color: var(--base-dark);
+  color: var(--light);
 }

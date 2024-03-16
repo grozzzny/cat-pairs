@@ -29,6 +29,7 @@ export const ProfilePage = () => {
             handleOpenPopup={handleOpenPopup}
             handleClosePopup={handleClosePopup}
           />
+
           <ProfileForm />
           <p
             className='profile-page__change-password'

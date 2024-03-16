@@ -1,8 +1,15 @@
-import { Input, MessagePopup, PageWrapper } from '@/components';
-import { Button, Form, type FormProps } from 'antd';
+import {
+  AuthWrapper,
+  Button,
+  Input,
+  MessagePopup,
+  PageWrapper,
+} from '@/components';
+import { Form, type FormProps } from 'antd';
 import { UserService } from '@/servises/user';
 import { DataChangePassword } from '@/helpers/types';
 import { useState } from 'react';
+import './new-password.css';
 
 type RegistrationFieldType = {
   oldpasswod: string;
@@ -24,35 +31,35 @@ export const NewPassword = () => {
     setIsPopupOpen(false);
   };
 
-  {
-    const handleChangePassword = async ({
+  const handleChangePassword = async ({
+    oldPassword,
+    newPassword,
+  }: DataChangePassword) => {
+    const result = await UserService.changePassword({
       oldPassword,
       newPassword,
-    }: DataChangePassword) => {
-      const result = await UserService.changePassword({
-        oldPassword,
-        newPassword,
+    });
+    if (result.isOk) {
+      setIsPopupOpen(true);
+      setMessage('Пароль успешно изменен');
+    } else {
+      setIsPopupOpen(true);
+      setMessage('Не удалось поменять пароль');
+    }
+  };
+
+  const onFinish: FormProps<RegistrationFieldType>['onFinish'] = values => {
+    {
+      handleChangePassword({
+        oldPassword: values.oldpasswod,
+        newPassword: values.newpassword,
       });
-      if (result.isOk) {
-        setIsPopupOpen(true);
-        setMessage('Пароль успешно изменен');
-      } else {
-        setIsPopupOpen(true);
-        setMessage('Не удалось поменять пароль');
-      }
-    };
-
-    const onFinish: FormProps<RegistrationFieldType>['onFinish'] = values => {
-      {
-        handleChangePassword({
-          oldPassword: values.oldpasswod,
-          newPassword: values.newpassword,
-        });
-      }
-    };
-
-    return (
-      <PageWrapper withMenu={false}>
+    }
+  };
+  const darkTheme = false;
+  return (
+    <PageWrapper withMenu={false}>
+      <AuthWrapper darkTheme={darkTheme} label=''>
         <>
           <Form
             name='basic'
@@ -69,11 +76,17 @@ export const NewPassword = () => {
               <Input placeholder='Новый пароль' type='password' />
             </Form.Item>
             <Form.Item<RegistrationFieldType> name='newpassword2'>
-              <Input placeholder='Еще раз' type='password' />
+              <Input
+                placeholder='Введите новый пароль еще раз'
+                type='password'
+              />
             </Form.Item>
-            <Button type='primary' htmlType='submit'>
-              Submit
-            </Button>
+            <Button
+              darkTheme={darkTheme}
+              label='Поменять пароль'
+              htmlType='submit'
+              size='large'
+            />
           </Form>
           <MessagePopup
             isPopupOpen={isPopupOpen}
@@ -82,7 +95,7 @@ export const NewPassword = () => {
             backPath='../profile'
           />
         </>
-      </PageWrapper>
-    );
-  }
+      </AuthWrapper>
+    </PageWrapper>
+  );
 };
