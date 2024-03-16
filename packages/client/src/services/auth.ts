@@ -1,10 +1,14 @@
 import { AuthApi } from '@/api';
-import { LoginRequestDto } from '@/helpers/types';
+import { isRequestError } from '@/helpers/request';
+import { LoginRequestDto, LoginRequestResult } from '@/helpers/types';
 
 export class AuthService {
-  static async login(props: LoginRequestDto) {
+  static async login(props: LoginRequestDto): Promise<LoginRequestResult> {
     const response = await AuthApi.login(props);
-    console.log(response.status);
-    // далее тут обработка результата запроса и другая логика с данными
+    if (response.ok && !isRequestError(response.status)) {
+      return { isOk: true, reason: '' };
+    }
+    const error = await response.json();
+    return { isOk: false, reason: error.reason };
   }
 }

@@ -1,4 +1,5 @@
 import { Input, PageWrapper } from '@/components';
+import { Button } from '@/components/button';
 import { AuthService } from '@/services/auth';
 import { Flex } from 'antd';
 import { useState } from 'react';
@@ -6,10 +7,15 @@ import { useNavigate } from 'react-router-dom';
 
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 
+type ValidateValueType = {
+  login: string;
+  password: string;
+};
+
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
+  const [login, setLogin] = useState('NikDoomchan');
+  const [password, setPassword] = useState('QWERTY123');
 
   const handleLoginChange = (e: InputEvent) => {
     setLogin(e.target.value);
@@ -17,6 +23,18 @@ export const LoginPage = () => {
 
   const handlePasswordChange = (e: InputEvent) => {
     setPassword(e.target.value);
+  };
+
+  const handleValidateLogin = async ({
+    login,
+    password,
+  }: ValidateValueType) => {
+    const result = await AuthService.login({ login, password });
+    if (result.isOk) {
+      navigate('/');
+      return;
+    }
+    console.log(`Не удалось войти: ${result.reason}`);
   };
 
   return (
@@ -41,7 +59,11 @@ export const LoginPage = () => {
               onChange={handlePasswordChange}
             />
           </Flex>
-          <Flex vertical className='form__wrapper-bottom' align='center'>
+          <Flex
+            vertical
+            className='form__wrapper-bottom'
+            align='center'
+            gap={8}>
             <div className='text'>
               Не зарегистрированы?&nbsp;
               <span
@@ -50,9 +72,11 @@ export const LoginPage = () => {
                 Регистрация
               </span>
             </div>
-            <button onClick={() => AuthService.login({ login, password })}>
-              Войти
-            </button>
+            <Button
+              block
+              label='Войти'
+              onClick={() => handleValidateLogin({ login, password })}
+            />
           </Flex>
         </Flex>
       </Flex>
