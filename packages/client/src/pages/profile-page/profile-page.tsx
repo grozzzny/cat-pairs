@@ -6,9 +6,11 @@ import {
 } from '@/components';
 import './profile-page.css';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const ProfilePage = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const navigate = useNavigate();
   const handleOpenPopup = () => {
     setIsPopupOpen(true);
   };
@@ -28,6 +30,11 @@ export const ProfilePage = () => {
             handleClosePopup={handleClosePopup}
           />
           <ProfileForm />
+          <p
+            className='profile-page__change-password'
+            onClick={() => navigate('../new-password')}>
+            Сменить пароль
+          </p>
         </div>
       </PageWrapper>
     </>

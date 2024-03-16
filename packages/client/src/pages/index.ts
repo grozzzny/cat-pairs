@@ -6,3 +6,5 @@ export { RegistrationPage } from './registration-page';
 export { ProfilePage } from './profile-page';
 export { LeaderboardPage } from './leaderboard-page';
 export { Page404 } from './page-404';
+export { Page500 } from './page-500';
+export { NewPassword } from './new-password';

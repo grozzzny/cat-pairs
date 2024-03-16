@@ -4,7 +4,6 @@ export const routes = [
   {
     path: '/',
     element: <Pages.MainPage />,
-    errorElement: <Pages.Page404 />,
     index: true,
   },
   {
@@ -24,6 +23,10 @@ export const routes = [
     element: <Pages.ProfilePage />,
   },
   {
+    path: '/new-password',
+    element: <Pages.NewPassword />,
+  },
+  {
     path: '/leaderboard',
     element: <Pages.LeaderboardPage />,
   },
@@ -34,5 +37,9 @@ export const routes = [
   {
     path: '/forum/:id',
     element: <Pages.ForumPage />,
+  },
+  {
+    path: '*',
+    element: <Pages.Page404 />,
   },
 ];

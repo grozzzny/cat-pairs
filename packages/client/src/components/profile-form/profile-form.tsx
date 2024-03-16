@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import './profile-form.css';
-import { profileFormErrors } from '@/constants/profile-form-errors';
+import { profileFormErrors } from '@/helpers/constants/profile-form-errors';
 
 interface ProfileForm {
   firstName: string;

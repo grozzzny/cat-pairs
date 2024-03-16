@@ -5,6 +5,10 @@
   height: 100%;
 }
 
+.page-wrapper__content {
+  height: 100%;
+}
+
 .page-wrapper__cat-background {
   position: absolute;
   top: 1%;

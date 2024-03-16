@@ -1,3 +1,7 @@
+@import url('@/css/form.css');
+@import url('@/css/text.css');
+@import url('@/css/link.css');
+
 html,
 body,
 #root {
@@ -23,4 +27,9 @@ body,
   --base-dark: #565a5d;
   --base-light: #efe5cc;
   --base-red: #ee2d39;
+}
+
+:root {
+  --dark: #565a5d;
+  --light: #efe5cc;
 }

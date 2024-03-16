@@ -9,3 +9,9 @@
   max-height: 539px;
   margin-top: 110px;
 }
+
+.profile-page__change-password {
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--base-dark);
+}
