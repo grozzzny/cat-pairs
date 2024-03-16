@@ -7,11 +7,6 @@ import { useNavigate } from 'react-router-dom';
 
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 
-type ValidateValueType = {
-  login: string;
-  password: string;
-};
-
 export const LoginPage = () => {
   const navigate = useNavigate();
   const [login, setLogin] = useState('NikDoomchan');
@@ -25,10 +20,7 @@ export const LoginPage = () => {
     setPassword(e.target.value);
   };
 
-  const handleValidateLogin = async ({
-    login,
-    password,
-  }: ValidateValueType) => {
+  const handleValidateLogin = async () => {
     const result = await AuthService.login({ login, password });
     if (result.isOk) {
       navigate('/');
@@ -72,11 +64,7 @@ export const LoginPage = () => {
                 Регистрация
               </span>
             </div>
-            <Button
-              block
-              label='Войти'
-              onClick={() => handleValidateLogin({ login, password })}
-            />
+            <Button block label='Войти' onClick={handleValidateLogin} />
           </Flex>
         </Flex>
       </Flex>

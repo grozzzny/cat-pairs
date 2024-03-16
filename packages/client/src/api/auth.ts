@@ -5,9 +5,16 @@ import { LoginRequestDto } from '@/helpers/types/api';
 export class AuthApi {
   static login(params: LoginRequestDto) {
     return fetchHelper({
-      url: `${YANDEX_API_HOST}/auth/signin`,
+      url: '/auth/signin',
       method: 'POST',
       data: params,
+    });
+  }
+
+  static getUser() {
+    return fetchHelper({
+      url: '/auth/user',
+      method: 'GET',
     });
   }
 }

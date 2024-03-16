@@ -11,4 +11,9 @@ export class AuthService {
     const error = await response.json();
     return { isOk: false, reason: error.reason };
   }
+
+  static async getUser(): Promise<boolean> {
+    const response = await AuthApi.getUser();
+    return response.ok;
+  }
 }
