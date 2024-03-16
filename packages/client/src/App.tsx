@@ -5,6 +5,7 @@ import { routes } from './routes';
 import { ErrorProvider } from '@/providers';
 import React, { ErrorInfo } from 'react';
 import { Page500 } from '@/pages';
+import { THEME } from '@/helpers/constants/global';
 
 function App() {
   const handleError = (error: Error, errorInfo: ErrorInfo) => {
@@ -13,15 +14,8 @@ function App() {
   };
 
   return (
-    <ErrorProvider errorPage={Page500} onError={handleError}>
-      <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: '#EFE5CC',
-            colorText: '#EFE5CC',
-            colorIcon: '#565A5D',
-          },
-        }}>
+    <ErrorProvider errorPage={Page500} onError={handleError} theme={THEME}>
+      <ConfigProvider theme={THEME}>
         <BrowserRouter>
           <Routes>
             {routes.map(route => (
