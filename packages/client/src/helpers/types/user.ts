@@ -21,6 +21,6 @@ export interface User {
 
 export interface AvatarRequestResult {
   isOk: boolean;
-  user: User;
-  reason: string;
+  avatar?: string;
+  error?: string;
 }

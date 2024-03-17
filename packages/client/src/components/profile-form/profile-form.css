@@ -25,23 +25,23 @@
 
 .profile-form__error {
   font-size: 12px;
-  color: var(--base-red);
+  color: var(--red);
   padding-right: 5px;
   text-align: end;
 }
 
 .profile-form__label {
   font-size: 14px;
-  color: var(--base-light);
+  color: var(--light);
   padding-left: 5px;
-  border-bottom: 1px solid var(--base-light);
+  border-bottom: 1px solid var(--light);
   display: flex;
   justify-content: space-between;
 }
 
 .profile-form__input {
   font-size: 14px;
-  color: var(--base-light);
+  color: var(--light);
   text-align: end;
   background: transparent;
   border: none;
@@ -53,19 +53,8 @@
   outline: none;
 }
 
-.profile-form__button {
+.profile-form button {
   width: 280px;
-  height: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  font-size: 14px;
-  color: var(--base-dark);
-  background-color: var(--base-light);
   margin-top: 54px;
-  margin-bottom: 94px;
-  cursor: pointer;
-  border: none;
+  margin-bottom: 20px;
 }

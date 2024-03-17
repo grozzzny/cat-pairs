@@ -2,7 +2,7 @@
   min-width: 67px;
   margin-top: 57px;
   min-height: 67px;
-  background-color: var(--base-light);
+  background-color: var(--light);
   border-radius: 33.5px;
   display: flex;
   flex-direction: column;
@@ -14,10 +14,12 @@
 .profile-avatar__img {
   object-fit: cover;
   border-radius: 33.5px;
+  height: 67px;
+  width: 67px;
 }
 
 .profile-avatar__text {
   font-size: 12px;
   font-weight: 600;
-  color: var(--base-dark);
+  color: var(--dark);
 }

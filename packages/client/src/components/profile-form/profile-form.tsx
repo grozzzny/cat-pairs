@@ -1,6 +1,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import './profile-form.css';
 import { profileFormErrors } from '@/helpers/constants/profile-form-errors';
+import { Button } from '@/components/button';
 
 interface ProfileForm {
   firstName: string;
@@ -36,14 +37,7 @@ export const ProfileForm = () => {
     handleSubmit,
     reset,
   } = useForm<ProfileForm>({
-    defaultValues: {
-      firstName: currentUser.firstName,
-      lastName: currentUser.lastName,
-      nikName: currentUser.nikName,
-      email: currentUser.email,
-      phone: currentUser.phone,
-      password: currentUser.password,
-    },
+    defaultValues: { ...currentUser },
     mode: 'onChange',
   });
 
@@ -194,9 +188,7 @@ export const ProfileForm = () => {
           )}
         </div>
       </div>
-      <button className='profile-form__button' type='submit'>
-        Редактировать
-      </button>
+      <Button label={'Редактировать'} />
     </form>
   );
 };

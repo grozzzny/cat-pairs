@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import './profile-avatar.css';
-interface ProfileAvatarProps {
-  handleOpenPopup: () => void;
-  handleClosePopup: () => void;
-}
-export const ProfileAvatar = ({ handleOpenPopup }: ProfileAvatarProps) => {
+import { ProfilePopup } from '@/components/profile-popup';
+import { YANDEX_API_HOST } from '@/helpers/constants/api';
+
+export const ProfileAvatar = () => {
   //этот useEffect для авторизации, его не будет, нужен для проверки работы смены аватара
   useEffect(() => {
     //авторизация
@@ -35,34 +34,37 @@ export const ProfileAvatar = ({ handleOpenPopup }: ProfileAvatarProps) => {
   }, []);
 
   const [image, setImage] = useState('');
-  //  const isOpen = useSelector(state=>state.isPopupOpen)
-  useEffect(() => {
-    //этого запроса тоже не будет, аватар будет подтягиваться из редакса, в папку апи не стала выносить
-    /* fetch('https://ya-praktikum.tech/api/v2/auth/user', {
-      method: 'GET',
-      credentials: 'include',
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === 'ok') {
-          setImage(`https://ya-praktikum.tech/api/v2/${data.avatar}`);
-          
-        }
-      })
-      .catch(err => console.error('Ошибка:', err));*/
-  }, []);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleOpenPopup = () => {
+    setIsPopupOpen(true);
+  };
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+  };
+
+  const handleSetAvatar = (val: string) => {
+    setImage(`${YANDEX_API_HOST}/resources${val}`);
+  };
 
   return (
-    <div className='profile-avatar' onClick={handleOpenPopup}>
-      {image ? (
-        <img
-          className='profile-avatar__img'
-          src={image}
-          alt='фото пользователя'
-        />
-      ) : (
-        <p className='profile-avatar__text'>фото</p>
-      )}
-    </div>
+    <>
+      <ProfilePopup
+        isPopupOpen={isPopupOpen}
+        handleClosePopup={handleClosePopup}
+        handleSetAvatar={handleSetAvatar}
+      />
+      <div className='profile-avatar' onClick={handleOpenPopup}>
+        {image ? (
+          <img
+            className='profile-avatar__img'
+            src={image}
+            alt='фото пользователя'
+          />
+        ) : (
+          <p className='profile-avatar__text'>фото</p>
+        )}
+      </div>
+    </>
   );
 };

@@ -7,10 +7,9 @@ import {
 } from '@/components';
 import { Form, type FormProps } from 'antd';
 import { UserService } from '@/servises/user';
-import { UserApi } from '@/api/user';
 import { DataChangePassword } from '@/helpers/types';
 import { useEffect, useState } from 'react';
-import './new-password.css';
+import './change-password.css';
 
 type RegistrationFieldType = {
   oldpasswod: string;

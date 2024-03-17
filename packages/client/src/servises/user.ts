@@ -17,15 +17,14 @@ export class UserService {
     return { isOk: false, reason: error.reason };
   }
 
-  /*static async changeAvatar(
-    props: FormData
-  ): Promise<AvatarRequestResult> {
+  static async changeAvatar(props: FormData): Promise<AvatarRequestResult> {
     const response = await UserApi.changeAvatar(props);
-    console.log(response);
-    /*if (response.ok && response.status <= 400) {
-      return { isOk: true, reason: '', avatar: response.avatar };
+    if (response.status <= 400) {
+      const user = await response.json();
+      return { isOk: true, avatar: user.avatar };
+    } else {
+      const error = await response.json();
+      return { isOk: false, error: error.reason };
     }
-    const error = await response.json();
-    return { isOk: false, reason: error.reason };
-  }*/
+  }
 }

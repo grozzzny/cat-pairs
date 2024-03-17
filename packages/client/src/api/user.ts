@@ -13,11 +13,11 @@ export class UserApi {
     });
   }
 
-  /*static async changeAvatar(data: FormData) {
-    return await fetch(`${YANDEX_API_HOST}/user/password`, {
-      ...API_PARAMS,
+  static async changeAvatar(data: FormData) {
+    return await fetch(`${YANDEX_API_HOST}/user/profile/avatar`, {
       method: 'PUT',
       body: data,
+      credentials: 'include',
     });
-  }*/
+  }
 }

@@ -1,15 +1,18 @@
 import './profile-popup.css';
 import { CloseOutlined, ConsoleSqlOutlined } from '@ant-design/icons';
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { UserService } from '@/servises/user';
 
 interface ProfilePopupProps {
   isPopupOpen: boolean;
   handleClosePopup: () => void;
+  handleSetAvatar: (val: string) => void;
 }
 
 export const ProfilePopup = ({
   isPopupOpen,
   handleClosePopup,
+  handleSetAvatar,
 }: ProfilePopupProps) => {
   //этот useEffect для авторизации, его не будет, нужен для проверки работы смены аватара
   useEffect(() => {
@@ -43,19 +46,21 @@ export const ProfilePopup = ({
 
   const [file, setFile] = useState<File | null>(null);
 
-  const handleSubmit = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (file) {
-      console.log(file);
       const formData = new FormData();
       formData.append('avatar', file);
-      fetch('https://ya-praktikum.tech/api/v2/user/profile/avatar', {
+      const result = await UserService.changeAvatar(formData);
+
+      if (result.isOk && result.avatar) {
+        handleSetAvatar(result.avatar);
+      }
+      handleClosePopup();
+      /*fetch('https://ya-praktikum.tech/api/v2/user/profile/avatar', {
         method: 'PUT',
         body: formData,
         credentials: 'include',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
       })
         .then(res => res.json())
         .then(data => {
@@ -63,9 +68,7 @@ export const ProfilePopup = ({
           if (data.status === 'ok') console.log('успешно: ', data);
           else console.log('с ошибкой: ', data);
         })
-        .catch(err => console.error('Ошибка:', err));
-
-      handleClosePopup();
+        .catch(err => console.error('Ошибка:', err));*/
       setFile(null);
     }
   };
