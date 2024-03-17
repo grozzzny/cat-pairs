@@ -16,3 +16,7 @@ export enum GameStatus {
   WON = 'won',
   LOST = 'lost',
 }
+
+export interface LevelPairCounts {
+  [key: number]: number;
+}
