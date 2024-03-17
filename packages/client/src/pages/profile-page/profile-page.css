@@ -13,5 +13,6 @@
 .profile-page__change-password {
   cursor: pointer;
   font-size: 14px;
-  color: var(--light);
+  color: var(--dark);
+  margin: 0;
 }

@@ -17,19 +17,20 @@ export const ProfilePage = () => {
   const handleClosePopup = () => {
     setIsPopupOpen(false);
   };
+
   return (
     <>
       <ProfilePopup
         isPopupOpen={isPopupOpen}
         handleClosePopup={handleClosePopup}
       />
+
       <PageWrapper>
         <div className='profile-page'>
           <ProfileAvatar
             handleOpenPopup={handleOpenPopup}
             handleClosePopup={handleClosePopup}
           />
-
           <ProfileForm />
           <p
             className='profile-page__change-password'

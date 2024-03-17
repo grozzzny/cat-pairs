@@ -1,5 +1,9 @@
 import { UserApi } from '@/api';
-import { DataChangePassword, PasswordRequestResult } from '@/helpers/types';
+import {
+  AvatarRequestResult,
+  DataChangePassword,
+  PasswordRequestResult,
+} from '@/helpers/types';
 
 export class UserService {
   static async changePassword(
@@ -12,4 +16,16 @@ export class UserService {
     const error = await response.json();
     return { isOk: false, reason: error.reason };
   }
+
+  /*static async changeAvatar(
+    props: FormData
+  ): Promise<AvatarRequestResult> {
+    const response = await UserApi.changeAvatar(props);
+    console.log(response);
+    /*if (response.ok && response.status <= 400) {
+      return { isOk: true, reason: '', avatar: response.avatar };
+    }
+    const error = await response.json();
+    return { isOk: false, reason: error.reason };
+  }*/
 }

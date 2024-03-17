@@ -7,8 +7,9 @@ import {
 } from '@/components';
 import { Form, type FormProps } from 'antd';
 import { UserService } from '@/servises/user';
+import { UserApi } from '@/api/user';
 import { DataChangePassword } from '@/helpers/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './new-password.css';
 
 type RegistrationFieldType = {
@@ -24,6 +25,35 @@ const onFinishFailed: FormProps<RegistrationFieldType>['onFinishFailed'] =
   };
 
 export const NewPassword = () => {
+  //этот useEffect для авторизации, его не будет, нужен для проверки работы смены пароля
+  useEffect(() => {
+    //авторизация
+    /* const bodyData = JSON.stringify({
+      login: 'test19',
+      password: 'qqqQQQ111',
+    });
+    fetch('https://ya-praktikum.tech/api/v2/auth/signin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: bodyData,
+    })
+      .then(res => res.json())
+      .then(data => console.log('Успешно:', data))
+      .catch(err => console.error('Ошибка:', err));
+
+    //выход
+    /* fetch('https://ya-praktikum.tech/api/v2/auth/logout', {
+      method: 'POST',
+      credentials: 'include',
+    })
+      .then(res => res.json())
+      .then(data => console.log('Успешно:', data))
+      .catch(err => console.error('Ошибка:', err));*/
+  }, []);
+
   const [message, setMessage] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -49,12 +79,10 @@ export const NewPassword = () => {
   };
 
   const onFinish: FormProps<RegistrationFieldType>['onFinish'] = values => {
-    {
-      handleChangePassword({
-        oldPassword: values.oldpasswod,
-        newPassword: values.newpassword,
-      });
-    }
+    handleChangePassword({
+      oldPassword: values.oldpasswod,
+      newPassword: values.newpassword,
+    });
   };
   const darkTheme = false;
   return (
