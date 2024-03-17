@@ -45,6 +45,7 @@ export class Game {
       THEME === 'light' ? 'card-back-light.jpg' : 'card-back-dark.jpg';
     this.cardBackImage = null;
     this.cardImages = [];
+    this.initGame();
   }
 
   componentDidMount() {
@@ -60,7 +61,7 @@ export class Game {
 
     try {
       const cardBackImagePromise = loadImage(
-        `images/cards/${this.cardBackImage}`
+        `images/cards/${this.cardBackImageName}`
       );
       const cardImagesPromises = Array.from(
         { length: numPairs },
