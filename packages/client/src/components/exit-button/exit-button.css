@@ -11,12 +11,12 @@
   gap: 12px;
   align-items: center;
   text-decoration: none;
-  background-color: #efe5cc;
+  background-color: var(--light);
   border: none;
   cursor: pointer;
 }
 
 .exit-button__button-text {
   font-size: 16px;
-  color: #565a5d;
+  color: var(--dark);
 }

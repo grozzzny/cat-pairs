@@ -1,6 +1,7 @@
-import { Button } from 'antd';
+/*import { Button } from 'antd';*/
 import { useNavigate } from 'react-router-dom';
 import './game-over-wrapper.css';
+import { Button } from '@/components/button';
 
 interface GameOverWrapperProps {
   title: string;
@@ -18,14 +19,7 @@ export const GameOverWrapper = ({
     <div className='game-over-wrapper'>
       <h1 className='game-over-wrapper__title'>{title}</h1>
       <p className='game-over-wrapper__text'>{message}</p>
-      <Button
-        className='game-over-wrapper__button'
-        type='primary'
-        onClick={() => {
-          navigate('/start');
-        }}>
-        {buttonText}
-      </Button>
+      <Button label={buttonText} onClick={() => navigate('/start')} />
     </div>
   );
 };
