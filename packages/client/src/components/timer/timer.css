@@ -1,5 +1,5 @@
 .timer {
-  color: #565a5d;
+  color: var(--dark);
   font-size: 120px;
   font-weight: 600;
   margin: 0;
