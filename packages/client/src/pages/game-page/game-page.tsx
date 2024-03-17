@@ -1,35 +1,24 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Level, PageWrapper, Timer } from '@/components';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  GameControls,
+  GameField,
+  GameInfo,
+  GameStartScreen,
+  PageWrapper,
+} from '@/components';
 import './game-page.css';
+
+import { Card, Difficulty, GameStatus } from '@/components/game/types';
+
+import { GameEndScreen } from '@/components/game/game-end-screen/game-end-screen';
 import {
   calculateCardSize,
   loadImage,
   shuffleCards,
 } from '@/utils/game-helpers';
+import { CARD_SPACING, GAME_FIELD_SIZE } from '@/components/game/constants';
+import { drawCards } from '@/utils/graw-cards';
 
-enum Difficulty {
-  EASY = 'easy',
-  HARD = 'hard',
-}
-
-enum GameStatus {
-  PRE_GAME = 'pre-game',
-  PLAYING = 'playing',
-  WON = 'won',
-  LOST = 'lost',
-}
-
-interface Card {
-  value: number;
-  flipped: boolean;
-  x: number;
-  y: number;
-}
-
-const CARD_SPACING = 10;
-const CARD_BORDER_RADIUS = 8;
-const MAX_CARDS_LINE = 8;
-const GAME_FIELD_SIZE = 800;
 const THEME = 'light';
 const PAIR_CARDS = 2;
 
@@ -51,10 +40,6 @@ export const GamePage = () => {
   const cardBackImage =
     THEME === 'light' ? 'card-back-light.jpg' : 'card-back-dark.jpg';
   const themeColor = THEME === 'light' ? '#565A5D' : '#EFE5CC';
-  const levelComponent = useMemo(
-    () => <Level level={level} color={themeColor} />,
-    [level]
-  );
 
   const [cardBackImg, setCardBackImg] = useState<HTMLImageElement | null>(null);
   const [cardImages, setCardImages] = useState<HTMLImageElement[]>([]);
@@ -134,70 +119,6 @@ export const GamePage = () => {
     }
   };
 
-  const drawCard = (
-    ctx: CanvasRenderingContext2D,
-    x: number,
-    y: number,
-    img: HTMLImageElement,
-    cardSize: number,
-    flipped: boolean
-  ) => {
-    ctx.save();
-    ctx.beginPath();
-    ctx.moveTo(x + CARD_BORDER_RADIUS, y);
-    ctx.arcTo(x + cardSize, y, x + cardSize, y + cardSize, CARD_BORDER_RADIUS);
-    ctx.arcTo(x + cardSize, y + cardSize, x, y + cardSize, CARD_BORDER_RADIUS);
-    ctx.arcTo(x, y + cardSize, x, y, CARD_BORDER_RADIUS);
-    ctx.arcTo(x, y, x + cardSize, y, CARD_BORDER_RADIUS);
-    ctx.clip();
-
-    if (!flipped && cardBackImg) {
-      ctx.drawImage(cardBackImg, x, y, cardSize, cardSize);
-    } else {
-      ctx.drawImage(img, x, y, cardSize, cardSize);
-    }
-    ctx.restore();
-  };
-
-  const drawCards = () => {
-    const canvas = canvasRef.current;
-    if (!canvas || !cardBackImg) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const numCards = cards.length;
-    const columns = Math.min(Math.ceil(Math.sqrt(numCards)), MAX_CARDS_LINE);
-    const rows = Math.ceil(numCards / columns);
-    const cardSize = calculateCardSize(numCards, CARD_SPACING, GAME_FIELD_SIZE);
-
-    const totalWidth = columns * cardSize + (columns - 1) * CARD_SPACING;
-    const totalHeight = rows * cardSize + (rows - 1) * CARD_SPACING;
-    const offsetX = (GAME_FIELD_SIZE - totalWidth) / 2;
-    const offsetY = (GAME_FIELD_SIZE - totalHeight) / 2;
-
-    canvas.width = GAME_FIELD_SIZE;
-    canvas.height = GAME_FIELD_SIZE;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    cards.forEach((card, index) => {
-      const row = Math.floor(index / columns);
-      const col = index % columns;
-      const x = offsetX + col * (cardSize + CARD_SPACING);
-      const y = offsetY + row * (cardSize + CARD_SPACING);
-      cards[index].x = x;
-      cards[index].y = y;
-
-      drawCard(
-        ctx,
-        x,
-        y,
-        card.flipped ? cardImages[card.value - 1] : cardBackImg,
-        cardSize,
-        card.flipped
-      );
-    });
-  };
-
   const handleCardClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
     const cardSize = calculateCardSize(
       cards.length,
@@ -206,9 +127,7 @@ export const GamePage = () => {
     );
     if (clickDisabled || paused) return;
 
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
+    const canvas = event.currentTarget;
     const rect = canvas.getBoundingClientRect();
     const mouseX = event.clientX - rect.left;
     const mouseY = event.clientY - rect.top;
@@ -277,7 +196,7 @@ export const GamePage = () => {
   const handleExitGame = () => {
     setGameStatus(GameStatus.PRE_GAME);
     setTimerRunning(false);
-    setLevel(initialLevel);
+    // setLevel(initialLevel); сброс уровня на начальный при выходе
     setTimeLeft(0);
     setFoundPairs([]);
   };
@@ -297,41 +216,38 @@ export const GamePage = () => {
   };
 
   useEffect(() => {
-    drawCards();
+    drawCards(canvasRef, cards, cardImages, cardBackImg);
   }, [cards, foundPairs]);
 
   return (
     <PageWrapper>
       <div className='game-page'>
         {gameStatus === GameStatus.PRE_GAME && (
-          <div>
-            <h2>Choose Difficulty:</h2>
-            <select
-              value={selectedDifficulty}
-              onChange={e =>
-                setSelectedDifficulty(e.target.value as Difficulty)
-              }>
-              <option value={Difficulty.EASY}>Easy</option>
-              <option value={Difficulty.HARD}>Hard</option>
-            </select>
-            <button onClick={handleStartGame}>Start Game</button>
-          </div>
+          <GameStartScreen
+            selectedDifficulty={selectedDifficulty}
+            onStartGame={handleStartGame}
+            onDifficultyChange={setSelectedDifficulty}
+          />
         )}
         {gameStatus === GameStatus.PLAYING && (
           <div className='game'>
-            <div className='game__info-wrapper'>
-              {levelComponent}
-              <Timer time={timeLeft} color={themeColor} />
-            </div>
+            <GameInfo
+              level={level}
+              timeLeft={timeLeft}
+              themeColor={themeColor}
+            />
             <div className='game__wrapper'>
-              <div className='game__controls-wrapper'>
-                <button onClick={handlePauseGame}>
-                  {paused ? 'Resume' : 'Pause'}
-                </button>
-                <button onClick={handleRestartGame}>Restart</button>
-              </div>
-
-              <canvas ref={canvasRef} onClick={handleCardClick} />
+              <GameControls
+                paused={paused}
+                handlePauseGame={handlePauseGame}
+                handleRestartGame={handleRestartGame}
+              />
+              <GameField
+                cards={cards}
+                cardImages={cardImages}
+                cardBackImg={cardBackImg}
+                onCardClick={handleCardClick}
+              />
             </div>
             <div className='game__exit-wrapper'>
               <button onClick={handleExitGame}>Exit Game</button>
@@ -339,16 +255,10 @@ export const GamePage = () => {
           </div>
         )}
         {gameStatus === GameStatus.WON && (
-          <div>
-            <h2>Congratulations! You won!</h2>
-            <button onClick={handleRestartGame}>Continue</button>
-          </div>
+          <GameEndScreen status='WON' onRestartGame={handleRestartGame} />
         )}
         {gameStatus === GameStatus.LOST && (
-          <div>
-            <h2>Game Over!</h2>
-            <button onClick={handleRestartGame}>Play Again</button>
-          </div>
+          <GameEndScreen status='LOST' onRestartGame={handleRestartGame} />
         )}
       </div>
     </PageWrapper>

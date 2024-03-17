@@ -1,5 +1,10 @@
 export { PageWrapper } from './page-wrapper';
 export { NavigationBar } from './navigation-bar';
 export { IconButton } from './icon-button';
-export { Timer } from './timer';
-export { Level } from './level';
+export { Timer } from './game/timer';
+export { Level } from './game/level';
+export { GameControls } from './game/game-controls';
+export { GameInfo } from './game/game-info';
+export { GameStartScreen } from './game/game-start-screen';
+export { GameEndScreen } from './game/game-end-screen';
+export { GameField } from './game/game-field';
