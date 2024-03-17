@@ -4,7 +4,6 @@ export const routes = [
   {
     path: '/',
     element: <Pages.MainPage />,
-    errorElement: <Pages.Page404 />,
     index: true,
   },
   {
@@ -38,5 +37,9 @@ export const routes = [
   {
     path: '/start',
     element: <Pages.StartGamePage />,
+  },
+  {
+    path: '*',
+    element: <Pages.Page404 />,
   },
 ];
