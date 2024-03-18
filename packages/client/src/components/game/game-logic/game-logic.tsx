@@ -14,50 +14,42 @@ import {
 import { drawCards } from '@/utils/graw-cards';
 const THEME = 'light';
 
-export class Game {
-  canvasRef: React.RefObject<HTMLCanvasElement>;
-  cards: Card[];
-  foundPairs: number[];
-  level: number;
-  initialLevel: number;
-  timeLeft: number;
-  timerRunning: boolean;
-  clickDisabled: boolean;
-  gameStatus: GameStatus;
-  paused: boolean;
-  selectedDifficulty: Difficulty;
+export class GameApi {
+  cards: Card[] = [];
+  foundPairs: number[] = [];
+  level = 1;
+  initialLevel = 1;
+  countCards = 0;
+  timerRunning = true;
+  clickDisabled = false;
+  paused = false;
   cardBackImageName: string;
-  cardBackImage: HTMLImageElement | null;
-  cardImages: HTMLImageElement[];
-  constructor(canvasRef: React.RefObject<HTMLCanvasElement>) {
-    this.canvasRef = canvasRef;
-    this.cards = [];
-    this.foundPairs = [];
-    this.level = 1;
-    this.initialLevel = 1;
-    this.timeLeft = 0;
-    this.timerRunning = false;
-    this.clickDisabled = false;
-    this.gameStatus = GameStatus.PRE_GAME;
-    this.paused = false;
-    this.selectedDifficulty = Difficulty.EASY;
+  cardBackImage: HTMLImageElement | null = null;
+  cardImages: HTMLImageElement[] = [];
+  constructor(
+    private readonly canvasRef: React.RefObject<HTMLCanvasElement>,
+    private changeGameStatus: (status: GameStatus) => void,
+    private readonly gameStatus: GameStatus = GameStatus.PRE_GAME,
+    private selectedDifficulty: Difficulty = Difficulty.EASY,
+    private readonly theme: 'light' | 'dark' = THEME
+  ) {
     this.cardBackImageName =
-      THEME === 'light' ? 'card-back-light.jpg' : 'card-back-dark.jpg';
-    this.cardBackImage = null;
-    this.cardImages = [];
+      theme === THEME ? 'card-back-light.jpg' : 'card-back-dark.jpg';
+    this.setLevel();
     this.initGame();
   }
 
-  componentDidMount() {
+  setLevel() {
     const savedLevel = localStorage.getItem('memory_game_level');
     if (savedLevel) {
       this.initialLevel = parseInt(savedLevel);
       this.level = parseInt(savedLevel);
     }
   }
-  private initGame = async () => {
+
+  public initGame = async () => {
     const numPairs = LEVEL_PAIR_COUNTS[this.level] || 32;
-    const countCards = numPairs * PAIR_CARDS;
+    this.countCards = numPairs * PAIR_CARDS;
 
     try {
       const cardBackImagePromise = loadImage(
@@ -91,10 +83,6 @@ export class Game {
         y: 0,
       }));
 
-      const baseTime =
-        countCards * (this.selectedDifficulty === Difficulty.EASY ? 4 : 3) -
-        10 * Math.max(this.level - 4, 0);
-      this.timeLeft = Math.round(baseTime / 10) * 10;
       this.timerRunning = true;
     } catch (error) {
       console.error('Failed to load images:', error);
@@ -102,7 +90,6 @@ export class Game {
   };
 
   public handleCardClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    // Логика обработки кликов по картам
     const cardSize = calculateCardSize(
       this.cards.length,
       CARD_SPACING,
@@ -138,7 +125,7 @@ export class Game {
             const [firstCard, secondCard] = flippedCards;
             if (firstCard.value === secondCard.value) {
               this.foundPairs = [...this.foundPairs, firstCard.value];
-              if (this.foundPairs.length + 1 === newCards.length / 2) {
+              if (this.foundPairs.length === newCards.length / 2) {
                 this.handleGameWon();
               }
             } else {
@@ -157,7 +144,7 @@ export class Game {
   };
 
   private handleGameWon = () => {
-    this.gameStatus = GameStatus.WON;
+    this.changeGameStatus(GameStatus.WON);
     this.timerRunning = false;
     const newLevel = this.level + 1;
     this.level = newLevel;
@@ -165,14 +152,15 @@ export class Game {
     localStorage.setItem('memory_game_level', newLevel.toString());
   };
 
-  private handleGameOver = () => {
-    this.gameStatus = GameStatus.LOST;
+  public handleGameOver = () => {
+    this.changeGameStatus(GameStatus.LOST);
     this.timerRunning = false;
   };
 
   public handlePauseGame = () => {
     this.paused = !this.paused;
     this.timerRunning = !this.timerRunning;
+    return this.paused;
   };
   public handleRestartGame = () => {
     this.paused = false;
@@ -180,15 +168,14 @@ export class Game {
   };
 
   public handleExitGame = () => {
-    this.gameStatus = GameStatus.PRE_GAME;
+    this.changeGameStatus(GameStatus.PRE_GAME);
     this.timerRunning = false;
-    this.timeLeft = 0;
     this.foundPairs = [];
     this.level = this.initialLevel; // Не уверен, нужно ли сбрасывать уровень при выходе из игры, если нет удалить
   };
 
   public handleStartGame = () => {
-    this.gameStatus = GameStatus.PLAYING;
+    this.changeGameStatus(GameStatus.PLAYING);
     this.level = this.initialLevel;
     localStorage.setItem('memory_game_level', this.initialLevel.toString());
     this.initGame();
@@ -203,10 +190,16 @@ export class Game {
   public getLevel = () => {
     return this.level;
   };
-  public getTimeLeft = () => {
-    return this.timeLeft;
+  public getTimerRunning = () => {
+    return this.timerRunning;
   };
-  public getPaused = () => {
+  public getTimeLeft = () => {
+    const baseTime =
+      this.countCards * (this.selectedDifficulty === Difficulty.EASY ? 4 : 3) -
+      10 * Math.max(this.level - 4, 0);
+    return Math.round(baseTime / 10) * 10;
+  };
+  public getPaused = (): boolean => {
     return this.paused;
   };
   public getCards = () => {
@@ -219,7 +212,17 @@ export class Game {
     return this.cardBackImage;
   };
 
-  private drawCardsOnCanvas() {
+  public render = () => {
+    const animate = () => {
+      if (this.timerRunning && !this.paused) {
+        this.drawCards();
+      }
+      requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  };
+
+  public drawCards() {
     drawCards(this.canvasRef, this.cards, this.cardImages, this.cardBackImage);
   }
 }

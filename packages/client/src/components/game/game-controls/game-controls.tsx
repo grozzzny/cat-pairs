@@ -3,18 +3,18 @@ import './game-controls.css';
 
 interface GameControlsProps {
   paused: boolean;
-  handlePauseGame: () => void;
+  handlePause: () => void;
   handleRestartGame: () => void;
 }
 
 export const GameControls: React.FC<GameControlsProps> = ({
   paused,
-  handlePauseGame,
+  handlePause,
   handleRestartGame,
 }) => {
   return (
     <div className='game-controls'>
-      <button onClick={handlePauseGame}>{paused ? 'Resume' : 'Pause'}</button>
+      <button onClick={handlePause}>{paused ? 'Resume' : 'Pause'}</button>
       <button onClick={handleRestartGame}>Restart</button>
     </div>
   );

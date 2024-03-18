@@ -1,1 +1,1 @@
-export { Game } from './game-logic';
+export { GameApi } from './game-logic';

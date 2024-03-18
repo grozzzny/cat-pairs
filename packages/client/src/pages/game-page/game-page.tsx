@@ -1,62 +1,52 @@
-import {
-  Game,
-  GameControls,
-  GameEndScreen,
-  GameField,
-  GameInfo,
-  GameStartScreen,
-  PageWrapper,
-} from '@/components';
-import { GameStatus } from '@/components/game/types';
-import React, { useRef } from 'react';
+import { GameEndScreen, GameStartScreen, PageWrapper } from '@/components';
+import { Difficulty, GameStatus } from '@/components/game/types';
+import React, { useState } from 'react';
+import './game-page.css';
+import { Game } from '@/components/game/game';
 
-const THEME = 'light';
 export const GamePage = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const game = new Game(canvasRef);
+  const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.PRE_GAME);
+  const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>(
+    Difficulty.EASY
+  );
 
   return (
     <PageWrapper>
       <div className='game-page'>
-        {game.gameStatus === GameStatus.PRE_GAME && (
+        {gameStatus === GameStatus.PRE_GAME && (
           <GameStartScreen
-            selectedDifficulty={game.getSelectedDifficulty()}
-            onStartGame={game.handleStartGame}
-            onDifficultyChange={difficulty =>
-              game.setSelectedDifficulty(difficulty)
-            }
+            selectedDifficulty={selectedDifficulty}
+            onStartGame={() => {
+              setGameStatus(GameStatus.PLAYING);
+            }}
+            onDifficultyChange={difficulty => setSelectedDifficulty(difficulty)}
           />
         )}
-        {game.gameStatus === GameStatus.PLAYING && (
-          <div className='game'>
-            <GameInfo
-              level={game.getLevel()}
-              timeLeft={game.getTimeLeft()}
-              themeColor={THEME === 'light' ? '#565A5D' : '#EFE5CC'}
-            />
-            <div className='game__wrapper'>
-              <GameControls
-                paused={game.getPaused()}
-                handlePauseGame={game.handlePauseGame}
-                handleRestartGame={game.handleRestartGame}
-              />
-              <GameField
-                cards={game.getCards()}
-                cardImages={game.getCardImages()}
-                cardBackImg={game.getCardBackImage()}
-                onCardClick={game.handleCardClick}
-              />
-            </div>
-            <div className='game__exit-wrapper'>
-              <button onClick={game.handleExitGame}>Exit Game</button>
-            </div>
-          </div>
+        {gameStatus === GameStatus.PLAYING && (
+          <Game
+            changeGameStatus={status => {
+              setGameStatus(status);
+            }}
+            gameStatus={gameStatus}
+            selectedDifficulty={selectedDifficulty}
+            theme='light'
+          />
         )}
-        {game.gameStatus === GameStatus.WON && (
-          <GameEndScreen status='WON' onRestartGame={game.handleRestartGame} />
+        {gameStatus === GameStatus.WON && (
+          <GameEndScreen
+            status='WON'
+            onRestartGame={() => {
+              setGameStatus(GameStatus.PLAYING);
+            }}
+          />
         )}
-        {game.gameStatus === GameStatus.LOST && (
-          <GameEndScreen status='LOST' onRestartGame={game.handleRestartGame} />
+        {gameStatus === GameStatus.LOST && (
+          <GameEndScreen
+            status='LOST'
+            onRestartGame={() => {
+              setGameStatus(GameStatus.PLAYING);
+            }}
+          />
         )}
       </div>
     </PageWrapper>

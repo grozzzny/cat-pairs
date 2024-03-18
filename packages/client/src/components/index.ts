@@ -8,4 +8,4 @@ export { GameInfo } from './game/game-info';
 export { GameStartScreen } from './game/game-start-screen';
 export { GameEndScreen } from './game/game-end-screen';
 export { GameField } from './game/game-field';
-export { Game } from './game/game-logic';
+export { GameApi } from './game/game-logic';
