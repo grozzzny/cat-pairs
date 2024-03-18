@@ -13,8 +13,12 @@ export const LinkList: React.FC = () => {
 
   return (
     <Space>
-      {data.map(item => (
-        <Button label={item.title} onClick={() => navigate(item.url)} />
+      {data.map((item, index) => (
+        <Button
+          key={index}
+          label={item.title}
+          onClick={() => navigate(item.url)}
+        />
       ))}
     </Space>
   );
