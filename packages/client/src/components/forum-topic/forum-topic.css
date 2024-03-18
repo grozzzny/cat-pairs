@@ -5,27 +5,22 @@
 
 .forum-topic__feed {
   border: 1px solid var(--dark);
+  margin-bottom: 30px;
 }
 
-.forum-topic__feed-item {
-  padding: 10px;
+.forum-topic .textarea {
+  width: 100%;
+  margin-bottom: 10px;
 }
 
-.forum-topic__feed-item:nth-child(even) {
+.forum-topic__send-message-button {
   background-color: var(--dark);
+  padding-top: 0;
   color: var(--light);
 }
 
-.forum-topic__feed-item-name {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.forum-topic__feed-item-text {
-  margin-bottom: 20px;
-}
-
-.forum-topic__feed-item-time {
-  font-size: 14px;
+.forum-topic__send-message-button:hover {
+  background: var(--dark) !important;
+  color: var(--light) !important;
+  opacity: 0.8;
 }

@@ -1,3 +1,6 @@
+import { ForumTopicFeedItem } from '@/components';
+import { Button, Form } from 'antd';
+import { Input } from '@/components';
 import './forum-topic.css';
 
 interface Message {
@@ -22,15 +25,27 @@ export const ForumTopic = ({
     <div className='forum-topic'>
       <h1>{title}</h1>
       <div className='forum-topic__description'>{description}</div>
-      <div className='forum-topic__feed'>
-        {feed.map(({ messageId, name, text, time }) => (
-          <div key={messageId} className='forum-topic__feed-item'>
-            <div className='forum-topic__feed-item-name'>{name}</div>
-            <div className='forum-topic__feed-item-text'>{text}</div>
-            <div className='forum-topic__feed-item-time'>{time}</div>
-          </div>
-        ))}
-      </div>
+      {feed.length ? (
+        <div className='forum-topic__feed'>
+          {feed.map(item => (
+            <ForumTopicFeedItem
+              key={item.messageId}
+              name={item.name}
+              text={item.text}
+              time={item.time}
+            />
+          ))}
+        </div>
+      ) : null}
+      <Form>
+        <Input type='textarea' placeholder='Написать сообщение' />
+        <Button
+          className='forum-topic__send-message-button'
+          type='primary'
+          htmlType='submit'>
+          Отправить
+        </Button>
+      </Form>
     </div>
   );
 };

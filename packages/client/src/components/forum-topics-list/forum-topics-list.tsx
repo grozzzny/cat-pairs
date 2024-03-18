@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Flex, Modal } from 'antd';
+import { Button, Flex, Form, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components';
 import './forum-topics-list.css';
@@ -67,11 +67,12 @@ export const ForumTopicsList = ({
         onCancel={handleCancel}
         cancelButtonProps={{ className: 'forum-topics-list__cancel-button' }}
         okButtonProps={{ className: 'forum-topics-list__submit-button' }}
-        okText='Создать тему'>
-        <form>
+        okText='Создать тему'
+        cancelText='Закрыть'>
+        <Form>
           <Input placeholder='Название темы' />
-          <Input placeholder='Описание' />
-        </form>
+          <Input type='textarea' placeholder='Описание' />
+        </Form>
       </Modal>
       <div className='forum-topics-list__right-column'>
         <Button
