@@ -9,9 +9,9 @@ export const setPageTitle = (title: string) => {
 export const setBodyScroll = () => {
   useEffect(() => {
     return () => {
-      document.body.style.overflow = 'scroll';
+      document.body.style.overflowY = 'auto';
       const root = document.getElementById('root');
-      if (root) root.style.overflow = 'scroll';
+      if (root) root.style.overflowY = 'auto';
     };
   }, []);
 };
