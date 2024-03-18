@@ -4,7 +4,7 @@ import './gameover-page.css';
 import { useState } from 'react';
 import { GameOverWrapper } from '@/components';
 import Confetti from 'react-confetti';
-import { ExitButtom } from '@/components/exit-button';
+import { ExitButton } from '@/components/exit-button';
 
 export const GameOverPage = () => {
   const [isSuccess, setIsSuccess] = useState<boolean>(true);
@@ -28,7 +28,7 @@ export const GameOverPage = () => {
             buttonText='Играть'
           />
         )}
-        <ExitButtom />
+        <ExitButton />
       </>
     </PageWrapper>
   );

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './exit-button.css';
 import { Color } from '@/helpers/constants/global';
 
-export const ExitButtom = () => {
+export const ExitButton = () => {
   const navigate = useNavigate();
   return (
     <div

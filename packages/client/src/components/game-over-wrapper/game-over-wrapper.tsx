@@ -1,4 +1,3 @@
-/*import { Button } from 'antd';*/
 import { useNavigate } from 'react-router-dom';
 import './game-over-wrapper.css';
 import { Button } from '@/components/button';
