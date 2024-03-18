@@ -5,3 +5,5 @@ export { ErrorContainer } from './error-container';
 export { Input } from './input';
 export { AuthWrapper } from './auth-wrapper';
 export { Button } from './button';
+export { ForumTopicsList } from './forum-topics-list';
+export { ForumTopic } from './forum-topic';

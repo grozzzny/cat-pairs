@@ -32,7 +32,7 @@ export const routes = [
   },
   {
     path: '/forum/:id',
-    element: <Pages.ForumPage />,
+    element: <Pages.ForumTopicPage />,
   },
   {
     path: '*',
