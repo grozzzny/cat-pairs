@@ -5,7 +5,7 @@ import { routes } from './routes';
 import { AuthProvider, ErrorProvider } from '@/providers';
 import React, { ErrorInfo } from 'react';
 import { Page500 } from '@/pages';
-import { THEME } from '@/helpers/constants/global';
+import { THEME_ANTD } from '@/helpers/constants/global';
 
 function App() {
   const handleError = (error: Error, errorInfo: ErrorInfo) => {
@@ -14,8 +14,8 @@ function App() {
   };
 
   return (
-    <ErrorProvider errorPage={Page500} onError={handleError} theme={THEME}>
-      <ConfigProvider theme={THEME}>
+    <ErrorProvider errorPage={Page500} onError={handleError} theme={THEME_ANTD}>
+      <ConfigProvider theme={THEME_ANTD}>
         <BrowserRouter>
           <AuthProvider authRoute='/login' exceptionRoutes={['/registration']}>
             <Routes>
