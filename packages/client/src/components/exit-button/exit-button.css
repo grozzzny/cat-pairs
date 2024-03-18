@@ -1,0 +1,22 @@
+.exit-button {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: calc(100vh - 600px);
+}
+
+.exit-button__button {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  text-decoration: none;
+  background-color: var(--light);
+  border: none;
+  cursor: pointer;
+}
+
+.exit-button__button-text {
+  font-size: 16px;
+  color: var(--dark);
+}

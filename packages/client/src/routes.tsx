@@ -35,6 +35,10 @@ export const routes = [
     element: <Pages.ForumPage />,
   },
   {
+    path: '/gameover',
+    element: <Pages.GameOverPage />,
+  },
+  {
     path: '*',
     element: <Pages.Page404 />,
   },
