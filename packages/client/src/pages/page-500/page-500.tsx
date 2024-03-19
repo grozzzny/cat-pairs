@@ -1,11 +1,11 @@
 import { ConfigProvider } from 'antd';
 import { PageWrapper } from '@/components';
 import { ErrorContainer } from '@/components';
-import { ThemeProps } from '@/providers/error-provider';
+import { ThemeConfig } from 'antd/es/config-provider/context';
 
 type Page500Props = {
   error?: string;
-  theme: ThemeProps;
+  theme: ThemeConfig;
 };
 
 export const Page500 = ({ error = 'ошибка сервера', theme }: Page500Props) => {

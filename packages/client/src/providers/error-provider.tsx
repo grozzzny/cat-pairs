@@ -1,18 +1,11 @@
 import React, { ErrorInfo, ReactNode } from 'react';
-
-export interface ThemeProps {
-  token: {
-    colorPrimary: string;
-    colorText: string;
-    colorIcon: string;
-  };
-}
+import { ThemeConfig } from 'antd/es/config-provider/context';
 
 interface ErrorProviderProps {
   children: ReactNode;
-  errorPage: React.ComponentType<{ error?: string; theme: ThemeProps }>;
+  errorPage: React.ComponentType<{ error?: string; theme: ThemeConfig }>;
   onError?: (error: Error, errorInfo: ErrorInfo) => void;
-  theme: ThemeProps;
+  theme: ThemeConfig;
 }
 
 interface ErrorProviderState {

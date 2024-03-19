@@ -6,3 +6,5 @@ export { ErrorContainer } from './error-container';
 export { Input } from './input';
 export { AuthWrapper } from './auth-wrapper';
 export { Button } from './button';
+export { BackgroundWrapper } from './background-wrapper';
+export { LinkList } from './links-list';
