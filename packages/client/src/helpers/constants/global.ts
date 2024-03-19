@@ -15,6 +15,10 @@ export const THEME_ANTD: ThemeConfig = {
     colorPrimary: Color.Light,
     colorText: Color.Light,
     colorIcon: Color.Dark,
+    colorLink: Color.Light,
+    linkDecoration: 'underline',
+    colorLinkActive: Color.Light,
+    colorLinkHover: Color.Light,
   },
   components: {
     Typography: {
