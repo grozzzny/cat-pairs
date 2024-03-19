@@ -10,3 +10,5 @@ export { ForumTopicsList } from './forum-topics-list';
 export { ForumTopic } from './forum-topic';
 export { ForumTopicFeedItem } from './forum-topic-feed-item';
 export { ExitButton } from './exit-button';
+export { BackgroundWrapper } from './background-wrapper';
+export { LinkList } from './links-list';
