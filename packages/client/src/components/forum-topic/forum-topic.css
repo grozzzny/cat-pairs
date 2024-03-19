@@ -19,8 +19,8 @@
   color: var(--light);
 }
 
-.forum-topic__send-message-button:hover {
-  background: var(--dark) !important;
-  color: var(--light) !important;
+.forum-topic .ant-btn.forum-topic__send-message-button:hover {
+  background-color: var(--dark);
+  color: var(--light);
   opacity: 0.8;
 }

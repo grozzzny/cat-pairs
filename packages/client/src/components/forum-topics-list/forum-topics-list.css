@@ -49,9 +49,6 @@
 }
 
 .forum-topics-list__create-button:hover {
-  background: transparent !important;
-  border-color: var(--dark) !important;
-  color: var(--dark) !important;
   opacity: 0.8;
 }
 
@@ -60,9 +57,9 @@
   color: var(--dark);
 }
 
-.forum-topics-list__cancel-button:hover {
-  border-color: var(--dark) !important;
-  color: var(--dark) !important;
+.forum-topics-list__modal .ant-btn.forum-topics-list__cancel-button:hover {
+  border-color: var(--dark);
+  color: var(--dark);
   opacity: 0.8;
 }
 
@@ -70,8 +67,8 @@
   color: var(--dark);
 }
 
-.forum-topics-list__submit-button:hover {
-  background: var(--light) !important;
-  color: var(--dark) !important;
+.forum-topics-list__modal .ant-btn.forum-topics-list__submit-button:hover {
+  background: var(--light);
+  color: var(--dark);
   opacity: 0.8;
 }

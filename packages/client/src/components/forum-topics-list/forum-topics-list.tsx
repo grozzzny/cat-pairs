@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Button, Flex, Form, Modal } from 'antd';
+import { Button, ConfigProvider, Flex, Form, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components';
+import { Color } from '@/helpers';
 import './forum-topics-list.css';
 
 interface ForumTopic {
@@ -68,20 +69,33 @@ export const ForumTopicsList = ({
         cancelButtonProps={{ className: 'forum-topics-list__cancel-button' }}
         okButtonProps={{ className: 'forum-topics-list__submit-button' }}
         okText='Создать тему'
-        cancelText='Закрыть'>
+        cancelText='Закрыть'
+        className='forum-topics-list__modal'>
         <Form>
           <Input placeholder='Название темы' />
           <Input type='textarea' placeholder='Описание' />
         </Form>
       </Modal>
       <div className='forum-topics-list__right-column'>
-        <Button
-          type='default'
-          size='large'
-          className='forum-topics-list__create-button'
-          onClick={showModal}>
-          Создать новую тему
-        </Button>
+        <ConfigProvider
+          theme={{
+            components: {
+              Button: {
+                defaultHoverColor: Color.Dark,
+                defaultHoverBorderColor: Color.Dark,
+                defaultHoverBg: 'transparent',
+                defaultActiveBg: 'transparent',
+              },
+            },
+          }}>
+          <Button
+            type='default'
+            size='large'
+            className='forum-topics-list__create-button'
+            onClick={showModal}>
+            Создать новую тему
+          </Button>
+        </ConfigProvider>
       </div>
     </Flex>
   );
