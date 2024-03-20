@@ -62,3 +62,13 @@ export const validateRequired = (ob: RuleObject, value: string) => {
   }
   return Promise.resolve();
 };
+
+export const validateConfirmPassword = (
+  newPassword: string,
+  newPassword2: string
+) => {
+  if (!newPassword || newPassword === newPassword2) {
+    return Promise.resolve();
+  }
+  return Promise.reject('Пароли не совпадают');
+};
