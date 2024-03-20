@@ -23,6 +23,10 @@ export const routes = [
     element: <Pages.ProfilePage />,
   },
   {
+    path: '/change-password',
+    element: <Pages.NewPassword />,
+  },
+  {
     path: '/leaderboard',
     element: <Pages.LeaderboardPage />,
   },
