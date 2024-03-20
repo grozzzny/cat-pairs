@@ -1,0 +1,74 @@
+.forum-topics-list {
+  width: 100%;
+}
+
+.forum-topics-list__table {
+  margin-right: 122px;
+}
+
+.forum-topics-list__column-title {
+  font-size: 36px;
+  font-weight: normal;
+  text-align-last: left;
+  padding-bottom: 10px;
+}
+
+.forum-topics-list__item-title {
+  width: 478px;
+  height: 70px;
+  border-radius: 8px;
+  background-color: var(--dark);
+  margin-right: 20px;
+  margin-bottom: 30px;
+  padding-left: 30px;
+  font-size: 24px;
+  color: var(--light);
+  cursor: pointer;
+}
+
+.forum-topics-list__item-messages-count {
+  width: 178px;
+  height: 70px;
+  border: 1px solid var(--dark);
+  border-radius: 8px;
+  margin-bottom: 30px;
+  font-size: 24px;
+  color: var(--dark);
+  box-sizing: border-box;
+}
+
+.forum-topics-list__right-column {
+  padding-top: 70px;
+}
+
+.forum-topics-list__create-button {
+  background-color: transparent;
+  border-color: var(--dark);
+  color: var(--dark);
+  font-weight: bold;
+}
+
+.forum-topics-list__create-button:hover {
+  opacity: 0.8;
+}
+
+.forum-topics-list__cancel-button {
+  border-color: var(--dark);
+  color: var(--dark);
+}
+
+.forum-topics-list__modal .ant-btn.forum-topics-list__cancel-button:hover {
+  border-color: var(--dark);
+  color: var(--dark);
+  opacity: 0.8;
+}
+
+.forum-topics-list__submit-button {
+  color: var(--dark);
+}
+
+.forum-topics-list__modal .ant-btn.forum-topics-list__submit-button:hover {
+  background: var(--light);
+  color: var(--dark);
+  opacity: 0.8;
+}

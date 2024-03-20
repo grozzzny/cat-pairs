@@ -1,0 +1,25 @@
+.profile-page {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 8px;
+  background-color: var(--dark);
+  min-width: 539px;
+  max-width: 780px;
+  max-height: 539px;
+  margin-top: 110px;
+}
+
+.profile-page__change-password {
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--light);
+  margin: 0;
+}
+
+.profile-page__exit {
+  margin-top: 10px;
+  margin-left: 620px;
+}
