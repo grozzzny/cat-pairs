@@ -28,7 +28,7 @@ export const RegistrationPage = () => {
   const darkTheme = false;
 
   return (
-    <PageWrapper>
+    <PageWrapper withMenu={false}>
       <AuthWrapper darkTheme={darkTheme} label='Регистрация'>
         <Form
           name='basic'

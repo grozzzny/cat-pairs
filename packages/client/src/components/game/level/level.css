@@ -1,0 +1,22 @@
+.level,
+.level__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.level__wrapper {
+  flex-shrink: 0;
+  width: 91px;
+  height: 91px;
+  border-radius: 50%;
+  border: 2px solid;
+  font-size: 36px;
+  font-weight: bold;
+}
+.level__text {
+  font-size: 24px;
+  line-height: 24px;
+  font-weight: bold;
+  color: inherit;
+}
