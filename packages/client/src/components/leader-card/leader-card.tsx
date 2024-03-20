@@ -16,11 +16,13 @@ export const LeaderCard = ({
 }: LeaderCardProps): JSX.Element => {
   return (
     <Flex align='center' justify='center' className='leader-card'>
-      <div
-        className='leader-card__icon'
-        style={{ backgroundImage: `url(${avatar})` }}></div>
+      <div className='leader-card__icon'></div>
       <div className='leader-card__position'>{position}</div>
-      <div className='leader-card__avatar'>{avatar}</div>
+      <div
+        className='leader-card__avatar'
+        style={{ backgroundImage: `url(${avatar})` }}>
+        {avatar}
+      </div>
       <div className='leader-card__name'>{name}</div>
       <div className='leader-card__score'>{score}</div>
     </Flex>
