@@ -18,6 +18,7 @@ export const LeadersTable = ({ list }: LeadersTableProps): JSX.Element => {
     <Flex wrap='wrap' justify='space-between' className='leaders-table'>
       {list.map(item => (
         <LeaderCard
+          key={item.position}
           position={item.position}
           avatar={item.avatar}
           name={item.name}
