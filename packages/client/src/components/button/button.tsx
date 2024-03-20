@@ -19,10 +19,13 @@ export const Button: React.FC<ButtonProps> = ({
   ...rest
 }) => {
   const commonConfig: Partial<ComponentToken | SeedToken> = {
-    lineWidth: 0,
+    lineWidth: 1,
     defaultShadow: '',
     borderRadius: 8,
     controlHeight: 51,
+    defaultBorderColor: Color.Dark,
+    defaultActiveBorderColor: Color.Dark,
+    defaultHoverBorderColor: Color.Dark,
   };
 
   let buttonConfig: Partial<ComponentToken>;
@@ -42,6 +45,8 @@ export const Button: React.FC<ButtonProps> = ({
     buttonConfig = {
       ...commonConfig,
       ...{
+        defaultHoverBg: Color.Light,
+        defaultActiveBg: Color.Light,
         defaultBg: Color.Light,
         colorText: Color.Dark,
         defaultHoverColor: Color.Dark,

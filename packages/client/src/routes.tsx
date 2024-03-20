@@ -39,6 +39,10 @@ export const routes = [
     element: <Pages.StartGamePage />,
   },
   {
+    path: '/gameover',
+    element: <Pages.GameOverPage />,
+  },
+  {
     path: '*',
     element: <Pages.Page404 />,
   },

@@ -3,6 +3,7 @@
   padding: 5% 15%;
   box-sizing: border-box;
   height: 100%;
+  overflow: auto;
 }
 
 .page-wrapper__content {

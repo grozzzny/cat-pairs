@@ -1,0 +1,26 @@
+.game-over-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 200px;
+}
+
+.game-over-wrapper__title {
+  color: var(--dark);
+  font-size: 40px;
+  margin: 0;
+}
+
+.game-over-wrapper__text {
+  color: var(--dark);
+  font-size: 24px;
+  margin: 11px 0 0 0;
+}
+
+.game-over-wrapper button {
+  margin-top: 50px;
+  background-color: var(--dark);
+  color: var(--light);
+  width: 285px;
+}
