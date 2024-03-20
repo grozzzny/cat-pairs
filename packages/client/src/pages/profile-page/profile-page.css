@@ -18,3 +18,8 @@
   color: var(--light);
   margin: 0;
 }
+
+.profile-page__exit {
+  margin-top: 10px;
+  margin-left: 620px;
+}

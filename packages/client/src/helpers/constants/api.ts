@@ -6,3 +6,7 @@ export const API_PARAMS = {
   },
   credentials: 'include',
 };
+
+export const API_PARAMS_FORMDATA = {
+  credentials: 'include',
+};

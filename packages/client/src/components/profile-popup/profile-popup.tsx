@@ -1,7 +1,7 @@
 import './profile-popup.css';
-import { CloseOutlined, ConsoleSqlOutlined } from '@ant-design/icons';
-import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
-import { UserService } from '@/servises/user';
+import { CloseOutlined } from '@ant-design/icons';
+import { ChangeEvent, MouseEvent, useState } from 'react';
+import { UserService } from '@/services/user';
 
 interface ProfilePopupProps {
   isPopupOpen: boolean;
@@ -14,34 +14,6 @@ export const ProfilePopup = ({
   handleClosePopup,
   handleSetAvatar,
 }: ProfilePopupProps) => {
-  //этот useEffect для авторизации, его не будет, нужен для проверки работы смены аватара
-  useEffect(() => {
-    //авторизация
-    /* const bodyData = JSON.stringify({
-      login: 'test19',
-      password: 'qqqQQQ111',
-    });
-    fetch('https://ya-praktikum.tech/api/v2/auth/signin', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: bodyData,
-    })
-      .then(res => res.json())
-      .then(data => console.log('Успешно:', data))
-      .catch(err => console.error('Ошибка:', err));*/
-    //выход
-    /*fetch('https://ya-praktikum.tech/api/v2/auth/logout', {
-      method: 'POST',
-      credentials: 'include',
-    })
-      .then(res => res.json())
-      .then(data => console.log('Успешно:', data))
-      .catch(err => console.error('Ошибка:', err));*/
-  }, []);
-
   const popupClass = `popup  ${isPopupOpen ? 'popup_opened' : ''}`;
 
   const [file, setFile] = useState<File | null>(null);
@@ -53,22 +25,10 @@ export const ProfilePopup = ({
       formData.append('avatar', file);
       const result = await UserService.changeAvatar(formData);
 
-      if (result.isOk && result.avatar) {
+      if (result && result.isOk && result.avatar) {
         handleSetAvatar(result.avatar);
       }
       handleClosePopup();
-      /*fetch('https://ya-praktikum.tech/api/v2/user/profile/avatar', {
-        method: 'PUT',
-        body: formData,
-        credentials: 'include',
-      })
-        .then(res => res.json())
-        .then(data => {
-          console.log('Запрос выполнен: ');
-          if (data.status === 'ok') console.log('успешно: ', data);
-          else console.log('с ошибкой: ', data);
-        })
-        .catch(err => console.error('Ошибка:', err));*/
       setFile(null);
     }
   };
