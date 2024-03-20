@@ -1,0 +1,24 @@
+.background-wrapper {
+  background-color: var(--light);
+}
+.background-wrapper__container {
+  background-image: url('/bg.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top center;
+  width: 100vw;
+  height: 100vh;
+}
+.background-wrapper__title {
+  color: var(--light);
+  font-size: 64px;
+  font-weight: bold;
+  margin: 51px 0 0;
+}
+.background-wrapper__footer {
+  width: 100%;
+  max-width: 1180px;
+  margin-bottom: 43px;
+  padding: 0 10px;
+  box-sizing: border-box;
+}

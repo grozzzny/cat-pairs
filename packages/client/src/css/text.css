@@ -1,0 +1,8 @@
+.text {
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--light);
+}
+.text--dark-color {
+  color: var(--dark);
+}

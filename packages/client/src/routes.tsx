@@ -4,7 +4,6 @@ export const routes = [
   {
     path: '/',
     element: <Pages.MainPage />,
-    errorElement: <Pages.Page404 />,
     index: true,
   },
   {
@@ -34,5 +33,13 @@ export const routes = [
   {
     path: '/forum/:id',
     element: <Pages.ForumPage />,
+  },
+  {
+    path: '/gameover',
+    element: <Pages.GameOverPage />,
+  },
+  {
+    path: '*',
+    element: <Pages.Page404 />,
   },
 ];

@@ -1,0 +1,41 @@
+.auth-wrapper {
+  max-width: 480px;
+  background-color: var(--dark);
+  border-radius: 8px;
+  margin: auto;
+}
+.auth-wrapper__container {
+  max-width: 300px;
+  width: 100%;
+  padding: 37px 0 118px;
+}
+.auth-wrapper__content {
+  width: 100%;
+  align-items: stretch;
+  padding: 0 10px;
+}
+.auth-wrapper__title {
+  color: var(--light);
+  font-size: 25px;
+  text-align: center;
+  font-weight: normal;
+  margin: 0 0 33px;
+}
+.auth-wrapper__form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 15px;
+}
+.auth-wrapper__form input {
+  width: 100%;
+}
+.auth-wrapper__form button {
+  margin-top: 61px;
+}
+.auth-wrapper--dark {
+  background-color: var(--light);
+}
+.auth-wrapper--dark .auth-wrapper__title {
+  color: var(--dark);
+}

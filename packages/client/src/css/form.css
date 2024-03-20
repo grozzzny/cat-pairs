@@ -1,0 +1,16 @@
+.form {
+  height: 100%;
+}
+
+.form__wrapper {
+  background-color: var(--dark);
+  border-color: inherit;
+  border-radius: 8px;
+  padding: 50px 10%;
+}
+
+.form__title {
+  font-size: 25px;
+  margin-bottom: 24px;
+  color: var(--light);
+}
