@@ -1,0 +1,22 @@
+.forum-topic-feed-item {
+  padding: 10px;
+}
+
+.forum-topic-feed-item:nth-child(even) {
+  background-color: var(--dark);
+  color: var(--light);
+}
+
+.forum-topic-feed-item__name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.forum-topic-feed-item__text {
+  margin-bottom: 20px;
+}
+
+.forum-topic-feed-item__time {
+  font-size: 14px;
+}

@@ -5,11 +5,27 @@ interface InputProps extends AntInputProps {
   type?: InputType;
 }
 
-type InputType = 'password' | 'text';
+type TextAreaProps = HTMLTextAreaElement;
 
-export const Input = (props: InputProps) => {
+type InputType = 'password' | 'text' | 'textarea';
+
+export const Input = (props: InputProps | TextAreaProps) => {
   const { type, ...restProps } = props;
-  const inputProps = { ...restProps, className: 'input' };
+  let inputProps = {};
+
+  /* eslint-disable indent */
+  switch (type) {
+    case 'password':
+    case 'text':
+      inputProps = { ...(restProps as InputProps), className: 'input' };
+      break;
+    case 'textarea':
+      inputProps = { ...(restProps as TextAreaProps), className: 'textarea' };
+      break;
+    default:
+      inputProps = { ...(restProps as InputProps), className: 'input' };
+      break;
+  }
 
   if (type === 'text') {
     return <AntInput {...inputProps} />;
@@ -17,6 +33,11 @@ export const Input = (props: InputProps) => {
 
   if (type === 'password') {
     return <AntInput.Password {...inputProps} />;
+  }
+
+  if (type === 'textarea') {
+    const { TextArea } = AntInput;
+    return <TextArea {...inputProps} />;
   }
 
   // Можно добавлять другие типы инпутов, если потребуется

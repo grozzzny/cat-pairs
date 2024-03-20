@@ -1,0 +1,26 @@
+.forum-topic__description {
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+
+.forum-topic__feed {
+  border: 1px solid var(--dark);
+  margin-bottom: 30px;
+}
+
+.forum-topic .textarea {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.forum-topic__send-message-button {
+  background-color: var(--dark);
+  padding-top: 0;
+  color: var(--light);
+}
+
+.forum-topic .ant-btn.forum-topic__send-message-button:hover {
+  background-color: var(--dark);
+  color: var(--light);
+  opacity: 0.8;
+}
