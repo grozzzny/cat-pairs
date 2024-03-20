@@ -25,7 +25,7 @@ export const ForumTopic = ({
     <div className='forum-topic'>
       <h1>{title}</h1>
       <div className='forum-topic__description'>{description}</div>
-      {feed.length ? (
+      {feed.length > 0 && (
         <div className='forum-topic__feed'>
           {feed.map(item => (
             <ForumTopicFeedItem
@@ -36,7 +36,7 @@ export const ForumTopic = ({
             />
           ))}
         </div>
-      ) : null}
+      )}
       <Form>
         <Input type='textarea' placeholder='Написать сообщение' />
         <Button

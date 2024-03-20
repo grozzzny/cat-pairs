@@ -11,7 +11,7 @@ export const ForumTopicPage = () => {
     topic => topic.id === parseInt(id as string)
   );
 
-  setPageTitle(topic ? topic.title : 'Форум');
+  setPageTitle(topic?.title ?? 'Форум');
 
   return (
     <PageWrapper>
