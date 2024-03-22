@@ -3,8 +3,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  min-width: 442px;
-  max-height: 539px;
+  width: 100%;
+  max-width: 442px;
   border-radius: 8px;
   margin-top: 27px;
 }
@@ -39,6 +39,10 @@
   justify-content: space-between;
 }
 
+.profile-form__label > div {
+  width: 100%;
+}
+
 .profile-form__input {
   font-size: 14px;
   color: var(--light);
@@ -49,8 +53,26 @@
   padding-right: 5px;
 }
 
-.profile-form__input:focus {
-  outline: none;
+.profile-form__input-password input {
+  text-align: end !important;
+}
+
+.profile-form__input,
+.profile-form__input:focus,
+.profile-form__input:active,
+.profile-form__input:hover {
+  outline: none !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.profile-form .ant-form-item-margin-offset {
+  display: none;
+}
+
+.profile-form .ant-form-item-explain-error {
+  text-align: right;
 }
 
 .profile-form button {
