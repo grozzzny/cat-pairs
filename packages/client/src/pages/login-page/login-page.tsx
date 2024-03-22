@@ -1,43 +1,40 @@
 import { AuthWrapper, Button, Input, PageWrapper } from '@/components';
 import { AuthService } from '@/services';
-import { Flex, Form, notification } from 'antd';
-import { useState } from 'react';
+import { Flex, Form, FormProps, notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import './login-page.css';
+import {
+  setPageTitle,
+  validateLogin,
+  validatePassword,
+  validateRequired,
+} from '@/helpers';
 
-type InputEvent = React.ChangeEvent<HTMLInputElement>;
+type LoginFieldType = {
+  login: string;
+  password: string;
+};
 
 export const LoginPage = () => {
+  setPageTitle('Войти');
   const navigate = useNavigate();
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
   const [notify, contextHolder] = notification.useNotification();
 
-  const handleLoginChange = (e: InputEvent) => {
-    setLogin(e.target.value);
-  };
-
-  const handlePasswordChange = (e: InputEvent) => {
-    setPassword(e.target.value);
-  };
-
-  const handleValidateLogin = async () => {
+  const onFinish: FormProps<LoginFieldType>['onFinish'] = async ({
+    login,
+    password,
+  }) => {
     const result = await AuthService.login({ login, password });
     if (result?.isOk) {
       navigate('/');
       return;
     }
-    // eslint-disable-next-line no-console
     const errorMessage = `Не удалось войти: ${result?.reason}`;
     notify.error({
       message: 'Ошибка авторизации',
       description: errorMessage,
       className: 'notification-bar',
     });
-  };
-
-  const handleFailedValidation = () => {
-    // TODO: добавить валидацию ошибок
   };
 
   return (
@@ -47,26 +44,26 @@ export const LoginPage = () => {
           name='basic'
           layout='horizontal'
           initialValues={{}}
-          onFinish={handleValidateLogin}
-          onFinishFailed={handleFailedValidation}
+          onFinish={onFinish}
           autoComplete='off'
           className='login-form'>
           <Flex vertical gap={32}>
             <Flex vertical className='login-form__top' align='center' gap={8}>
-              <Form.Item>
-                <Input
-                  placeholder='Логин'
-                  value={login}
-                  onChange={handleLoginChange}
-                />
+              <Form.Item<LoginFieldType>
+                name='login'
+                rules={[
+                  { validator: validateLogin },
+                  { validator: validateRequired },
+                ]}>
+                <Input placeholder='Логин' />
               </Form.Item>
-              <Form.Item>
-                <Input
-                  placeholder='Пароль'
-                  type='password'
-                  value={password}
-                  onChange={handlePasswordChange}
-                />
+              <Form.Item<LoginFieldType>
+                name='password'
+                rules={[
+                  { validator: validatePassword },
+                  { validator: validateRequired },
+                ]}>
+                <Input placeholder='Пароль' type='password' />
               </Form.Item>
             </Flex>
             <Flex

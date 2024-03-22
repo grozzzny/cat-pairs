@@ -23,6 +23,10 @@ export const routes = [
     element: <Pages.ProfilePage />,
   },
   {
+    path: '/change-password',
+    element: <Pages.NewPassword />,
+  },
+  {
     path: '/leaderboard',
     element: <Pages.LeaderboardPage />,
   },
@@ -32,7 +36,7 @@ export const routes = [
   },
   {
     path: '/forum/:id',
-    element: <Pages.ForumPage />,
+    element: <Pages.ForumTopicPage />,
   },
   {
     path: '/start',
