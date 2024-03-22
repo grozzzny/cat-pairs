@@ -39,6 +39,10 @@ export const routes = [
     element: <Pages.ForumTopicPage />,
   },
   {
+    path: '/start',
+    element: <Pages.StartGamePage />,
+  },
+  {
     path: '/gameover',
     element: <Pages.GameOverPage />,
   },

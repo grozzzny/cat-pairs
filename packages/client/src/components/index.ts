@@ -1,6 +1,8 @@
 export { PageWrapper } from './page-wrapper';
 export { NavigationBar } from './navigation-bar';
 export { IconButton } from './icon-button';
+export { Loader } from './loader';
+export { StartTimer } from './srart-timer';
 export { Timer } from './game/timer';
 export { Level } from './game/level';
 export { GameControls } from './game/game-controls';
