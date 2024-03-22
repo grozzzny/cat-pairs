@@ -24,3 +24,9 @@ export interface AvatarRequestResult {
   avatar?: string;
   error?: string;
 }
+
+export interface CurrentUserRequestResult {
+  isOk: boolean;
+  user?: User;
+  error?: string;
+}

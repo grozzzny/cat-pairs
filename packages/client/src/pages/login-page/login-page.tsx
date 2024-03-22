@@ -4,11 +4,13 @@ import { Flex, Form, notification } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login-page.css';
+import { useAppDispatch } from '@/hooks';
 
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 
 export const LoginPage = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [notify, contextHolder] = notification.useNotification();

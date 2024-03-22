@@ -23,4 +23,18 @@ export class AuthService {
     const response = await AuthApi.getUser();
     return response.ok;
   }
+
+  static async logout(): Promise<LoginRequestResult | undefined> {
+    try {
+      const response = await AuthApi.logout();
+      if (response.ok && !isRequestError(response.status)) {
+        return { isOk: true, reason: '' };
+      }
+      const error = await response.json();
+      return { isOk: false, reason: error.reason };
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
+  }
 }

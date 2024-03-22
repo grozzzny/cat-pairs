@@ -10,6 +10,8 @@ import { UserService } from '@/services/user';
 import { DataChangePassword } from '@/helpers/types';
 import { useState } from 'react';
 import './change-password.css';
+import { toggleOpenPopup } from '@/store/userSlice';
+import { useAppDispatch } from '@/hooks';
 
 type RegistrationFieldType = {
   oldpasswod: string;
@@ -25,11 +27,7 @@ const onFinishFailed: FormProps<RegistrationFieldType>['onFinishFailed'] =
 
 export const NewPassword = () => {
   const [message, setMessage] = useState<string>('');
-  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
-
-  const handleClosePopup = () => {
-    setIsPopupOpen(false);
-  };
+  const dispatch = useAppDispatch();
 
   const handleChangePassword = async ({
     oldPassword,
@@ -40,11 +38,11 @@ export const NewPassword = () => {
       newPassword,
     });
     if (result && result.isOk) {
-      setIsPopupOpen(true);
       setMessage('Пароль успешно изменен');
+      dispatch(toggleOpenPopup(true));
     } else {
-      setIsPopupOpen(true);
       setMessage('Не удалось поменять пароль');
+      dispatch(toggleOpenPopup(true));
     }
   };
 
@@ -86,12 +84,7 @@ export const NewPassword = () => {
               size='large'
             />
           </Form>
-          <MessagePopup
-            isPopupOpen={isPopupOpen}
-            handleClosePopup={handleClosePopup}
-            message={message}
-            backPath='../profile'
-          />
+          <MessagePopup message={message} backPath='../profile' />
         </>
       </AuthWrapper>
     </PageWrapper>

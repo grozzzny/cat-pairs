@@ -1,7 +1,9 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import './profile-form.css';
 import { profileFormErrors } from '@/helpers/constants/profile-form-errors';
 import { Button } from '@/components/button';
+import { useEffect } from 'react';
 
 interface ProfileForm {
   firstName: string;
@@ -21,16 +23,18 @@ interface User {
   password: string;
 }
 
-const currentUser: User = {
+/*const currentUser: User = {
   firstName: 'Федор',
   lastName: 'Иванов',
   nikName: 'Fred',
   email: 'fred@email.ru',
   phone: '+79635897856',
   password: 'Qq123zz',
-};
+};*/
 
 export const ProfileForm = () => {
+  const currentUser = useAppSelector(state => state.user.currentUser);
+  console.log(currentUser);
   const {
     register,
     formState: { errors },
@@ -43,7 +47,6 @@ export const ProfileForm = () => {
 
   const submit: SubmitHandler<ProfileForm> = data => {
     reset();
-    console.log(data);
   };
 
   return (

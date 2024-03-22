@@ -2,12 +2,18 @@ import { BackgroundWrapper, Button, LinkList } from '@/components';
 import './main-page.css';
 import { setBodyScroll, setPageTitle } from '@/helpers';
 import { Col, Divider, Flex, Row } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Theme } from '@/helpers/constants/global';
 import { useNavigate } from 'react-router-dom';
 import Paragraph from 'antd/es/typography/Paragraph';
+import { useAppDispatch } from '@/hooks';
+import { fetchGetCurrentUser } from '@/store/userSlice';
 
 export const MainPage = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchGetCurrentUser());
+  }, []);
   const navigate = useNavigate();
   setPageTitle('CatCoders');
   // На уровне layouts установлен запрет на скроллинг страницы, поэтому этот метод отменяет эти действия. MainPage - это лендинг страница.

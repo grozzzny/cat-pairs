@@ -1,6 +1,7 @@
-import { UserApi } from '@/api';
+import { AuthApi, UserApi } from '@/api';
 import {
   AvatarRequestResult,
+  CurrentUserRequestResult,
   DataChangePassword,
   PasswordRequestResult,
 } from '@/helpers/types';
@@ -30,6 +31,22 @@ export class UserService {
       if (response.status <= 400) {
         const user = await response.json();
         return { isOk: true, avatar: user.avatar };
+      } else {
+        const error = await response.json();
+        return { isOk: false, error: error.reason };
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
+  }
+
+  static async getCurrentUser(): Promise<CurrentUserRequestResult | undefined> {
+    try {
+      const response = await AuthApi.getUser();
+      if (response.status <= 400) {
+        const user = await response.json();
+        return { isOk: true, user: user };
       } else {
         const error = await response.json();
         return { isOk: false, error: error.reason };

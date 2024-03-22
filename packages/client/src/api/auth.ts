@@ -16,4 +16,11 @@ export class AuthApi {
       method: 'GET',
     });
   }
+
+  static logout() {
+    return fetchHelper({
+      url: '/auth/logout',
+      method: 'POST',
+    });
+  }
 }
