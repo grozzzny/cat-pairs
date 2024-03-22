@@ -1,25 +1,33 @@
 import { Input as AntInput, InputProps as AntInputProps } from 'antd';
 import './input.css';
+import React from 'react';
+import { TextAreaProps } from 'antd/es/input/TextArea';
 
 interface InputProps extends AntInputProps {
   type?: InputType;
 }
 
-type InputType = 'password' | 'text';
+type InputType = 'password' | 'text' | 'textarea';
 
-export const Input = (props: InputProps) => {
+export const Input: React.FC<InputProps> = props => {
   const { type, ...restProps } = props;
-  const inputProps = { ...restProps, className: 'input' };
 
   if (type === 'text') {
-    return <AntInput {...inputProps} />;
+    return <AntInput className='input' {...restProps} />;
   }
 
   if (type === 'password') {
-    return <AntInput.Password {...inputProps} />;
+    return <AntInput.Password className='input' {...restProps} />;
   }
 
-  // Можно добавлять другие типы инпутов, если потребуется
+  if (type === 'textarea') {
+    return (
+      <AntInput.TextArea
+        className='textarea'
+        {...(restProps as TextAreaProps)}
+      />
+    );
+  }
 
-  return <AntInput {...inputProps} />;
+  return <AntInput className='input' {...restProps} />;
 };

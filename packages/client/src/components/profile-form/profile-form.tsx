@@ -1,197 +1,127 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '../../hooks';
 import './profile-form.css';
-import { profileFormErrors } from '@/helpers/constants/profile-form-errors';
 import { Button } from '@/components/button';
-import { useEffect } from 'react';
+import { Form, type FormProps } from 'antd';
+import {
+  validateEmail,
+  validateFirstName,
+  validateLogin,
+  validatePassword,
+  validatePhone,
+  validateRequired,
+  validateSecondName,
+} from '@/helpers';
+import { Input } from '@/components';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
-interface ProfileForm {
-  firstName: string;
-  lastName: string;
-  nikName: string;
+type ProfileFieldType = {
+  first_name: string;
+  second_name: string;
+  login: string;
   email: string;
   phone: string;
   password: string;
-}
+};
 
-interface User {
-  firstName: string;
-  lastName: string;
-  nikName: string;
-  email: string;
-  phone: string;
-  password: string;
-}
-
-/*const currentUser: User = {
-  firstName: 'Федор',
-  lastName: 'Иванов',
-  nikName: 'Fred',
+const currentUser: ProfileFieldType = {
+  first_name: 'Федор',
+  second_name: 'Иванов',
+  login: 'fred',
   email: 'fred@email.ru',
   phone: '+79635897856',
   password: 'Qq123zz',
-};*/
+};
 
 export const ProfileForm = () => {
   const currentUser = useAppSelector(state => state.user.currentUser);
-  console.log(currentUser);
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-    reset,
-  } = useForm<ProfileForm>({
-    defaultValues: { ...currentUser },
-    mode: 'onChange',
-  });
-
-  const submit: SubmitHandler<ProfileForm> = data => {
-    reset();
+  const onFinish: FormProps<ProfileFieldType>['onFinish'] = data => {
+    // eslint-disable-next-line no-console
+    console.log(data);
   };
 
   return (
-    <form onSubmit={handleSubmit(submit)} className='profile-form'>
+    <Form
+      name='basic'
+      layout='horizontal'
+      initialValues={currentUser}
+      onFinish={onFinish}
+      autoComplete='off'
+      className='profile-form'>
       <div className='profile-form__input-container'>
-        <label className='profile-form__label'>
-          Имя
-          <input
-            className='profile-form__input'
-            {...register('firstName', {
-              required: profileFormErrors.required,
-              maxLength: {
-                value: 50,
-                message: profileFormErrors.length,
-              },
-              minLength: {
-                value: 2,
-                message: profileFormErrors.length,
-              },
-            })}
-          />
-        </label>
-        <div className='profile-form__error-container'>
-          {errors.firstName && (
-            <span className='profile-form__error'>
-              {errors.firstName.message}
-            </span>
-          )}
-        </div>
+        <Form.Item<ProfileFieldType>
+          name='first_name'
+          label='Имя'
+          className='profile-form__label'
+          rules={[
+            { validator: validateFirstName },
+            { validator: validateRequired },
+          ]}>
+          <Input className='profile-form__input' />
+        </Form.Item>
       </div>
       <div className='profile-form__input-container'>
-        <label className='profile-form__label'>
-          Фамилия
-          <input
-            className='profile-form__input'
-            {...register('lastName', {
-              required: profileFormErrors.required,
-              maxLength: {
-                value: 50,
-                message: profileFormErrors.length,
-              },
-              minLength: {
-                value: 2,
-                message: profileFormErrors.length,
-              },
-            })}
-          />
-        </label>
-        <div className='profile-form__error-container'>
-          {errors.lastName && (
-            <span className='profile-form__error'>
-              {errors.lastName.message}
-            </span>
-          )}
-        </div>
+        <Form.Item<ProfileFieldType>
+          name='second_name'
+          label='Фамилия'
+          className='profile-form__label'
+          rules={[
+            { validator: validateSecondName },
+            { validator: validateRequired },
+          ]}>
+          <Input className='profile-form__input' />
+        </Form.Item>
       </div>
       <div className='profile-form__input-container'>
-        <label className='profile-form__label'>
-          Hикнейм
-          <input
-            className='profile-form__input'
-            {...register('nikName', {
-              required: profileFormErrors.required,
-              maxLength: {
-                value: 50,
-                message: profileFormErrors.length,
-              },
-              minLength: {
-                value: 2,
-                message: profileFormErrors.length,
-              },
-            })}
-          />
-        </label>
-        <div className='profile-form__error-container'>
-          {errors.nikName && (
-            <span className='profile-form__error'>
-              {errors.nikName.message}
-            </span>
-          )}
-        </div>
+        <Form.Item<ProfileFieldType>
+          name='email'
+          label='Емаил'
+          className='profile-form__label'
+          rules={[
+            { validator: validateEmail },
+            { validator: validateRequired },
+          ]}>
+          <Input className='profile-form__input' />
+        </Form.Item>
       </div>
       <div className='profile-form__input-container'>
-        <label className='profile-form__label'>
-          Email
-          <input
-            className='profile-form__input'
-            {...register('email', {
-              required: profileFormErrors.required,
-              pattern: {
-                message: profileFormErrors.errorEmail,
-                value: profileFormErrors.regEmail,
-              },
-            })}
-          />
-        </label>
-        <div className='profile-form__error-container'>
-          {errors.email && (
-            <span className='profile-form__error'>{errors.email.message}</span>
-          )}
-        </div>
+        <Form.Item<ProfileFieldType>
+          name='phone'
+          label='Телефон'
+          className='profile-form__label'
+          rules={[
+            { validator: validatePhone },
+            { validator: validateRequired },
+          ]}>
+          <Input className='profile-form__input' />
+        </Form.Item>
       </div>
       <div className='profile-form__input-container'>
-        <label className='profile-form__label'>
-          Tелефон
-          <input
-            className='profile-form__input'
-            {...register('phone', {
-              required: profileFormErrors.required,
-              pattern: {
-                message: profileFormErrors.errorPhone,
-                value: profileFormErrors.regPhone,
-              },
-            })}
-          />
-        </label>
-        <div className='profile-form__error-container'>
-          {errors.phone && (
-            <span className='profile-form__error'>{errors.phone.message}</span>
-          )}
-        </div>
+        <Form.Item<ProfileFieldType>
+          name='login'
+          label='Логин'
+          className='profile-form__label'
+          rules={[
+            { validator: validateLogin },
+            { validator: validateRequired },
+          ]}>
+          <Input className='profile-form__input' />
+        </Form.Item>
       </div>
       <div className='profile-form__input-container'>
-        <label className='profile-form__label'>
-          Пароль
-          <input
-            className='profile-form__input'
-            {...register('password', {
-              required: profileFormErrors.required,
-              pattern: {
-                message: profileFormErrors.errorPassword,
-                value: profileFormErrors.regPassword,
-              },
-            })}
+        <Form.Item<ProfileFieldType>
+          name='password'
+          label='Пароль'
+          className='profile-form__label'
+          rules={[
+            { validator: validatePassword },
+            { validator: validateRequired },
+          ]}>
+          <Input
+            className='profile-form__input profile-form__input-password'
+            type='password'
           />
-        </label>
-        <div className='profile-form__error-container'>
-          {errors.password && (
-            <span className='profile-form__error'>
-              {errors.password.message}
-            </span>
-          )}
-        </div>
+        </Form.Item>
       </div>
-      <Button label={'Редактировать'} />
-    </form>
+      <Button htmlType='submit' label={'Редактировать'} />
+    </Form>
   );
 };

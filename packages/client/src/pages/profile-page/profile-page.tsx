@@ -9,13 +9,15 @@ export const ProfilePage = () => {
   return (
     <PageWrapper>
       <div className='profile-page'>
-        <ProfileAvatar />
-        <ProfileForm />
-        <p
-          className='profile-page__change-password'
-          onClick={() => navigate('../change-password')}>
-          Сменить пароль
-        </p>
+        <div className='profile-page__container'>
+          <ProfileAvatar />
+          <ProfileForm />
+          <p
+            className='profile-page__change-password'
+            onClick={() => navigate('../change-password')}>
+            Сменить пароль
+          </p>
+        </div>
         <div className='profile-page__exit'>
           <ExitButton />
         </div>
