@@ -1,5 +1,7 @@
 // TODO: удалить файл после подключения API
-export const LEADERS_LIST = [
+import { Leader } from '@/components/leaders-table/leaders-table';
+
+export const LEADERS_LIST: Leader[] = [
   {
     position: 1,
     avatar: '',

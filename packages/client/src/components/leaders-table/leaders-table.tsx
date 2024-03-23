@@ -2,7 +2,7 @@ import { Flex } from 'antd';
 import { LeaderCard } from '@/components';
 import './leaders-table.css';
 
-interface Leader {
+export interface Leader {
   position: number;
   avatar: string;
   name: string;
