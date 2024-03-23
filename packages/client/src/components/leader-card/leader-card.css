@@ -1,0 +1,36 @@
+.leader-card {
+  position: relative;
+  width: 478px;
+  height: 198px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  background-color: var(--dark);
+  font-size: 16px;
+  color: var(--light);
+}
+
+.leader-card__icon {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  width: 22px;
+  height: 21px;
+  background: url('/crown.svg') no-repeat;
+}
+
+.leader-card__position {
+  margin-right: 15px;
+}
+
+.leader-card__avatar {
+  width: 69px;
+  height: 69px;
+  border-radius: 50%;
+  margin-right: 35px;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.leader-card__name {
+  margin-right: 60px;
+}
