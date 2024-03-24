@@ -1,5 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { GameApi, GameControls, GameField, GameInfo } from '@/components';
+import {
+  ExitButton,
+  GameApi,
+  GameControls,
+  GameField,
+  GameInfo,
+} from '@/components';
 import { Difficulty, GameStatus } from '@/components/game/types';
 
 interface GameProps {
@@ -57,7 +63,7 @@ export const Game: React.FC<GameProps> = ({
         <GameField game={game} canvasRef={canvasRef} />
       </div>
       <div className='game__exit-wrapper'>
-        <button onClick={game.handleExitGame}>Exit Game</button>
+        <ExitButton onClick={game.handleExitGame} />
       </div>
     </div>
   );
