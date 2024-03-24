@@ -2,11 +2,7 @@ import { theme as antdTheme } from 'antd';
 import React from 'react';
 import { NavigationBar } from '@/components';
 import './page-wrapper.css';
-
-interface PageWrapperProps {
-  children: JSX.Element | string;
-  withMenu?: boolean;
-}
+import { PageWrapperProps } from '@/helpers/types';
 
 export const PageWrapper = (props: PageWrapperProps): JSX.Element => {
   const { children, withMenu = true } = props;

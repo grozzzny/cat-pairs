@@ -5,8 +5,9 @@ import { useState } from 'react';
 import { GameOverWrapper } from '@/components';
 import Confetti from 'react-confetti';
 import { ExitButton } from '@/components/exit-button';
+import { withAuthRouteHOC } from '@/helpers/hooks/withAuthRouteHOC';
 
-export const GameOverPage = () => {
+const GameOverPage = () => {
   const [isSuccess, setIsSuccess] = useState<boolean>(true);
 
   return (
@@ -33,3 +34,5 @@ export const GameOverPage = () => {
     </PageWrapper>
   );
 };
+
+export default withAuthRouteHOC(GameOverPage);

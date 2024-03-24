@@ -1,8 +1,9 @@
 import { PageWrapper } from '@/components';
 import './startgame-page.css';
 import { Loader, StartTimer } from '@/components';
+import { withAuthRouteHOC } from '@/helpers/hooks/withAuthRouteHOC';
 
-export const StartGamePage = () => {
+const StartGamePage = () => {
   return (
     <PageWrapper>
       <div className='start-page'>
@@ -12,3 +13,5 @@ export const StartGamePage = () => {
     </PageWrapper>
   );
 };
+
+export default withAuthRouteHOC(StartGamePage);

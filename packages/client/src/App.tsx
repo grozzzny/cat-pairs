@@ -17,7 +17,7 @@ function App() {
     <ErrorProvider errorPage={Page500} onError={handleError} theme={THEME_ANTD}>
       <ConfigProvider theme={THEME_ANTD}>
         <BrowserRouter>
-          <AuthProvider authRoute='/login' exceptionRoutes={['/registration']}>
+          <AuthProvider>
             <Routes>
               {routes.map(route => (
                 <Route

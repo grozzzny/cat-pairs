@@ -1,1 +1,1 @@
-export { StartGamePage } from './startgame-page';
+export { default as StartGamePage } from './startgame-page';

@@ -3,8 +3,9 @@ import { Difficulty, GameStatus } from '@/components/game/types';
 import React, { useState } from 'react';
 import './game-page.css';
 import { Game } from '@/components/game/game';
+import { withAuthRouteHOC } from '@/helpers/hooks/withAuthRouteHOC';
 
-export const GamePage = () => {
+const GamePage = () => {
   const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.PRE_GAME);
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>(
     Difficulty.EASY
@@ -52,3 +53,5 @@ export const GamePage = () => {
     </PageWrapper>
   );
 };
+
+export default withAuthRouteHOC(GamePage);
