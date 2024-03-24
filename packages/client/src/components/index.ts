@@ -26,3 +26,5 @@ export { ProfileForm } from './profile-form';
 export { ProfilePopup } from './profile-popup';
 export { BackgroundWrapper } from './background-wrapper';
 export { LinkList } from './links-list';
+export { LeadersTable } from './leaders-table';
+export { LeaderCard } from './leader-card';
