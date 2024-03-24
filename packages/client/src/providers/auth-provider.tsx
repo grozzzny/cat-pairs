@@ -23,7 +23,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
   };
 
   useEffect(() => {
-    AuthService.getUser().then(isOk => (!isOk ? handleAuth() : stopLoading()));
+    AuthService.getUser().then(isOk => (isOk ? handleAuth() : stopLoading()));
   }, []);
 
   return (
