@@ -1,3 +1,4 @@
 export * from './user';
 export * from './api';
-export * from './component';
+
+export type typeWithSignal<T> = T & { signal: AbortSignal | null | undefined };

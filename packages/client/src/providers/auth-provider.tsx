@@ -22,6 +22,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
   const [isAuth, setIsAuth] = useState(false);
   const [isLoading, setLoading] = useState(true);
 
+  const abortController = new AbortController();
+
   const stopLoading = () => setLoading(false);
 
   const handleAuth = () => {
@@ -30,7 +32,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
   };
 
   useEffect(() => {
-    AuthService.getUser().then(isOk => (isOk ? handleAuth() : stopLoading()));
+    AuthService.getUser({ signal: abortController.signal }).then(isOk =>
+      isOk ? handleAuth() : stopLoading()
+    );
+    // TODO: вернуть при вливании в prod, сейчас в StrictMode происходит mount -> unmount -> mount
+    // return () => {
+    //   abortController.abort();
+    // };
   }, []);
 
   return (

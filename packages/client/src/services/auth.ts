@@ -1,7 +1,11 @@
 import { AuthApi } from '@/api';
 import { VALID_AUTH_ERROR } from '@/helpers/constants/api';
 import { isRequestError } from '@/helpers/request';
-import { LoginRequestDto, LoginRequestResult } from '@/helpers/types';
+import {
+  GetUserRequestDto,
+  LoginRequestDto,
+  LoginRequestResult,
+} from '@/helpers/types';
 
 const successAuthData = { isOk: true, reason: '' };
 
@@ -25,8 +29,8 @@ export class AuthService {
     }
   }
 
-  static async getUser(): Promise<boolean> {
-    const response = await AuthApi.getUser();
+  static async getUser(props: GetUserRequestDto): Promise<boolean> {
+    const response = await AuthApi.getUser(props);
     return response.ok;
   }
 }
