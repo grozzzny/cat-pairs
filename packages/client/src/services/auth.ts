@@ -1,6 +1,9 @@
 import { AuthApi } from '@/api';
+import { VALID_AUTH_ERROR } from '@/helpers/constants/api';
 import { isRequestError } from '@/helpers/request';
 import { LoginRequestDto, LoginRequestResult } from '@/helpers/types';
+
+const successAuthData = { isOk: true, reason: '' };
 
 export class AuthService {
   static async login(
@@ -9,10 +12,13 @@ export class AuthService {
     try {
       const response = await AuthApi.login(props);
       if (response.ok && !isRequestError(response.status)) {
-        return { isOk: true, reason: '' };
+        return successAuthData;
       }
-      const error = await response.json();
-      return { isOk: false, reason: error.reason };
+      const { reason } = await response.json();
+      if (reason === VALID_AUTH_ERROR) {
+        return successAuthData;
+      }
+      return { isOk: false, reason };
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);

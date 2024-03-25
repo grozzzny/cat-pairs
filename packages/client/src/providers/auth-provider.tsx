@@ -1,9 +1,16 @@
 import { AuthService } from '@/services';
 import React, { createContext, useEffect, useState } from 'react';
 
-export const AuthContext = createContext({
+type AuthContextType = {
+  isAuth: boolean;
+  isLoading: boolean;
+  setAuth?: () => void;
+};
+
+export const AuthContext = createContext<AuthContextType>({
   isAuth: false,
   isLoading: true,
+  setAuth: undefined,
 });
 
 interface AuthProviderProps {
@@ -31,6 +38,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
       value={{
         isAuth,
         isLoading,
+        setAuth: handleAuth,
       }}>
       {children}
     </AuthContext.Provider>

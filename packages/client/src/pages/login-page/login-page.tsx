@@ -9,6 +9,7 @@ import {
   validatePassword,
   validateRequired,
 } from '@/helpers';
+import { useAuth } from '@/helpers/hooks/useAuth';
 
 type LoginFieldType = {
   login: string;
@@ -19,6 +20,7 @@ export const LoginPage = () => {
   setPageTitle('Войти');
   const navigate = useNavigate();
   const [notify, contextHolder] = notification.useNotification();
+  const { setAuth } = useAuth();
 
   const onFinish: FormProps<LoginFieldType>['onFinish'] = async ({
     login,
@@ -26,6 +28,7 @@ export const LoginPage = () => {
   }) => {
     const result = await AuthService.login({ login, password });
     if (result?.isOk) {
+      setAuth?.();
       navigate('/');
       return;
     }
