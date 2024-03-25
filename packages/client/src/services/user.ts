@@ -4,6 +4,7 @@ import {
   CurrentUserRequestResult,
   DataChangePassword,
   PasswordRequestResult,
+  ProfileFieldType,
 } from '@/helpers/types';
 
 export class UserService {
@@ -28,7 +29,7 @@ export class UserService {
   ): Promise<AvatarRequestResult | undefined> {
     try {
       const response = await UserApi.changeAvatar(props);
-      if (response.status <= 400) {
+      if (response.status < 400) {
         const user = await response.json();
         return { isOk: true, avatar: user.avatar };
       } else {
@@ -44,7 +45,25 @@ export class UserService {
   static async getCurrentUser(): Promise<CurrentUserRequestResult | undefined> {
     try {
       const response = await AuthApi.getUser();
-      if (response.status <= 400) {
+      if (response.status < 400) {
+        const user = await response.json();
+        return { isOk: true, user: user };
+      } else {
+        const error = await response.json();
+        return { isOk: false, error: error.reason };
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
+  }
+
+  static async changeUser(
+    props: ProfileFieldType
+  ): Promise<CurrentUserRequestResult | undefined> {
+    try {
+      const response = await UserApi.changeUser(props);
+      if (response.status < 400) {
         const user = await response.json();
         return { isOk: true, user: user };
       } else {

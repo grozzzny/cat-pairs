@@ -19,7 +19,6 @@ export const LoginPage = () => {
   setPageTitle('Войти');
   const navigate = useNavigate();
   const [notify, contextHolder] = notification.useNotification();
-
   const onFinish: FormProps<LoginFieldType>['onFinish'] = async ({
     login,
     password,

@@ -6,22 +6,47 @@ import React, { useEffect } from 'react';
 import { Theme } from '@/helpers/constants/global';
 import { useNavigate } from 'react-router-dom';
 import Paragraph from 'antd/es/typography/Paragraph';
-import { useAppDispatch } from '@/hooks';
-import { fetchGetCurrentUser } from '@/store/userSlice';
+
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import {
+  fetchGetCurrentUser,
+  setThemeDark,
+  setThemeLight,
+} from '@/store/userSlice';
+import { notification } from 'antd';
 
 export const MainPage = () => {
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(fetchGetCurrentUser());
-  }, []);
   const navigate = useNavigate();
   setPageTitle('CatCoders');
   // На уровне layouts установлен запрет на скроллинг страницы, поэтому этот метод отменяет эти действия. MainPage - это лендинг страница.
   setBodyScroll();
-  const handleChangeTheme = (theme: Theme) => {
+
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchGetCurrentUser());
+  }, []);
+  const theme = useAppSelector(state => state.user.theme);
+  useEffect(() => {
+    console.log(theme);
+  }, [theme]);
+
+  const error: undefined | string = useAppSelector(state => state.user.error);
+  const [notify, contextHolder] = notification.useNotification();
+  useEffect(() => {
+    if (error) {
+      const errorMessage = `Не удалось установить пользователя: ${error}`;
+      notify.error({
+        message: 'Ошибка авторизации',
+        description: errorMessage,
+        className: 'notification-bar',
+      });
+    }
+  }, [error]);
+
+  /*const handleChangeTheme = (theme: Theme) => {
     // eslint-disable-next-line no-console
     console.log('setTheme', theme);
-  };
+  };*/
   return (
     <div className='main-page'>
       <BackgroundWrapper title={'CatCoders'}>
@@ -32,12 +57,12 @@ export const MainPage = () => {
                 className='main-page__button-theme'
                 darkTheme={true}
                 label='Темная тема'
-                onClick={() => handleChangeTheme(Theme.Dark)}
+                onClick={() => dispatch(setThemeDark())}
               />
               <Button
                 className='main-page__button-theme'
                 label='Светлая тема'
-                onClick={() => handleChangeTheme(Theme.Light)}
+                onClick={() => dispatch(setThemeLight())}
               />
             </Flex>
           </Col>
@@ -91,6 +116,7 @@ export const MainPage = () => {
         </Flex>
         <br />
         <br />
+        {contextHolder}
       </div>
     </div>
   );

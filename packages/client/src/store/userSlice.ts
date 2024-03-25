@@ -1,6 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { User } from '../helpers/types/user';
+import { ProfileFieldType, User } from '../helpers/types/user';
 import { UserService } from '@/services/user';
+import { Theme } from '@/helpers/constants/global';
 
 type CatPairsState = {
   currentUser: User;
@@ -8,7 +9,8 @@ type CatPairsState = {
   isPopupOpen: boolean;
   isAvatarPopupOpen: boolean;
   status: null | string;
-  error: null | string;
+  error: undefined | string;
+  theme: string;
 };
 
 const initialState: CatPairsState = {
@@ -26,18 +28,31 @@ const initialState: CatPairsState = {
   isPopupOpen: false,
   isAvatarPopupOpen: false,
   status: null,
-  error: null,
+  error: undefined,
+  theme: Theme.Dark,
 };
 
-export const fetchGetCurrentUser = createAsyncThunk(
-  'user/fetchGetCurrentUser',
-  async () => {
-    const result = await UserService.getCurrentUser();
-    if (result?.isOk) {
-      return result?.user;
-    }
-  }
-);
+export const fetchGetCurrentUser = createAsyncThunk<
+  string | User | undefined,
+  undefined,
+  { rejectValue: string }
+>('user/fetchGetCurrentUser', async (_, { rejectWithValue }) => {
+  const result = await UserService.getCurrentUser();
+  if (result?.isOk) {
+    return result?.user;
+  } else return result?.error && rejectWithValue(result?.error);
+});
+
+export const fetchChangeCurrentUser = createAsyncThunk<
+  string | User | undefined,
+  ProfileFieldType,
+  { rejectValue: string }
+>('user/fetchChangeCurrentUser', async (params, { rejectWithValue }) => {
+  const result = await UserService.changeUser(params);
+  if (result?.isOk) {
+    return result?.user;
+  } else return result?.error && rejectWithValue(result?.error);
+});
 
 const userSlice = createSlice({
   name: 'user',
@@ -49,26 +64,46 @@ const userSlice = createSlice({
     toggleOpenAvatarPopup(state, action: PayloadAction<boolean>): void {
       state.isAvatarPopupOpen = action.payload;
     },
+    setAvatar(state, action: PayloadAction<string>): void {
+      state.currentUser.avatar = action.payload;
+    },
+    setCurrentUser(state, action: PayloadAction<User>): void {
+      Object.assign(state.currentUser, action.payload);
+    },
+    setThemeDark(state): void {
+      state.theme = Theme.Dark;
+    },
+    setThemeLight(state): void {
+      state.theme = Theme.Light;
+    },
   },
   extraReducers: builder => {
-    // Add reducers for additional action types here, and handle loading state as needed
-    builder.addCase(fetchGetCurrentUser.fulfilled, (state, action) => {
-      // Add user to the state array
-      Object.assign(state.currentUser, action.payload);
-    });
+    builder
+      .addCase(fetchGetCurrentUser.fulfilled, (state, action) => {
+        Object.assign(state.currentUser, action.payload);
+        state.error = undefined;
+      })
+      .addCase(fetchChangeCurrentUser.fulfilled, (state, action) => {
+        Object.assign(state.currentUser, action.payload);
+        state.error = undefined;
+      })
+      .addMatcher(isError, (state, action: PayloadAction<string>) => {
+        state.error = action.payload;
+        state.loading = false;
+      });
   },
-  /*extraReducers: {
-    [fetchGetCurrentUser.pending]: (state, action) => {
-      state.status = 'loading',
-        state.error = null
-    }
-    [fetchGetCurrentUser.fulfilled]: (state, action) => {
-      state.status = 'resolved',
-        state.currentUser = action.payload;
-    }
-    [fetchGetCurrentUser.rejected]: (state, action) => { }
-  }*/
 });
 
-export const { toggleOpenPopup, toggleOpenAvatarPopup } = userSlice.actions;
+export const {
+  toggleOpenPopup,
+  toggleOpenAvatarPopup,
+  setAvatar,
+  setCurrentUser,
+  setThemeDark,
+  setThemeLight,
+} = userSlice.actions;
 export default userSlice.reducer;
+
+function isError(action: { type: string }) {
+  return action.type.endsWith('rejected');
+}
