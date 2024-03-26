@@ -12,6 +12,7 @@ export enum Difficulty {
 
 export enum GameStatus {
   PRE_GAME = 'pre-game',
+  LOAD = 'load',
   PLAYING = 'playing',
   WON = 'won',
   LOST = 'lost',

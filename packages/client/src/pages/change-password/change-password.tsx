@@ -15,6 +15,7 @@ import {
   validatePassword,
   validateRequired,
 } from '@/helpers';
+import { withAuthRouteHOC } from '@/helpers/hooks/withAuthRouteHOC';
 
 type RegistrationFieldType = {
   oldpasswod: string;
@@ -126,3 +127,5 @@ export const NewPassword = () => {
     </PageWrapper>
   );
 };
+
+export default withAuthRouteHOC(NewPassword);

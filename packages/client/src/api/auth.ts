@@ -1,5 +1,5 @@
 import { fetchHelper } from '@/helpers';
-import { LoginRequestDto } from '@/helpers/types/api';
+import { GetUserRequestDto, LoginRequestDto } from '@/helpers/types/api';
 
 export class AuthApi {
   static login(params: LoginRequestDto) {
@@ -10,10 +10,11 @@ export class AuthApi {
     });
   }
 
-  static getUser() {
+  static getUser({ signal }: GetUserRequestDto) {
     return fetchHelper({
       url: '/auth/user',
       method: 'GET',
+      signal,
     });
   }
 }

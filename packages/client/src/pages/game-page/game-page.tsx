@@ -1,15 +1,20 @@
-import { GameEndScreen, GameStartScreen, PageWrapper } from '@/components';
+import {
+  GameEndScreen,
+  GameLoader,
+  GameStartScreen,
+  PageWrapper,
+} from '@/components';
 import { Difficulty, GameStatus } from '@/components/game/types';
 import React, { useState } from 'react';
 import './game-page.css';
 import { Game } from '@/components/game/game';
+import { withAuthRouteHOC } from '@/helpers/hooks/withAuthRouteHOC';
 
-export const GamePage = () => {
+const GamePage = () => {
   const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.PRE_GAME);
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>(
     Difficulty.EASY
   );
-
   return (
     <PageWrapper>
       <div className='game-page'>
@@ -17,9 +22,16 @@ export const GamePage = () => {
           <GameStartScreen
             selectedDifficulty={selectedDifficulty}
             onStartGame={() => {
-              setGameStatus(GameStatus.PLAYING);
+              setGameStatus(GameStatus.LOAD);
             }}
             onDifficultyChange={difficulty => setSelectedDifficulty(difficulty)}
+          />
+        )}
+        {gameStatus === GameStatus.LOAD && (
+          <GameLoader
+            changeGameStatus={status => {
+              setGameStatus(status);
+            }}
           />
         )}
         {gameStatus === GameStatus.PLAYING && (
@@ -32,19 +44,11 @@ export const GamePage = () => {
             theme='light'
           />
         )}
-        {gameStatus === GameStatus.WON && (
+        {(gameStatus === GameStatus.WON || gameStatus === GameStatus.LOST) && (
           <GameEndScreen
-            status='WON'
+            status={gameStatus}
             onRestartGame={() => {
-              setGameStatus(GameStatus.PLAYING);
-            }}
-          />
-        )}
-        {gameStatus === GameStatus.LOST && (
-          <GameEndScreen
-            status='LOST'
-            onRestartGame={() => {
-              setGameStatus(GameStatus.PLAYING);
+              setGameStatus(GameStatus.LOAD);
             }}
           />
         )}
@@ -52,3 +56,5 @@ export const GamePage = () => {
     </PageWrapper>
   );
 };
+
+export default withAuthRouteHOC(GamePage);
