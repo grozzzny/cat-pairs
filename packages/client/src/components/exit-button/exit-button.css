@@ -1,6 +1,7 @@
 .exit-button {
   display: flex;
   justify-content: flex-end;
+  align-self: flex-end;
 }
 
 .exit-button__button {
