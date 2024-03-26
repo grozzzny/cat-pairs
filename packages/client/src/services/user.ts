@@ -3,6 +3,7 @@ import {
   AvatarRequestResult,
   CurrentUserRequestResult,
   DataChangePassword,
+  GetUserRequestDto,
   PasswordRequestResult,
   ProfileFieldType,
 } from '@/helpers/types';
@@ -42,9 +43,11 @@ export class UserService {
     }
   }
 
-  static async getCurrentUser(): Promise<CurrentUserRequestResult | undefined> {
+  static async getCurrentUser(
+    props: GetUserRequestDto
+  ): Promise<CurrentUserRequestResult | undefined> {
     try {
-      const response = await AuthApi.getUser();
+      const response = await AuthApi.getUser(props);
       if (response.status < 400) {
         const user = await response.json();
         return { isOk: true, user: user };

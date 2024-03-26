@@ -1,8 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setCurrentUser } from '@/store/userSlice';
 import { UserService } from '@/services/user';
-import { CurrentUserRequestResult } from '@/helpers/types';
-import { AuthService } from '@/services';
 import React, { createContext, useEffect, useRef, useState } from 'react';
 
 type AuthContextType = {
@@ -39,30 +37,39 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
     stopLoading();
   };
 
-  const handleSetUserInStore = (res: CurrentUserRequestResult) => {
-    stopLoading();
-    if (res.user) dispatch(setCurrentUser(res.user));
-  };
-
   useEffect(() => {
     if (!isAuthRef.current) {
       isAuthRef.current = true;
-      AuthService.getUser({ signal: abortController.signal }).then(isOk =>
-        isOk ? handleAuth() : stopLoading()
+      UserService.getCurrentUser({ signal: abortController.signal }).then(
+        res => {
+          if (res?.isOk) {
+            handleAuth();
+            if (res?.user) dispatch(setCurrentUser(res.user));
+          }
+          stopLoading();
+        }
       );
     }
-    //переделала метод обработки запроса, что бы можно было получать данные пользователя и устанавливать в store
-    /*UserService.getCurrentUser().then(res =>
-      !res?.isOk ? handleNavigate() : handleSetUserInStore(res)
-    );
-    AuthService.getUser().then(isOk =>
-      !isOk ? handleNavigate() : handleSetUsetInStore()
-    );
-  }, [isUserAuth]);*/
     return () => {
       !isAuthRef.current && abortController.abort();
     };
   }, []);
+
+  useEffect(() => {
+    if (isAuth) {
+      UserService.getCurrentUser({ signal: abortController.signal }).then(
+        res => {
+          if (res?.isOk) {
+            if (res?.user) dispatch(setCurrentUser(res.user));
+          }
+        }
+      );
+      stopLoading();
+    }
+    return () => {
+      !isAuthRef.current && abortController.abort();
+    };
+  }, [isUserAuth]);
 
   return (
     <AuthContext.Provider

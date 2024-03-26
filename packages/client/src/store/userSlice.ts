@@ -17,13 +17,15 @@ const initialState: CatPairsState = {
   theme: Theme.Light,
   userAuth: false,
 };
-
+const abortController = new AbortController();
 export const fetchGetCurrentUser = createAsyncThunk<
   string | User | undefined,
   undefined,
   { rejectValue: string }
 >('user/fetchGetCurrentUser', async (_, { rejectWithValue }) => {
-  const result = await UserService.getCurrentUser();
+  const result = await UserService.getCurrentUser({
+    signal: abortController.signal,
+  });
   if (result?.isOk) {
     return result?.user;
   } else return result?.error && rejectWithValue(result?.error);
