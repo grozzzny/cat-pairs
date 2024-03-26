@@ -1,7 +1,7 @@
 import './game-end-wrapper.css';
 import { Button } from '@/components/button';
 
-interface GameOverWrapperProps {
+interface GameEndWrapperProps {
   title: string;
   message: string;
   buttonText: string;
@@ -13,7 +13,7 @@ export const GameEndWrapper = ({
   message,
   buttonText,
   handleClick,
-}: GameOverWrapperProps) => {
+}: GameEndWrapperProps) => {
   return (
     <div className='game-end-wrapper'>
       <h1 className='game-end-wrapper__title'>{title}</h1>

@@ -43,17 +43,9 @@ export const GamePage = () => {
             theme='light'
           />
         )}
-        {gameStatus === GameStatus.WON && (
+        {(gameStatus === GameStatus.WON || gameStatus === GameStatus.LOST) && (
           <GameEndScreen
-            status='WON'
-            onRestartGame={() => {
-              setGameStatus(GameStatus.LOAD);
-            }}
-          />
-        )}
-        {gameStatus === GameStatus.LOST && (
-          <GameEndScreen
-            status='LOST'
+            status={gameStatus}
             onRestartGame={() => {
               setGameStatus(GameStatus.LOAD);
             }}

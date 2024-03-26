@@ -3,9 +3,10 @@ import { GameEndWrapper } from '@/components';
 import Confetti from 'react-confetti';
 import { ExitButton } from '@/components/exit-button';
 import React from 'react';
+import { GameStatus } from '@/components/game/types';
 
 interface GameEndScreenProps {
-  status: 'WON' | 'LOST';
+  status: GameStatus;
   onRestartGame: () => void;
 }
 export const GameEndScreen: React.FC<GameEndScreenProps> = ({
@@ -14,7 +15,7 @@ export const GameEndScreen: React.FC<GameEndScreenProps> = ({
 }) => {
   return (
     <>
-      {status === 'WON' ? (
+      {status === GameStatus.WON && (
         <div>
           <Confetti style={{ outline: '1px solid red' }} />
           <GameEndWrapper
@@ -24,7 +25,8 @@ export const GameEndScreen: React.FC<GameEndScreenProps> = ({
             handleClick={onRestartGame}
           />
         </div>
-      ) : (
+      )}
+      {status === GameStatus.LOST && (
         <GameEndWrapper
           title='Вы проиграли'
           message='Попробуйте еще раз'
