@@ -4,9 +4,15 @@ export interface FetchHelperParams {
   url: string;
   data?: object;
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  signal?: AbortSignal | null | undefined;
 }
 
-export const fetchHelper = ({ url, data, method }: FetchHelperParams) => {
+export const fetchHelper = ({
+  url,
+  data,
+  method,
+  signal,
+}: FetchHelperParams) => {
   return fetch(`${YANDEX_API_HOST}${url}`, {
     method,
     body: JSON.stringify(data),
@@ -14,5 +20,6 @@ export const fetchHelper = ({ url, data, method }: FetchHelperParams) => {
     headers: {
       'Content-Type': 'application/json',
     },
+    signal,
   });
 };

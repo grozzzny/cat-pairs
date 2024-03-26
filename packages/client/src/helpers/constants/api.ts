@@ -10,3 +10,5 @@ export const API_PARAMS = {
 export const API_PARAMS_FORMDATA = {
   credentials: 'include',
 };
+
+export const VALID_AUTH_ERROR = 'User already in system';

@@ -3,7 +3,7 @@ import React from 'react';
 import { NavigationBar } from '@/components';
 import './page-wrapper.css';
 
-interface PageWrapperProps {
+export interface PageWrapperProps {
   children: JSX.Element | string;
   withMenu?: boolean;
 }

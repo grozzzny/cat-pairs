@@ -2,8 +2,9 @@ import { PageWrapper, ProfileAvatar, ProfileForm } from '@/components';
 import './profile-page.css';
 import { useNavigate } from 'react-router-dom';
 import { ExitButton } from '@/components/exit-button';
+import { withAuthRouteHOC } from '@/helpers/hooks/withAuthRouteHOC';
 
-export const ProfilePage = () => {
+const ProfilePage = () => {
   const navigate = useNavigate();
 
   return (
@@ -25,3 +26,5 @@ export const ProfilePage = () => {
     </PageWrapper>
   );
 };
+
+export default withAuthRouteHOC(ProfilePage);

@@ -4,8 +4,9 @@ import { PageWrapper } from '@/components';
 import { FORUM_TOPICS_LIST } from '@/helpers/constants/forum';
 import { ForumTopic } from '@/components';
 import { ExitButton } from '@/components';
+import { withAuthRouteHOC } from '@/helpers/hooks/withAuthRouteHOC';
 
-export const ForumTopicPage = () => {
+const ForumTopicPage = () => {
   const { id } = useParams();
   const topic = FORUM_TOPICS_LIST.find(
     topic => topic.id === parseInt(id as string)
@@ -30,3 +31,5 @@ export const ForumTopicPage = () => {
     </PageWrapper>
   );
 };
+
+export default withAuthRouteHOC(ForumTopicPage);

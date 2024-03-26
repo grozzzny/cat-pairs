@@ -3,8 +3,9 @@ import { PageWrapper } from '@/components';
 import { ForumTopicsList } from '@/components';
 import { FORUM_TOPICS_LIST } from '@/helpers/constants/forum';
 import { ExitButton } from '@/components';
+import { withAuthRouteHOC } from '@/helpers/hooks/withAuthRouteHOC';
 
-export const ForumPage = () => {
+const ForumPage = () => {
   setPageTitle('Форум');
 
   return (
@@ -16,3 +17,5 @@ export const ForumPage = () => {
     </PageWrapper>
   );
 };
+
+export default withAuthRouteHOC(ForumPage);
