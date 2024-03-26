@@ -2,16 +2,18 @@ import { useEffect, useState } from 'react';
 import './profile-avatar.css';
 import { ProfilePopup } from '@/components/profile-popup';
 import { YANDEX_API_HOST } from '@/helpers/constants/api';
-import { useAppDispatch, useAppSelector } from '@/hooks';
-import { toggleOpenAvatarPopup } from '@/store/userSlice';
+import { useAppSelector } from '@/hooks';
 
 export const ProfileAvatar = () => {
   const [image, setImage] = useState('');
-  const dispatch = useAppDispatch();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const avatar = useAppSelector(state => state.user.currentUser.avatar);
 
   const handleOpenPopup = () => {
-    dispatch(toggleOpenAvatarPopup(true));
+    setIsPopupOpen(true);
+  };
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
   };
 
   const handleSetAvatar = (val: string) => {
@@ -24,7 +26,11 @@ export const ProfileAvatar = () => {
 
   return (
     <>
-      <ProfilePopup handleSetAvatar={handleSetAvatar} />
+      <ProfilePopup
+        isPopupOpen={isPopupOpen}
+        handleClosePopup={handleClosePopup}
+        handleSetAvatar={handleSetAvatar}
+      />
       <div className='profile-avatar' onClick={handleOpenPopup}>
         {image ? (
           <img

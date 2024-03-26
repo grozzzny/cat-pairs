@@ -2,17 +2,19 @@ import './profile-popup.css';
 import { CloseOutlined } from '@ant-design/icons';
 import { ChangeEvent, MouseEvent, useState } from 'react';
 import { UserService } from '@/services/user';
-import { useAppDispatch, useAppSelector } from '@/hooks';
-import { toggleOpenAvatarPopup } from '@/store/userSlice';
 
 interface ProfilePopupProps {
+  isPopupOpen: boolean;
+  handleClosePopup: () => void;
   handleSetAvatar: (val: string) => void;
 }
 
-export const ProfilePopup = ({ handleSetAvatar }: ProfilePopupProps) => {
-  const isPopupOpen = useAppSelector(state => state.user.isAvatarPopupOpen);
+export const ProfilePopup = ({
+  isPopupOpen,
+  handleClosePopup,
+  handleSetAvatar,
+}: ProfilePopupProps) => {
   const popupClass = `popup  ${isPopupOpen ? 'popup_opened' : ''}`;
-  const dispatch = useAppDispatch();
 
   const [file, setFile] = useState<File | null>(null);
 
@@ -26,7 +28,7 @@ export const ProfilePopup = ({ handleSetAvatar }: ProfilePopupProps) => {
       if (result && result.isOk && result.avatar) {
         handleSetAvatar(result.avatar);
       }
-      dispatch(toggleOpenAvatarPopup(false));
+      handleClosePopup();
       setFile(null);
     }
   };
@@ -38,7 +40,7 @@ export const ProfilePopup = ({ handleSetAvatar }: ProfilePopupProps) => {
   };
 
   const onClose = () => {
-    dispatch(toggleOpenAvatarPopup(false));
+    handleClosePopup();
     setFile(null);
   };
   return (

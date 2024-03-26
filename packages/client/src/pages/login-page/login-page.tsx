@@ -9,6 +9,8 @@ import {
   validatePassword,
   validateRequired,
 } from '@/helpers';
+import { useAppDispatch } from '@/hooks';
+import { setUserAuth } from '@/store/userSlice';
 
 type LoginFieldType = {
   login: string;
@@ -19,12 +21,14 @@ export const LoginPage = () => {
   setPageTitle('Войти');
   const navigate = useNavigate();
   const [notify, contextHolder] = notification.useNotification();
+  const dispatch = useAppDispatch();
   const onFinish: FormProps<LoginFieldType>['onFinish'] = async ({
     login,
     password,
   }) => {
     const result = await AuthService.login({ login, password });
     if (result?.isOk) {
+      dispatch(setUserAuth(true));
       navigate('/');
       return;
     }

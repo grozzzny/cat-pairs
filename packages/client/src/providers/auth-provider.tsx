@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Flex, Spin } from 'antd';
 import { PageWrapper } from '@/components';
 import { LoadingOutlined } from '@ant-design/icons';
-import { useAppDispatch } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setCurrentUser } from '@/store/userSlice';
 import { UserService } from '@/services/user';
 import { CurrentUserRequestResult } from '@/helpers/types';
@@ -31,7 +31,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
   const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
   const stopLoading = () => setLoading(false);
-
+  const isUserAuth = useAppSelector(state => state.user.userAuth);
   const handleNavigate = () => {
     navigate(authRoute);
     stopLoading();
@@ -54,7 +54,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
     /*AuthService.getUser().then(isOk =>
       !isOk ? handleNavigate() : handleSetUsetInStore()
     );*/
-  }, []);
+  }, [isUserAuth]);
 
   if (loading) {
     return (

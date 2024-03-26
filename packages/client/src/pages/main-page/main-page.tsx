@@ -2,51 +2,17 @@ import { BackgroundWrapper, Button, LinkList } from '@/components';
 import './main-page.css';
 import { setBodyScroll, setPageTitle } from '@/helpers';
 import { Col, Divider, Flex, Row } from 'antd';
-import React, { useEffect } from 'react';
-import { Theme } from '@/helpers/constants/global';
 import { useNavigate } from 'react-router-dom';
 import Paragraph from 'antd/es/typography/Paragraph';
-
-import { useAppDispatch, useAppSelector } from '@/hooks';
-import {
-  fetchGetCurrentUser,
-  setThemeDark,
-  setThemeLight,
-} from '@/store/userSlice';
-import { notification } from 'antd';
+import { useAppDispatch } from '@/hooks';
+import { setThemeDark, setThemeLight } from '@/store/userSlice';
 
 export const MainPage = () => {
   const navigate = useNavigate();
   setPageTitle('CatCoders');
   // На уровне layouts установлен запрет на скроллинг страницы, поэтому этот метод отменяет эти действия. MainPage - это лендинг страница.
   setBodyScroll();
-
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(fetchGetCurrentUser());
-  }, []);
-  const theme = useAppSelector(state => state.user.theme);
-  useEffect(() => {
-    console.log(theme);
-  }, [theme]);
-
-  const error: undefined | string = useAppSelector(state => state.user.error);
-  const [notify, contextHolder] = notification.useNotification();
-  useEffect(() => {
-    if (error) {
-      const errorMessage = `Не удалось установить пользователя: ${error}`;
-      notify.error({
-        message: 'Ошибка авторизации',
-        description: errorMessage,
-        className: 'notification-bar',
-      });
-    }
-  }, [error]);
-
-  /*const handleChangeTheme = (theme: Theme) => {
-    // eslint-disable-next-line no-console
-    console.log('setTheme', theme);
-  };*/
   return (
     <div className='main-page'>
       <BackgroundWrapper title={'CatCoders'}>
@@ -116,7 +82,6 @@ export const MainPage = () => {
         </Flex>
         <br />
         <br />
-        {contextHolder}
       </div>
     </div>
   );

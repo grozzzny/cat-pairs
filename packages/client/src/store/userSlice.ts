@@ -1,35 +1,21 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { ProfileFieldType, User } from '../helpers/types/user';
+import { ProfileFieldType, User } from '@/helpers/types';
 import { UserService } from '@/services/user';
 import { Theme } from '@/helpers/constants/global';
+import { userNotAutn } from '@/helpers/constants/store';
 
 type CatPairsState = {
   currentUser: User;
-  loading: boolean;
-  isPopupOpen: boolean;
-  isAvatarPopupOpen: boolean;
-  status: null | string;
   error: undefined | string;
   theme: string;
+  userAuth: boolean;
 };
 
 const initialState: CatPairsState = {
-  currentUser: {
-    id: 0,
-    first_name: '',
-    second_name: '',
-    display_name: '',
-    phone: '',
-    login: '',
-    avatar: '',
-    email: '',
-  },
-  loading: false,
-  isPopupOpen: false,
-  isAvatarPopupOpen: false,
-  status: null,
+  currentUser: userNotAutn,
   error: undefined,
-  theme: Theme.Dark,
+  theme: Theme.Light,
+  userAuth: false,
 };
 
 export const fetchGetCurrentUser = createAsyncThunk<
@@ -58,17 +44,14 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    toggleOpenPopup(state, action: PayloadAction<boolean>): void {
-      state.isPopupOpen = action.payload;
-    },
-    toggleOpenAvatarPopup(state, action: PayloadAction<boolean>): void {
-      state.isAvatarPopupOpen = action.payload;
-    },
     setAvatar(state, action: PayloadAction<string>): void {
       state.currentUser.avatar = action.payload;
     },
     setCurrentUser(state, action: PayloadAction<User>): void {
       Object.assign(state.currentUser, action.payload);
+    },
+    deleteCurrentUser(state): void {
+      Object.assign(state.currentUser, userNotAutn);
     },
     setThemeDark(state): void {
       state.theme = Theme.Dark;
@@ -76,31 +59,33 @@ const userSlice = createSlice({
     setThemeLight(state): void {
       state.theme = Theme.Light;
     },
+    setUserAuth(state, action: PayloadAction<boolean>): void {
+      state.userAuth = action.payload;
+    },
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchGetCurrentUser.fulfilled, (state, action) => {
+      /*.addCase(fetchGetCurrentUser.fulfilled, (state, action) => {
         Object.assign(state.currentUser, action.payload);
         state.error = undefined;
-      })
+      })*/
       .addCase(fetchChangeCurrentUser.fulfilled, (state, action) => {
         Object.assign(state.currentUser, action.payload);
         state.error = undefined;
       })
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
         state.error = action.payload;
-        state.loading = false;
       });
   },
 });
 
 export const {
-  toggleOpenPopup,
-  toggleOpenAvatarPopup,
   setAvatar,
   setCurrentUser,
   setThemeDark,
   setThemeLight,
+  deleteCurrentUser,
+  setUserAuth,
 } = userSlice.actions;
 export default userSlice.reducer;
 

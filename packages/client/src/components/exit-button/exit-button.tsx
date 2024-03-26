@@ -4,25 +4,43 @@ import './exit-button.css';
 import { Color } from '@/helpers/constants/global';
 import { AuthService } from '@/services/auth';
 import { MessagePopup } from '../message-popup';
-import { toggleOpenPopup } from '@/store/userSlice';
+import { deleteCurrentUser, setUserAuth } from '@/store/userSlice';
 import { useAppDispatch } from '@/hooks';
+import { useState } from 'react';
 
 export const ExitButton = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleOpenPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+  };
+
   const handleExit = async () => {
     const result = await AuthService.logout();
     if (result?.isOk) {
+      dispatch(deleteCurrentUser());
+      dispatch(setUserAuth(false));
       navigate('/login');
       return;
     } else {
-      dispatch(toggleOpenPopup(true));
+      handleOpenPopup();
     }
   };
   return (
     <>
-      <MessagePopup message='Не удалось выйти из игры' backPath='/' />
+      <MessagePopup
+        message='Не удалось выйти из игры'
+        backPath='/'
+        isPopupOpen={isPopupOpen}
+        handleClosePopup={handleClosePopup}
+      />
       <div className='exit-button' onClick={handleExit}>
         <button className='exit-button__button'>
           <p className='exit-button__button-text'>выход из игры</p>

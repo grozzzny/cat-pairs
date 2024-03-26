@@ -1,21 +1,25 @@
 import './message-popup.css';
 import { CloseOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '@/hooks';
-import { toggleOpenPopup } from '@/store/userSlice';
 
 interface MessagePopupProps {
+  isPopupOpen: boolean;
+  handleClosePopup: () => void;
   message: string;
   backPath: string;
 }
 
-export const MessagePopup = ({ message, backPath }: MessagePopupProps) => {
-  const isPopupOpen = useAppSelector(state => state.user.isPopupOpen);
-  const dispatch = useAppDispatch();
+export const MessagePopup = ({
+  isPopupOpen,
+  handleClosePopup,
+  message,
+  backPath,
+}: MessagePopupProps) => {
   const popupClass = `popup  ${isPopupOpen ? 'popup_opened' : ''}`;
+
   const navigate = useNavigate();
   const onClose = () => {
-    dispatch(toggleOpenPopup(false));
+    handleClosePopup();
     navigate(backPath);
   };
   return (
