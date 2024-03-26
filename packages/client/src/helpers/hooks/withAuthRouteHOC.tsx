@@ -15,7 +15,9 @@ const authProviderStyles = {
   },
 };
 
-export function withAuthRouteHOC<T>(WrappedRoute: React.ComponentType<T>) {
+export function withAuthRouteHOC<T extends JSX.IntrinsicAttributes>(
+  WrappedRoute: React.ComponentType<T>
+) {
   const ComponentWithAuth = (props: T) => {
     const navigate = useNavigate();
     const { isLoading, isAuth } = useAuth();
