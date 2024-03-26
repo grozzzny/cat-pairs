@@ -6,8 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import Paragraph from 'antd/es/typography/Paragraph';
 import { useAppDispatch } from '@/hooks';
 import { setThemeDark, setThemeLight } from '@/store/userSlice';
+import { withAuthRouteHOC } from '@/helpers/hooks/withAuthRouteHOC';
 
-export const MainPage = () => {
+const MainPage = () => {
   const navigate = useNavigate();
   setPageTitle('CatCoders');
   // На уровне layouts установлен запрет на скроллинг страницы, поэтому этот метод отменяет эти действия. MainPage - это лендинг страница.
@@ -86,3 +87,5 @@ export const MainPage = () => {
     </div>
   );
 };
+
+export default withAuthRouteHOC(MainPage);

@@ -7,8 +7,9 @@ import { MessagePopup } from '../message-popup';
 import { deleteCurrentUser, setUserAuth } from '@/store/userSlice';
 import { useAppDispatch } from '@/hooks';
 import { useState } from 'react';
+import React from 'react';
 
-export const ExitButton = () => {
+export const ExitButton: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 

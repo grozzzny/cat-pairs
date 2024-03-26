@@ -42,7 +42,6 @@ export class GameApi {
   setLevel() {
     const savedLevel = localStorage.getItem('memory_game_level');
     if (savedLevel) {
-      this.initialLevel = parseInt(savedLevel);
       this.level = parseInt(savedLevel);
     }
   }
@@ -171,7 +170,9 @@ export class GameApi {
     this.changeGameStatus(GameStatus.PRE_GAME);
     this.timerRunning = false;
     this.foundPairs = [];
-    this.level = this.initialLevel; // Не уверен, нужно ли сбрасывать уровень при выходе из игры, если нет удалить
+    // Не уверен, нужно ли сбрасывать уровень при выходе из игры, если нет удалить
+    this.level = this.initialLevel;
+    localStorage.setItem('memory_game_level', this.initialLevel.toString());
   };
 
   public handleStartGame = () => {

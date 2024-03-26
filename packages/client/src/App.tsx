@@ -23,7 +23,7 @@ function App() {
     <ErrorProvider errorPage={Page500} onError={handleError} theme={themeName}>
       <ConfigProvider theme={themeName}>
         <BrowserRouter>
-          <AuthProvider authRoute='/login' exceptionRoutes={['/registration']}>
+          <AuthProvider>
             <Routes>
               {routes.map(route => (
                 <Route

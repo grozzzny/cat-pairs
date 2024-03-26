@@ -1,39 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Flex, Spin } from 'antd';
-import { PageWrapper } from '@/components';
-import { LoadingOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setCurrentUser } from '@/store/userSlice';
 import { UserService } from '@/services/user';
 import { CurrentUserRequestResult } from '@/helpers/types';
+import { AuthService } from '@/services';
+import React, { createContext, useEffect, useRef, useState } from 'react';
+
+type AuthContextType = {
+  isAuth: boolean;
+  isLoading: boolean;
+  setAuth?: () => void;
+};
+
+export const AuthContext = createContext<AuthContextType>({
+  isAuth: false,
+  isLoading: true,
+  setAuth: undefined,
+});
 
 interface AuthProviderProps {
   children: React.ReactNode;
-  authRoute: string;
-  exceptionRoutes: string[];
 }
 
-const authProviderStyles = {
-  spinWrapper: {
-    height: '100%',
-  },
-  spin: {
-    fontSize: 40,
-    color: 'blue',
-  },
-};
-
 export const AuthProvider: React.FC<AuthProviderProps> = props => {
-  const { children, authRoute, exceptionRoutes } = props;
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
-  const stopLoading = () => setLoading(false);
   const isUserAuth = useAppSelector(state => state.user.userAuth);
-  const handleNavigate = () => {
-    navigate(authRoute);
+
+  const { children } = props;
+  const [isAuth, setIsAuth] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+  const isAuthRef = useRef(false);
+
+  const abortController = new AbortController();
+
+  const stopLoading = () => setLoading(false);
+
+  const handleAuth = () => {
+    setIsAuth(true);
     stopLoading();
   };
 
@@ -43,40 +45,33 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
   };
 
   useEffect(() => {
-    if (exceptionRoutes.includes(pathname)) {
-      stopLoading();
-      return;
+    if (!isAuthRef.current) {
+      isAuthRef.current = true;
+      AuthService.getUser({ signal: abortController.signal }).then(isOk =>
+        isOk ? handleAuth() : stopLoading()
+      );
     }
     //переделала метод обработки запроса, что бы можно было получать данные пользователя и устанавливать в store
-    UserService.getCurrentUser().then(res =>
+    /*UserService.getCurrentUser().then(res =>
       !res?.isOk ? handleNavigate() : handleSetUserInStore(res)
     );
-    /*AuthService.getUser().then(isOk =>
+    AuthService.getUser().then(isOk =>
       !isOk ? handleNavigate() : handleSetUsetInStore()
-    );*/
-  }, [isUserAuth]);
-
-  if (loading) {
-    return (
-      <PageWrapper withMenu={false}>
-        <Flex
-          vertical
-          justify='center'
-          align='center'
-          style={authProviderStyles.spinWrapper}>
-          <Spin
-            indicator={
-              <LoadingOutlined
-                rev={null}
-                style={authProviderStyles.spin}
-                spin
-              />
-            }
-          />
-        </Flex>
-      </PageWrapper>
     );
-  }
+  }, [isUserAuth]);*/
+    return () => {
+      !isAuthRef.current && abortController.abort();
+    };
+  }, []);
 
-  return <>{children}</>;
+  return (
+    <AuthContext.Provider
+      value={{
+        isAuth,
+        isLoading,
+        setAuth: handleAuth,
+      }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
