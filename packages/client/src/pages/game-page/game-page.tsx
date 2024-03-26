@@ -1,4 +1,9 @@
-import { GameEndScreen, GameStartScreen, PageWrapper } from '@/components';
+import {
+  GameEndScreen,
+  GameLoader,
+  GameStartScreen,
+  PageWrapper,
+} from '@/components';
 import { Difficulty, GameStatus } from '@/components/game/types';
 import React, { useState } from 'react';
 import './game-page.css';
@@ -9,7 +14,6 @@ export const GamePage = () => {
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>(
     Difficulty.EASY
   );
-
   return (
     <PageWrapper>
       <div className='game-page'>
@@ -17,9 +21,16 @@ export const GamePage = () => {
           <GameStartScreen
             selectedDifficulty={selectedDifficulty}
             onStartGame={() => {
-              setGameStatus(GameStatus.PLAYING);
+              setGameStatus(GameStatus.LOAD);
             }}
             onDifficultyChange={difficulty => setSelectedDifficulty(difficulty)}
+          />
+        )}
+        {gameStatus === GameStatus.LOAD && (
+          <GameLoader
+            changeGameStatus={status => {
+              setGameStatus(status);
+            }}
           />
         )}
         {gameStatus === GameStatus.PLAYING && (
@@ -32,19 +43,11 @@ export const GamePage = () => {
             theme='light'
           />
         )}
-        {gameStatus === GameStatus.WON && (
+        {(gameStatus === GameStatus.WON || gameStatus === GameStatus.LOST) && (
           <GameEndScreen
-            status='WON'
+            status={gameStatus}
             onRestartGame={() => {
-              setGameStatus(GameStatus.PLAYING);
-            }}
-          />
-        )}
-        {gameStatus === GameStatus.LOST && (
-          <GameEndScreen
-            status='LOST'
-            onRestartGame={() => {
-              setGameStatus(GameStatus.PLAYING);
+              setGameStatus(GameStatus.LOAD);
             }}
           />
         )}
