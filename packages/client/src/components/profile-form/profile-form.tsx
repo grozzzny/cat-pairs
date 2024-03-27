@@ -10,7 +10,7 @@ import {
   validateSecondName,
 } from '@/helpers';
 import { Input } from '@/components';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../helpers/hooks/storeHooks';
 import { fetchChangeCurrentUser } from '@/store/userSlice';
 import { ProfileFieldType } from '@/helpers/types/user';
 import { notification } from 'antd';

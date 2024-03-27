@@ -6,7 +6,7 @@ import { AuthProvider, ErrorProvider } from '@/providers';
 import React, { ErrorInfo } from 'react';
 import { Page500 } from '@/pages';
 import { THEME_ANTD, THEME_ANTD_DARK } from '@/helpers/constants/global';
-import { useAppSelector } from './hooks';
+import { useAppSelector } from './helpers/hooks/storeHooks';
 import { Theme } from '@/helpers/constants/global';
 
 function App() {

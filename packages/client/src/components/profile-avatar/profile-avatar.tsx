@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './profile-avatar.css';
 import { ProfilePopup } from '@/components/profile-popup';
 import { YANDEX_API_HOST } from '@/helpers/constants/api';
-import { useAppSelector } from '@/hooks';
+import { useAppSelector } from '@/helpers/hooks/storeHooks';
 
 export const ProfileAvatar = () => {
   const [image, setImage] = useState('');

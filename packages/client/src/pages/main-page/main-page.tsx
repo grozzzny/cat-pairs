@@ -4,7 +4,7 @@ import { setBodyScroll, setPageTitle } from '@/helpers';
 import { Col, Divider, Flex, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import Paragraph from 'antd/es/typography/Paragraph';
-import { useAppDispatch } from '@/hooks';
+import { useAppDispatch } from '@/helpers/hooks/storeHooks';
 import { setThemeDark, setThemeLight } from '@/store/userSlice';
 import { withAuthRouteHOC } from '@/helpers/hooks/withAuthRouteHOC';
 
