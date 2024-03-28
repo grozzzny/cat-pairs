@@ -6,12 +6,15 @@ import { AuthProvider, ErrorProvider } from '@/providers';
 import React, { ErrorInfo } from 'react';
 import { Page500 } from '@/pages';
 import { THEME_ANTD } from '@/helpers/constants/global';
+import { startServiceWorker } from './helpers';
 
 function App() {
   const handleError = (error: Error, errorInfo: ErrorInfo) => {
     // eslint-disable-next-line no-console
     console.error('Error handled:', error, errorInfo);
   };
+
+  startServiceWorker();
 
   return (
     <ErrorProvider errorPage={Page500} onError={handleError} theme={THEME_ANTD}>
