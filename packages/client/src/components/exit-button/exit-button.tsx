@@ -32,9 +32,8 @@ export const ExitButton: React.FC = () => {
       deleteAuth?.();
       navigate('/login');
       return;
-    } else {
-      handleOpenPopup();
     }
+    handleOpenPopup();
   };
   return (
     <>

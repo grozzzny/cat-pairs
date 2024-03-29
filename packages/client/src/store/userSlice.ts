@@ -26,7 +26,8 @@ export const fetchGetCurrentUser = createAsyncThunk<
   });
   if (result?.isOk) {
     return result?.user;
-  } else return result?.error && rejectWithValue(result?.error);
+  }
+  return result?.error && rejectWithValue(result?.error);
 });
 
 export const fetchChangeCurrentUser = createAsyncThunk<
@@ -37,7 +38,8 @@ export const fetchChangeCurrentUser = createAsyncThunk<
   const result = await UserService.changeUser(params);
   if (result?.isOk) {
     return result?.user;
-  } else return result?.error && rejectWithValue(result?.error);
+  }
+  return result?.error && rejectWithValue(result?.error);
 });
 
 const userSlice = createSlice({
@@ -53,19 +55,12 @@ const userSlice = createSlice({
     deleteCurrentUser(state): void {
       Object.assign(state.currentUser, userNotAutn);
     },
-    setThemeDark(state): void {
-      state.theme = Theme.Dark;
-    },
-    setThemeLight(state): void {
-      state.theme = Theme.Light;
+    setTheme(state, action: PayloadAction<string>): void {
+      state.theme = action.payload;
     },
   },
   extraReducers: builder => {
     builder
-      /*.addCase(fetchGetCurrentUser.fulfilled, (state, action) => {
-        Object.assign(state.currentUser, action.payload);
-        state.error = undefined;
-      })*/
       .addCase(fetchChangeCurrentUser.fulfilled, (state, action) => {
         Object.assign(state.currentUser, action.payload);
         state.error = undefined;
@@ -76,13 +71,8 @@ const userSlice = createSlice({
   },
 });
 
-export const {
-  setAvatar,
-  setCurrentUser,
-  setThemeDark,
-  setThemeLight,
-  deleteCurrentUser,
-} = userSlice.actions;
+export const { setAvatar, setCurrentUser, setTheme, deleteCurrentUser } =
+  userSlice.actions;
 export default userSlice.reducer;
 
 function isError(action: { type: string }) {

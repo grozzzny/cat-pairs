@@ -51,10 +51,9 @@ export class UserService {
       if (response.status < 400) {
         const user = await response.json();
         return { isOk: true, user: user };
-      } else {
-        const error = await response.json();
-        return { isOk: false, error: error.reason };
       }
+      const error = await response.json();
+      return { isOk: false, error: error.reason };
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);
@@ -69,10 +68,9 @@ export class UserService {
       if (response.status < 400) {
         const user = await response.json();
         return { isOk: true, user: user };
-      } else {
-        const error = await response.json();
-        return { isOk: false, error: error.reason };
       }
+      const error = await response.json();
+      return { isOk: false, error: error.reason };
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);

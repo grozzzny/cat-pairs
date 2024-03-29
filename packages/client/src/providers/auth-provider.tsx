@@ -45,18 +45,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
   useEffect(() => {
     if (!isAuthRef.current) {
       isAuthRef.current = true;
-      UserService.getCurrentUser({ signal: abortController.signal }).then(
-        res => {
-          if (res?.isOk) {
-            if (res?.user) {
-              dispatch(setCurrentUser(res.user));
+      const fetchUser = async () => {
+        try {
+          const response = await UserService.getCurrentUser({
+            signal: abortController.signal,
+          });
+          if (response?.isOk) {
+            if (response?.user) {
+              dispatch(setCurrentUser(response.user));
             }
             handleAuth();
             return;
           }
+          //этот stopLoading отрабатывает в случае, если response не isOk
           stopLoading();
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.log(err);
         }
-      );
+      };
+      fetchUser();
     }
     return () => {
       !isAuthRef.current && abortController.abort();
@@ -65,14 +73,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
 
   useEffect(() => {
     if (isAuth) {
-      UserService.getCurrentUser({ signal: abortController.signal }).then(
-        res => {
-          if (res?.isOk) {
-            if (res?.user) dispatch(setCurrentUser(res.user));
+      const fetchUser = async () => {
+        try {
+          const response = await UserService.getCurrentUser({
+            signal: abortController.signal,
+          });
+          if (response?.isOk) {
+            if (response?.user) {
+              dispatch(setCurrentUser(response.user));
+            }
           }
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.log(err);
         }
-      );
-      stopLoading();
+      };
+      fetchUser();
     }
     return () => {
       !isAuthRef.current && abortController.abort();

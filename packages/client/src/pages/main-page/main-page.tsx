@@ -5,7 +5,8 @@ import { Col, Divider, Flex, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import Paragraph from 'antd/es/typography/Paragraph';
 import { useAppDispatch } from '@/helpers/hooks/storeHooks';
-import { setThemeDark, setThemeLight } from '@/store/userSlice';
+import { setTheme } from '@/store/userSlice';
+import { Theme } from '@/helpers/constants/global';
 import { withAuthRouteHOC } from '@/helpers/hooks/withAuthRouteHOC';
 
 const MainPage = () => {
@@ -24,12 +25,12 @@ const MainPage = () => {
                 className='main-page__button-theme'
                 darkTheme={true}
                 label='Темная тема'
-                onClick={() => dispatch(setThemeDark())}
+                onClick={() => dispatch(setTheme(Theme.Dark))}
               />
               <Button
                 className='main-page__button-theme'
                 label='Светлая тема'
-                onClick={() => dispatch(setThemeLight())}
+                onClick={() => dispatch(setTheme(Theme.Light))}
               />
             </Flex>
           </Col>

@@ -29,14 +29,14 @@ export const ProfileForm = () => {
         description: errorMessage,
         className: 'notification-bar',
       });
-    } else {
-      const message = 'Данные пользователя успешно изменены';
-      notify.success({
-        description: message,
-        className: 'notification-bar',
-        message: undefined,
-      });
+      return;
     }
+    const message = 'Данные пользователя успешно изменены';
+    notify.success({
+      description: message,
+      className: 'notification-bar',
+      message: undefined,
+    });
   };
 
   return (
