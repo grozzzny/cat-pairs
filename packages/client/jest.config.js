@@ -8,4 +8,9 @@ export default {
   globals: {
     __SERVER_PORT__: process.env.SERVER_PORT,
   },
+  moduleNameMapper: {
+    '@/(.*)$': '<rootDir>/src/$1',
+    '\\.css$': 'identity-obj-proxy'
+  },
+  setupFilesAfterEnv: ['./setup-tests.tsx']
 };
