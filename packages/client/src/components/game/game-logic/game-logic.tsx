@@ -23,6 +23,7 @@ export class GameApi {
   timerRunning = true;
   clickDisabled = false;
   paused = false;
+  isFullscreen = false;
   cardBackImageName: string;
   cardBackImage: HTMLImageElement | null = null;
   cardImages: HTMLImageElement[] = [];
@@ -174,6 +175,10 @@ export class GameApi {
     } else {
       document.exitFullscreen();
     }
+
+    this.isFullscreen = !this.isFullscreen;
+
+    return this.isFullscreen;
   };
 
   public handleExitGame = () => {

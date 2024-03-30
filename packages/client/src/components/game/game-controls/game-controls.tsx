@@ -3,6 +3,7 @@ import './game-controls.css';
 
 interface GameControlsProps {
   paused: boolean;
+  isFullscreen: boolean;
   handlePause: () => void;
   handleRestartGame: () => void;
   handleFullscreen: () => void;
@@ -10,6 +11,7 @@ interface GameControlsProps {
 
 export const GameControls: React.FC<GameControlsProps> = ({
   paused,
+  isFullscreen,
   handlePause,
   handleRestartGame,
   handleFullscreen,
@@ -26,7 +28,7 @@ export const GameControls: React.FC<GameControlsProps> = ({
         onClick={handleRestartGame}></button>
       <button
         className={`game-controls__button ${
-          document.fullscreenElement
+          isFullscreen
             ? 'game-controls__button_exit-fullscreen'
             : 'game-controls__button_request-fullscreen'
         }`}

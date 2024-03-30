@@ -25,6 +25,7 @@ export const Game: React.FC<GameProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [game, setGame] = useState<null | GameApi>(null);
   const [paused, setPaused] = useState<boolean>(false);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [isGameReset, setIsGameReset] = useState<boolean>(false);
 
   useEffect(() => {
@@ -61,9 +62,10 @@ export const Game: React.FC<GameProps> = ({
             setIsGameReset(prevState => !prevState);
           }}
           handleFullscreen={() => {
-            game.toggleFullscreen();
+            setIsFullscreen(game.toggleFullscreen);
           }}
           paused={paused}
+          isFullscreen={isFullscreen}
         />
         <GameField game={game} canvasRef={canvasRef} />
       </div>
