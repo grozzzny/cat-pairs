@@ -26,6 +26,7 @@ export class GameApi {
   cardBackImageName: string;
   cardBackImage: HTMLImageElement | null = null;
   cardImages: HTMLImageElement[] = [];
+  remainingTime = 0;
   constructor(
     private readonly canvasRef: React.RefObject<HTMLCanvasElement>,
     private changeGameStatus: (status: GameStatus) => void,
@@ -45,8 +46,15 @@ export class GameApi {
       this.level = parseInt(savedLevel);
     }
   }
+  private resetScore = () => {
+    const savedScore = localStorage.getItem('memory_game_score');
+    if (savedScore) {
+      localStorage.setItem('memory_game_score', '');
+    }
+  };
 
   public initGame = async () => {
+    this.resetScore();
     const numPairs = LEVEL_PAIR_COUNTS[this.level] || 32;
     this.countCards = numPairs * PAIR_CARDS;
 
@@ -87,6 +95,9 @@ export class GameApi {
       console.error('Failed to load images:', error);
     }
   };
+  public setRemainingTime(time: number): void {
+    this.remainingTime = time;
+  }
 
   public handleCardClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
     const cardSize = calculateCardSize(
@@ -144,6 +155,11 @@ export class GameApi {
 
   private handleGameWon = () => {
     this.changeGameStatus(GameStatus.WON);
+    const score =
+      this.remainingTime *
+      this.level *
+      (this.selectedDifficulty === Difficulty.EASY ? 3 : 4);
+    localStorage.setItem('memory_game_score', score.toString());
     this.timerRunning = false;
     const newLevel = this.level + 1;
     this.level = newLevel;

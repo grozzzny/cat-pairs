@@ -31,6 +31,7 @@ export const GameInfo: React.FC<GameInfoProps> = ({
     if (!paused) {
       const timer = setTimeout(() => {
         setTimeLeft(prevTime => prevTime - 1);
+        game.setRemainingTime(timeLeft);
       }, 1000);
       return () => clearTimeout(timer);
     }
