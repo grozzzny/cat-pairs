@@ -27,6 +27,7 @@ export class GameApi {
   cardBackImage: HTMLImageElement | null = null;
   cardImages: HTMLImageElement[] = [];
   constructor(
+    private readonly gameRef: React.RefObject<HTMLElement>,
     private readonly canvasRef: React.RefObject<HTMLCanvasElement>,
     private changeGameStatus: (status: GameStatus) => void,
     private readonly gameStatus: GameStatus = GameStatus.PRE_GAME,
@@ -102,6 +103,7 @@ export class GameApi {
     const mouseY = event.clientY - rect.top;
 
     this.cards.forEach((card, index) => {
+      console.log(card);
       if (
         mouseX >= card.x &&
         mouseX <= card.x + cardSize &&
@@ -164,6 +166,15 @@ export class GameApi {
   public handleRestartGame = () => {
     this.paused = false;
     this.initGame();
+  };
+  public toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      const gameFieldWithControls = this.gameRef.current;
+
+      gameFieldWithControls && gameFieldWithControls.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
   };
 
   public handleExitGame = () => {

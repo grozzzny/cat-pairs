@@ -21,6 +21,7 @@ export const Game: React.FC<GameProps> = ({
   selectedDifficulty,
   changeGameStatus,
 }) => {
+  const gameRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [game, setGame] = useState<null | GameApi>(null);
   const [paused, setPaused] = useState<boolean>(false);
@@ -29,6 +30,7 @@ export const Game: React.FC<GameProps> = ({
   useEffect(() => {
     return () => {
       const gameApi = new GameApi(
+        gameRef,
         canvasRef,
         changeGameStatus,
         gameStatus,
@@ -42,7 +44,7 @@ export const Game: React.FC<GameProps> = ({
   if (!game) return <div style={{ color: 'white' }}>Loading...</div>;
 
   return (
-    <div className='game'>
+    <div className='game' ref={gameRef}>
       <GameInfo
         game={game}
         paused={paused}
@@ -57,6 +59,9 @@ export const Game: React.FC<GameProps> = ({
           handleRestartGame={() => {
             game.handleRestartGame();
             setIsGameReset(prevState => !prevState);
+          }}
+          handleFullscreen={() => {
+            game.toggleFullscreen();
           }}
           paused={paused}
         />
