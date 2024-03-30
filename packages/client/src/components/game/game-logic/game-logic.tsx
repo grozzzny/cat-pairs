@@ -103,7 +103,6 @@ export class GameApi {
     const mouseY = event.clientY - rect.top;
 
     this.cards.forEach((card, index) => {
-      console.log(card);
       if (
         mouseX >= card.x &&
         mouseX <= card.x + cardSize &&
