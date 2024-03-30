@@ -28,7 +28,7 @@ export class GameApi {
   cardBackImage: HTMLImageElement | null = null;
   cardImages: HTMLImageElement[] = [];
   constructor(
-    private readonly gameRef: React.RefObject<HTMLElement>,
+    private readonly gameRef: React.RefObject<HTMLDivElement>,
     private readonly canvasRef: React.RefObject<HTMLCanvasElement>,
     private changeGameStatus: (status: GameStatus) => void,
     private readonly gameStatus: GameStatus = GameStatus.PRE_GAME,

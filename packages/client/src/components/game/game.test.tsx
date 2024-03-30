@@ -16,6 +16,7 @@ describe('Тестируем игровой движок компонента Ga
 
   beforeEach(() => {
     gameFake = new GameApi(
+      null as unknown as React.RefObject<HTMLDivElement>,
       null as unknown as React.RefObject<HTMLCanvasElement>,
       null as unknown as (status: GameStatus) => void,
       null as unknown as GameStatus,
@@ -49,7 +50,7 @@ describe('Тестируем игровой движок компонента Ga
 
     (useState as jest.Mock).mockImplementationOnce(() => [gameFake, jest.fn()]);
 
-    const { getByText } = render(
+    const { getByRole } = render(
       <Game
         theme={Theme.Light}
         gameStatus={GameStatus.PLAYING}
@@ -58,7 +59,7 @@ describe('Тестируем игровой движок компонента Ga
       />
     );
 
-    const restartButton = getByText('Restart');
+    const restartButton = getByRole('restart');
     fireEvent.click(restartButton);
 
     expect(handleRestartGame).toHaveBeenCalledTimes(1);
@@ -70,7 +71,7 @@ describe('Тестируем игровой движок компонента Ga
     const setPaused = jest.fn();
     (useState as jest.Mock).mockImplementationOnce(() => [false, setPaused]);
 
-    const { getByText } = render(
+    const { getByRole } = render(
       <Game
         theme={Theme.Light}
         gameStatus={GameStatus.PLAYING}
@@ -79,7 +80,7 @@ describe('Тестируем игровой движок компонента Ga
       />
     );
 
-    const pauseButton = getByText('Pause');
+    const pauseButton = getByRole('pause');
     fireEvent.click(pauseButton);
 
     expect(setPaused).toHaveBeenCalledTimes(1);
