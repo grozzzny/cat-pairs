@@ -11,10 +11,10 @@ export class UserService {
   ): Promise<PasswordRequestResult | undefined> {
     try {
       const response = await UserApi.changePassword(props);
-      if (response.ok && response.status <= 400) {
+      if (response?.ok && response.status <= 400) {
         return { isOk: true, reason: '' };
       }
-      const error = await response.json();
+      const error = await response?.json();
       return { isOk: false, reason: error.reason };
     } catch (e) {
       // eslint-disable-next-line no-console
