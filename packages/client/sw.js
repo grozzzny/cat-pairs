@@ -33,6 +33,9 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   event.respondWith(
     (async () => {
+      if (event.request.method !== 'GET') {
+        return await fetch(event.request);
+      }
       try {
         const response = await fetch(event.request);
   
@@ -41,7 +44,6 @@ self.addEventListener('fetch', event => {
   
         return response;
       } catch (error) {
-
         const cachedResponse = await caches.match(event.request);
 
         if (cachedResponse) {

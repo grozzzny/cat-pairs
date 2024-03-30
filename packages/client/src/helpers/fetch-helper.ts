@@ -13,19 +13,13 @@ export const fetchHelper = ({
   method,
   signal,
 }: FetchHelperParams) => {
-  try {
-    const request = fetch(`${YANDEX_API_HOST}${url}`, {
-      method,
-      body: JSON.stringify(data),
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      signal,
-    });
-
-    return request;
-  } catch (e) {
-    console.log('Fetch error', e);
-  }
+  return fetch(`${YANDEX_API_HOST}${url}`, {
+    method,
+    body: JSON.stringify(data),
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    signal,
+  });
 };
