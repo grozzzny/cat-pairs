@@ -25,7 +25,7 @@ export const Game: React.FC<GameProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [game, setGame] = useState<null | GameApi>(null);
   const [paused, setPaused] = useState<boolean>(false);
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [isGameReset, setIsGameReset] = useState<boolean>(false);
 
   useEffect(() => {
