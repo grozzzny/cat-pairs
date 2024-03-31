@@ -20,7 +20,7 @@ export const LeaderCard: React.FC<LeaderCardProps> = ({
       <div className='leader-card__position'>{position}</div>
       <img
         className='leader-card__avatar'
-        src={avatar || '/src/assets/cat-background.png'}
+        src={avatar || '/public/cat-background.png'}
         alt={name}
       />
       <div className='leader-card__name'>{name}</div>

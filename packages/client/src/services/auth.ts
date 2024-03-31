@@ -15,10 +15,11 @@ export class AuthService {
   ): Promise<LoginRequestResult | undefined> {
     try {
       const response = await AuthApi.login(props);
-      if (response.ok && !isRequestError(response.status)) {
+      if (response?.ok && !isRequestError(response.status)) {
         return successAuthData;
       }
-      const { reason } = await response.json();
+      // eslint-disable-next-line no-unsafe-optional-chaining
+      const { reason } = await response?.json();
       if (reason === VALID_AUTH_ERROR) {
         return successAuthData;
       }
@@ -31,7 +32,7 @@ export class AuthService {
 
   static async getUser(props: GetUserRequestDto): Promise<boolean> {
     const response = await AuthApi.getUser(props);
-    return response.ok;
+    return response?.ok ?? false;
   }
 
   static async logout(): Promise<LoginRequestResult | undefined> {
