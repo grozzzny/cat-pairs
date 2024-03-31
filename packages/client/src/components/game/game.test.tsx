@@ -18,6 +18,7 @@ describe('Тестируем игровой движок компонента Ga
 
   beforeEach(() => {
     gameFake = new GameApi(
+      null as unknown as React.RefObject<HTMLDivElement>,
       null as unknown as React.RefObject<HTMLCanvasElement>,
       null as unknown as (status: GameStatus) => void,
       null as unknown as GameStatus,

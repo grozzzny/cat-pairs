@@ -6,3 +6,33 @@
   gap: 20px;
   min-width: 70px;
 }
+
+.game-controls__button {
+  width: 53px;
+  height: 53px;
+  border: none;
+  background-color: transparent;
+  background-size: cover;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.game-controls__button_pause {
+  background-image: url('/pause.svg');
+}
+
+.game-controls__button_play {
+  background-image: url('/play.svg');
+}
+
+.game-controls__button_restart {
+  background-image: url('/restart.svg');
+}
+
+.game-controls__button_request-fullscreen {
+  background-image: url('/request-fullscreen.svg');
+}
+
+.game-controls__button_exit-fullscreen {
+  background-image: url('/exit-fullscreen.svg');
+}

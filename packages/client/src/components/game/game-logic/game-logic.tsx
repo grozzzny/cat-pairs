@@ -23,10 +23,12 @@ export class GameApi {
   timerRunning = true;
   clickDisabled = false;
   paused = false;
+  isFullscreen = false;
   cardBackImageName: string;
   cardBackImage: HTMLImageElement | null = null;
   cardImages: HTMLImageElement[] = [];
   constructor(
+    private readonly gameRef: React.RefObject<HTMLDivElement>,
     private readonly canvasRef: React.RefObject<HTMLCanvasElement>,
     private changeGameStatus: (status: GameStatus) => void,
     private readonly gameStatus: GameStatus = GameStatus.PRE_GAME,
@@ -164,6 +166,19 @@ export class GameApi {
   public handleRestartGame = () => {
     this.paused = false;
     this.initGame();
+  };
+  public toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      const gameFieldWithControls = this.gameRef.current;
+
+      gameFieldWithControls && gameFieldWithControls.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+
+    this.isFullscreen = !this.isFullscreen;
+
+    return this.isFullscreen;
   };
 
   public handleExitGame = () => {
