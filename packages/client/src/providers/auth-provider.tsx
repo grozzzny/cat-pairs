@@ -1,16 +1,20 @@
-import { AuthService } from '@/services';
+import { useAppDispatch } from '@/helpers/hooks/storeHooks';
+import { setCurrentUser } from '@/store/userSlice';
+import { UserService } from '@/services/user';
 import React, { createContext, useEffect, useRef, useState } from 'react';
 
 type AuthContextType = {
   isAuth: boolean;
   isLoading: boolean;
   setAuth?: () => void;
+  deleteAuth?: () => void;
 };
 
 export const AuthContext = createContext<AuthContextType>({
   isAuth: false,
   isLoading: true,
   setAuth: undefined,
+  deleteAuth: undefined,
 });
 
 interface AuthProviderProps {
@@ -18,6 +22,8 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = props => {
+  const dispatch = useAppDispatch();
+
   const { children } = props;
   const [isAuth, setIsAuth] = useState(false);
   const [isLoading, setLoading] = useState(true);
@@ -32,17 +38,62 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
     stopLoading();
   };
 
+  const deleteAuth = () => {
+    setIsAuth(false);
+  };
+
   useEffect(() => {
     if (!isAuthRef.current) {
       isAuthRef.current = true;
-      AuthService.getUser({ signal: abortController.signal }).then(isOk =>
-        isOk ? handleAuth() : stopLoading()
-      );
+      const fetchUser = async () => {
+        try {
+          const response = await UserService.getCurrentUser({
+            signal: abortController.signal,
+          });
+          if (response?.isOk) {
+            if (response?.user) {
+              dispatch(setCurrentUser(response.user));
+            }
+            handleAuth();
+            return;
+          }
+          //этот stopLoading отрабатывает в случае, если response не isOk
+          stopLoading();
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.log(err);
+        }
+      };
+      fetchUser();
     }
     return () => {
       !isAuthRef.current && abortController.abort();
     };
   }, []);
+
+  useEffect(() => {
+    if (isAuth) {
+      const fetchUser = async () => {
+        try {
+          const response = await UserService.getCurrentUser({
+            signal: abortController.signal,
+          });
+          if (response?.isOk) {
+            if (response?.user) {
+              dispatch(setCurrentUser(response.user));
+            }
+          }
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.log(err);
+        }
+      };
+      fetchUser();
+    }
+    return () => {
+      !isAuthRef.current && abortController.abort();
+    };
+  }, [isAuth]);
 
   return (
     <AuthContext.Provider
@@ -50,6 +101,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
         isAuth,
         isLoading,
         setAuth: handleAuth,
+        deleteAuth,
       }}>
       {children}
     </AuthContext.Provider>
