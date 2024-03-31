@@ -5,6 +5,8 @@ import { Theme } from '@/helpers/constants/global';
 import { Game } from '@/components/game/game';
 import '@testing-library/jest-dom';
 import { GameApi } from '@/components';
+import { Provider } from 'react-redux';
+import store from '@/store';
 
 jest.mock('react', () => ({
   ...jest.requireActual('react'),
@@ -31,12 +33,14 @@ describe('Тестируем игровой движок компонента Ga
 
   test('проверяем отображение экрана загрузки', () => {
     const { getByText } = render(
-      <Game
-        theme='light'
-        gameStatus={GameStatus.PLAYING}
-        selectedDifficulty={Difficulty.EASY}
-        changeGameStatus={jest.fn()}
-      />
+      <Provider store={store}>
+        <Game
+          theme='light'
+          gameStatus={GameStatus.PLAYING}
+          selectedDifficulty={Difficulty.EASY}
+          changeGameStatus={jest.fn()}
+        />
+      </Provider>
     );
 
     const gameElement = getByText('Loading...');
@@ -49,16 +53,18 @@ describe('Тестируем игровой движок компонента Ga
 
     (useState as jest.Mock).mockImplementationOnce(() => [gameFake, jest.fn()]);
 
-    const { getByText } = render(
-      <Game
-        theme={Theme.Light}
-        gameStatus={GameStatus.PLAYING}
-        selectedDifficulty={Difficulty.EASY}
-        changeGameStatus={jest.fn()}
-      />
+    const { getByRole } = render(
+      <Provider store={store}>
+        <Game
+          theme={Theme.Light}
+          gameStatus={GameStatus.PLAYING}
+          selectedDifficulty={Difficulty.EASY}
+          changeGameStatus={jest.fn()}
+        />
+      </Provider>
     );
 
-    const restartButton = getByText('Restart');
+    const restartButton = getByRole('restart');
     fireEvent.click(restartButton);
 
     expect(handleRestartGame).toHaveBeenCalledTimes(1);
@@ -70,16 +76,18 @@ describe('Тестируем игровой движок компонента Ga
     const setPaused = jest.fn();
     (useState as jest.Mock).mockImplementationOnce(() => [false, setPaused]);
 
-    const { getByText } = render(
-      <Game
-        theme={Theme.Light}
-        gameStatus={GameStatus.PLAYING}
-        selectedDifficulty={Difficulty.EASY}
-        changeGameStatus={jest.fn()}
-      />
+    const { getByRole } = render(
+      <Provider store={store}>
+        <Game
+          theme={Theme.Light}
+          gameStatus={GameStatus.PLAYING}
+          selectedDifficulty={Difficulty.EASY}
+          changeGameStatus={jest.fn()}
+        />
+      </Provider>
     );
 
-    const pauseButton = getByText('Pause');
+    const pauseButton = getByRole('pause');
     fireEvent.click(pauseButton);
 
     expect(setPaused).toHaveBeenCalledTimes(1);
@@ -91,16 +99,18 @@ describe('Тестируем игровой движок компонента Ga
 
     (useState as jest.Mock).mockImplementationOnce(() => [gameFake, jest.fn()]);
 
-    const { getByText } = render(
-      <Game
-        theme={Theme.Light}
-        gameStatus={GameStatus.PLAYING}
-        selectedDifficulty={Difficulty.EASY}
-        changeGameStatus={jest.fn()}
-      />
+    const { getByRole } = render(
+      <Provider store={store}>
+        <Game
+          theme={Theme.Light}
+          gameStatus={GameStatus.PLAYING}
+          selectedDifficulty={Difficulty.EASY}
+          changeGameStatus={jest.fn()}
+        />
+      </Provider>
     );
 
-    const exitButton = getByText('выход из игры');
+    const exitButton = getByRole('exit');
     fireEvent.click(exitButton);
     expect(handleExitGame).toHaveBeenCalledTimes(1);
   });

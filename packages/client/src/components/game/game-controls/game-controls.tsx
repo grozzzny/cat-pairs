@@ -14,8 +14,12 @@ export const GameControls: React.FC<GameControlsProps> = ({
 }) => {
   return (
     <div className='game-controls'>
-      <button onClick={handlePause}>{paused ? 'Resume' : 'Pause'}</button>
-      <button onClick={handleRestartGame}>Restart</button>
+      <button role='pause' onClick={handlePause}>
+        {paused ? 'Resume' : 'Pause'}
+      </button>
+      <button role='restart' onClick={handleRestartGame}>
+        Restart
+      </button>
     </div>
   );
 };
