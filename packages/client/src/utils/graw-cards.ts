@@ -8,13 +8,21 @@ import { calculateCardSize } from '@/utils/game-helpers';
 import { Card } from '@/components/game/types';
 import React from 'react';
 
+const cardAnimation: Record<
+  string,
+  {
+    percent: 0;
+    enabled: boolean;
+  }
+> = {};
+
 const drawCard = (
   ctx: CanvasRenderingContext2D,
   x: number,
   y: number,
   img: HTMLImageElement,
   cardSize: number,
-  cardBackImg: HTMLImageElement | null, // Added cardBackImg parameter
+  cardBackImg: HTMLImageElement,
   flipped: boolean
 ) => {
   ctx.save();
@@ -26,11 +34,41 @@ const drawCard = (
   ctx.arcTo(x, y, x + cardSize, y, CARD_BORDER_RADIUS);
   ctx.clip();
 
-  if (!flipped && cardBackImg) {
+  const uid = [x, y].join('-');
+  const animation = cardAnimation[uid] || { percent: 0, enabled: true };
+
+  if (!flipped) {
     ctx.drawImage(cardBackImg, x, y, cardSize, cardSize);
+    animation.enabled = true;
+    animation.percent = 0;
   } else {
-    ctx.drawImage(img, x, y, cardSize, cardSize);
+    if (
+      animation.enabled &&
+      animation.percent >= 0 &&
+      animation.percent <= 100
+    ) {
+      const scaleFactor =
+        1 - Math.sin((animation.percent / 100) * Math.PI) * 0.05;
+      const centerX = x + cardSize / 2;
+      const centerY = y + cardSize / 2;
+      ctx.translate(centerX, centerY);
+      ctx.scale(scaleFactor, scaleFactor);
+      ctx.drawImage(
+        cardBackImg,
+        -cardSize / 2,
+        -cardSize / 2,
+        cardSize,
+        cardSize
+      );
+      animation.percent += 10;
+    } else {
+      ctx.drawImage(img, x, y, cardSize, cardSize);
+      animation.percent = 0;
+      animation.enabled = false;
+    }
   }
+
+  cardAnimation[uid] = animation;
   ctx.restore();
 };
 
