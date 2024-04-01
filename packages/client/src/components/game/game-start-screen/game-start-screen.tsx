@@ -1,5 +1,8 @@
+import { Button, ConfigProvider, Select } from 'antd';
+import { Color } from '@/helpers/constants/global';
 import { Difficulty } from '@/components/game/types';
 import React from 'react';
+import './game-start-screen.css';
 
 interface GameStartScreenProps {
   selectedDifficulty: Difficulty;
@@ -13,15 +16,39 @@ export const GameStartScreen: React.FC<GameStartScreenProps> = ({
   onDifficultyChange,
 }) => {
   return (
-    <div>
-      <h2>Choose Difficulty:</h2>
-      <select
-        value={selectedDifficulty}
-        onChange={e => onDifficultyChange(e.target.value as Difficulty)}>
-        <option value={Difficulty.EASY}>Easy</option>
-        <option value={Difficulty.HARD}>Hard</option>
-      </select>
-      <button onClick={onStartGame}>Start Game</button>
+    <div className='game-start-screen'>
+      <h2>Выберите уровень сложности:</h2>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: Color.Dark,
+            colorBorder: Color.Dark,
+            colorText: Color.Dark,
+          },
+          components: {
+            Select: {
+              selectorBg: 'transparent',
+              optionSelectedBg: Color.Light,
+            },
+          },
+        }}>
+        <Select
+          className='game-start-screen__select'
+          defaultValue={selectedDifficulty}
+          options={[
+            { value: Difficulty.EASY, label: <span>Лёгкий</span> },
+            { value: Difficulty.HARD, label: <span>Хардкор</span> },
+          ]}
+          onChange={(value: Difficulty) => onDifficultyChange(value)}
+        />
+      </ConfigProvider>
+      <Button
+        type='primary'
+        size='large'
+        className='game-start-screen__button'
+        onClick={onStartGame}>
+        Начать игру
+      </Button>
     </div>
   );
 };
