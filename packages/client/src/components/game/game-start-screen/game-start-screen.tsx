@@ -39,7 +39,7 @@ export const GameStartScreen: React.FC<GameStartScreenProps> = ({
             { value: Difficulty.EASY, label: <span>Лёгкий</span> },
             { value: Difficulty.HARD, label: <span>Хардкор</span> },
           ]}
-          onChange={(value: Difficulty) => onDifficultyChange(value)}
+          onChange={onDifficultyChange}
         />
       </ConfigProvider>
       <Button
