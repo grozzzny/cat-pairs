@@ -1,4 +1,5 @@
-.container-center {
-  display: grid;
+.container-vertical-center {
+  display: flex;
   height: 100%;
+  align-items: center;
 }

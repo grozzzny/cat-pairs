@@ -42,7 +42,7 @@ export const LoginPage = () => {
 
   return (
     <PageWrapper withMenu={false}>
-      <div className='container-center'>
+      <div className='container-vertical-center'>
         <AuthWrapper darkTheme={false} label='Вход'>
           <Form
             name='basic'

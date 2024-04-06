@@ -63,7 +63,7 @@ export const NewPassword = () => {
   const darkTheme = false;
   return (
     <PageWrapper withMenu={false}>
-      <div className='container-center'>
+      <div className='container-vertical-center'>
         <AuthWrapper darkTheme={darkTheme} label=''>
           <>
             <Form
