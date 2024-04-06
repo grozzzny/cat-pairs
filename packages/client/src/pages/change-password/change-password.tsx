@@ -63,66 +63,68 @@ export const NewPassword = () => {
   const darkTheme = false;
   return (
     <PageWrapper withMenu={false}>
-      <AuthWrapper darkTheme={darkTheme} label=''>
-        <>
-          <Form
-            form={form}
-            name='basic'
-            layout='horizontal'
-            initialValues={{}}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete='off'
-            className='new-password__form'>
-            <Form.Item<RegistrationFieldType>
-              name='oldpasswod'
-              rules={[
-                { validator: validatePassword },
-                { validator: validateRequired },
-              ]}>
-              <Input placeholder='Старый пароль' type='password' />
-            </Form.Item>
-            <Form.Item<RegistrationFieldType>
-              name='newpassword'
-              rules={[
-                { validator: validatePassword },
-                { validator: validateRequired },
-              ]}>
-              <Input placeholder='Новый пароль' type='password' />
-            </Form.Item>
-            <Form.Item<RegistrationFieldType>
-              name='newpassword2'
-              rules={[
-                { validator: validatePassword },
-                { validator: validateRequired },
-                {
-                  validator: (ob, value) =>
-                    validateConfirmPassword(
-                      form.getFieldValue('newpassword'),
-                      value
-                    ),
-                },
-              ]}>
-              <Input
-                placeholder='Введите новый пароль еще раз'
-                type='password'
+      <div className='container-center'>
+        <AuthWrapper darkTheme={darkTheme} label=''>
+          <>
+            <Form
+              form={form}
+              name='basic'
+              layout='horizontal'
+              initialValues={{}}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete='off'
+              className='new-password__form'>
+              <Form.Item<RegistrationFieldType>
+                name='oldpasswod'
+                rules={[
+                  { validator: validatePassword },
+                  { validator: validateRequired },
+                ]}>
+                <Input placeholder='Старый пароль' type='password' />
+              </Form.Item>
+              <Form.Item<RegistrationFieldType>
+                name='newpassword'
+                rules={[
+                  { validator: validatePassword },
+                  { validator: validateRequired },
+                ]}>
+                <Input placeholder='Новый пароль' type='password' />
+              </Form.Item>
+              <Form.Item<RegistrationFieldType>
+                name='newpassword2'
+                rules={[
+                  { validator: validatePassword },
+                  { validator: validateRequired },
+                  {
+                    validator: (ob, value) =>
+                      validateConfirmPassword(
+                        form.getFieldValue('newpassword'),
+                        value
+                      ),
+                  },
+                ]}>
+                <Input
+                  placeholder='Введите новый пароль еще раз'
+                  type='password'
+                />
+              </Form.Item>
+              <Button
+                darkTheme={darkTheme}
+                label='Поменять пароль'
+                htmlType='submit'
+                size='large'
               />
-            </Form.Item>
-            <Button
-              darkTheme={darkTheme}
-              label='Поменять пароль'
-              htmlType='submit'
-              size='large'
+            </Form>
+            <MessagePopup
+              isPopupOpen={isPopupOpen}
+              handleClosePopup={handleClosePopup}
+              message={message}
+              backPath='../profile'
             />
-          </Form>
-          <MessagePopup
-            isPopupOpen={isPopupOpen}
-            handleClosePopup={handleClosePopup}
-            message={message}
-            backPath='../profile'
-          />
-        </>
-      </AuthWrapper>
+          </>
+        </AuthWrapper>
+      </div>
     </PageWrapper>
   );
 };
