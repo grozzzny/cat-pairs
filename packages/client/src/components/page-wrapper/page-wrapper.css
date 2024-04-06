@@ -14,6 +14,7 @@
   position: absolute;
   top: 1%;
   left: 1%;
+  cursor: pointer;
 }
 
 .page-wrapper__navigation-bar {
