@@ -4,14 +4,16 @@ import {
   CrownTwoTone,
   MessageTwoTone,
   PlayCircleTwoTone,
+  SmileTwoTone,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { memo } from 'react';
 
 interface NavigationBarProps {
   className?: string;
 }
 
-export const NavigationBar = (props: NavigationBarProps) => {
+export const NavigationBar = memo((props: NavigationBarProps) => {
   const { className } = props;
   const { token: theme } = antdTheme.useToken();
   const iconProps = {
@@ -40,6 +42,11 @@ export const NavigationBar = (props: NavigationBarProps) => {
           <PlayCircleTwoTone {...iconProps} onClick={() => navigate('/game')} />
         }
       />
+      <IconButton
+        icon={
+          <SmileTwoTone {...iconProps} onClick={() => navigate('/profile')} />
+        }
+      />
     </Flex>
   );
-};
+});
