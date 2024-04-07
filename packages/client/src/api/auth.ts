@@ -1,26 +1,25 @@
-import { fetchHelper } from '@/helpers';
+import { fetchHelper, getString, setHeaders } from '@/helpers';
 import { GetUserRequestDto, LoginRequestDto } from '@/helpers/types/api';
 
 export class AuthApi {
   static login(params: LoginRequestDto) {
-    return fetchHelper({
-      url: '/auth/signin',
+    return fetchHelper('/auth/signin', {
       method: 'POST',
-      data: params,
+      body: getString(params),
+      headers: setHeaders('application/json'),
     });
   }
 
   static getUser({ signal }: GetUserRequestDto) {
-    return fetchHelper({
-      url: '/auth/user',
+    return fetchHelper('/auth/user', {
       method: 'GET',
       signal,
+      headers: setHeaders('application/json'),
     });
   }
 
   static logout() {
-    return fetchHelper({
-      url: '/auth/logout',
+    return fetchHelper('/auth/logout', {
       method: 'POST',
     });
   }
