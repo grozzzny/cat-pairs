@@ -12,7 +12,7 @@ describe('Тестируем страницу GamePage в обход Auth Route 
 
   test('проверяем отображение экрана начала игры после нажатия на кнопку "Start Game" на странице', async () => {
     const { getByText, container } = render(<GamePage />);
-    const startGameButton = getByText('Начать игру');
+    const startGameButton = getByText('Играть!');
     fireEvent.click(startGameButton);
 
     await waitFor(() => {

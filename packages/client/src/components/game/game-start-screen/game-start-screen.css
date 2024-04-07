@@ -9,6 +9,7 @@
   color: var(--light);
   font-size: 22px;
   padding-top: 2px;
+  margin: 10px 0;
 }
 
 .game-start-screen .ant-btn.game-start-screen__button:hover {

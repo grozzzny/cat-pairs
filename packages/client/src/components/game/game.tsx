@@ -7,6 +7,7 @@ import {
   GameInfo,
 } from '@/components';
 import { Difficulty, GameStatus } from '@/components/game/types';
+import { useNavigate } from 'react-router-dom';
 
 interface GameProps {
   theme: 'light' | 'dark';
@@ -27,6 +28,7 @@ export const Game: React.FC<GameProps> = ({
   const [paused, setPaused] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isGameReset, setIsGameReset] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     return () => {
@@ -43,7 +45,9 @@ export const Game: React.FC<GameProps> = ({
   }, [changeGameStatus, gameStatus, selectedDifficulty]);
 
   if (!game) return <div style={{ color: 'white' }}>Loading...</div>;
-
+  const handleExitGame = () => {
+    navigate('/');
+  };
   return (
     <div className='game' ref={gameRef}>
       <GameInfo
@@ -70,7 +74,7 @@ export const Game: React.FC<GameProps> = ({
         <GameField game={game} canvasRef={canvasRef} />
       </div>
       <div className='game__exit-wrapper'>
-        <ExitButton onClick={game.handleExitGame} />
+        <ExitButton onClick={handleExitGame} />
       </div>
     </div>
   );

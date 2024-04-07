@@ -7,12 +7,16 @@ import '@testing-library/jest-dom';
 import { GameApi } from '@/components';
 import { Provider } from 'react-redux';
 import store from '@/store';
+import { useNavigate } from 'react-router-dom';
 
 jest.mock('react', () => ({
   ...jest.requireActual('react'),
   useState: jest.fn(),
 }));
-
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn(), // Создаем мок-функцию для useNavigate
+}));
 describe('Тестируем игровой движок компонента Game.', () => {
   let gameFake: GameApi;
 
@@ -95,11 +99,10 @@ describe('Тестируем игровой движок компонента Ga
   });
 
   it('проверяем нажатие кнопки Exit', () => {
-    const handleExitGame = jest.fn();
-    gameFake.handleExitGame = handleExitGame;
+    const mockNavigate = jest.fn();
 
     (useState as jest.Mock).mockImplementationOnce(() => [gameFake, jest.fn()]);
-
+    (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
     const { getByRole } = render(
       <Provider store={store}>
         <Game
@@ -113,6 +116,6 @@ describe('Тестируем игровой движок компонента Ga
 
     const exitButton = getByRole('exit');
     fireEvent.click(exitButton);
-    expect(handleExitGame).toHaveBeenCalledTimes(1);
+    expect(mockNavigate).toHaveBeenCalledWith('/');
   });
 });
