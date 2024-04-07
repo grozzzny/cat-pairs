@@ -10,7 +10,11 @@ import { useState } from 'react';
 import React from 'react';
 import { useAuth } from '@/helpers/hooks/useAuth';
 
-export const ExitButton: React.FC = () => {
+interface ExitButtonProps extends JSX.IntrinsicAttributes {
+  onClick?: () => void;
+}
+
+export const ExitButton: React.FC<ExitButtonProps> = props => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { deleteAuth } = useAuth();
@@ -43,8 +47,8 @@ export const ExitButton: React.FC = () => {
         isPopupOpen={isPopupOpen}
         handleClosePopup={handleClosePopup}
       />
-      <div className='exit-button' onClick={handleExit}>
-        <button className='exit-button__button'>
+      <div className='exit-button' onClick={props.onClick ?? handleExit}>
+        <button role='exit' className='exit-button__button'>
           <p className='exit-button__button-text'>выход из игры</p>
           <LogoutOutlined
             style={{ fontSize: '150%', color: Color.Dark }}

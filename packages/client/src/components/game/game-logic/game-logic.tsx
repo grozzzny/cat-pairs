@@ -23,10 +23,13 @@ export class GameApi {
   timerRunning = true;
   clickDisabled = false;
   paused = false;
+  isFullscreen = false;
   cardBackImageName: string;
   cardBackImage: HTMLImageElement | null = null;
   cardImages: HTMLImageElement[] = [];
+  remainingTime = 0;
   constructor(
+    private readonly gameRef: React.RefObject<HTMLDivElement>,
     private readonly canvasRef: React.RefObject<HTMLCanvasElement>,
     private changeGameStatus: (status: GameStatus) => void,
     private readonly gameStatus: GameStatus = GameStatus.PRE_GAME,
@@ -45,19 +48,26 @@ export class GameApi {
       this.level = parseInt(savedLevel);
     }
   }
+  private resetScore = () => {
+    const savedScore = localStorage.getItem('memory_game_score');
+    if (savedScore) {
+      localStorage.setItem('memory_game_score', '');
+    }
+  };
 
   public initGame = async () => {
+    this.resetScore();
     const numPairs = LEVEL_PAIR_COUNTS[this.level] || 32;
     this.countCards = numPairs * PAIR_CARDS;
 
     try {
       const cardBackImagePromise = loadImage(
-        `images/cards/${this.cardBackImageName}`
+        `public/images/cards/${this.cardBackImageName}`
       );
       const cardImagesPromises = Array.from(
         { length: numPairs },
         (_, index) => {
-          return loadImage(`images/cards/card-${index + 1}.jpg`);
+          return loadImage(`public/images/cards/card-${index + 1}.jpg`);
         }
       );
 
@@ -87,6 +97,9 @@ export class GameApi {
       console.error('Failed to load images:', error);
     }
   };
+  public setRemainingTime(time: number): void {
+    this.remainingTime = time;
+  }
 
   public handleCardClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
     const cardSize = calculateCardSize(
@@ -144,6 +157,11 @@ export class GameApi {
 
   private handleGameWon = () => {
     this.changeGameStatus(GameStatus.WON);
+    const score =
+      this.remainingTime *
+      this.level *
+      (this.selectedDifficulty === Difficulty.EASY ? 3 : 4);
+    localStorage.setItem('memory_game_score', score.toString());
     this.timerRunning = false;
     const newLevel = this.level + 1;
     this.level = newLevel;
@@ -164,6 +182,19 @@ export class GameApi {
   public handleRestartGame = () => {
     this.paused = false;
     this.initGame();
+  };
+  public toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      const gameFieldWithControls = this.gameRef.current;
+
+      gameFieldWithControls && gameFieldWithControls.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+
+    this.isFullscreen = !this.isFullscreen;
+
+    return this.isFullscreen;
   };
 
   public handleExitGame = () => {

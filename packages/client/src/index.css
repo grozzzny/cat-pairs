@@ -30,3 +30,7 @@ body,
   --base-light: #efe5cc;
   --base-red: #ee2d39;
 }
+
+:not(:root):fullscreen::backdrop {
+  background: var(--light);
+}

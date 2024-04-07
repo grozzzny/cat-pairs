@@ -17,12 +17,13 @@ export const GameEndScreen: React.FC<GameEndScreenProps> = ({
     <>
       {status === GameStatus.WON && (
         <div>
-          <Confetti style={{ outline: '1px solid red' }} />
+          <Confetti />
           <GameEndWrapper
             title='Поздравляем!'
             message='Вы перешли на следующий уровень'
             buttonText='Продолжить игру'
             handleClick={onRestartGame}
+            score={localStorage.getItem('memory_game_score')}
           />
         </div>
       )}

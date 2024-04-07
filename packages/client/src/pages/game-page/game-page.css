@@ -8,6 +8,10 @@
   display: flex;
 }
 
+.game:fullscreen {
+  justify-content: center;
+}
+
 .game__wrapper {
   display: flex;
   align-items: center;
@@ -19,4 +23,8 @@
   display: flex;
   align-items: end;
   width: 155px;
+}
+
+.game:fullscreen .game__exit-wrapper {
+  display: none;
 }

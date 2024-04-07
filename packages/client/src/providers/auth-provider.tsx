@@ -1,3 +1,4 @@
+import { notification } from 'antd';
 import { useAppDispatch } from '@/helpers/hooks/storeHooks';
 import { setCurrentUser } from '@/store/userSlice';
 import { UserService } from '@/services/user';
@@ -28,6 +29,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
   const [isAuth, setIsAuth] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const isAuthRef = useRef(false);
+  const [notify, contextHolder] = notification.useNotification();
 
   const abortController = new AbortController();
 
@@ -36,6 +38,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
   const handleAuth = () => {
     setIsAuth(true);
     stopLoading();
+  };
+
+  const handleNotAuth = () => {
+    stopLoading();
+    notify.error({
+      message: 'Ошибка авторизации',
+      description: 'Время авторизации истекло, пожалуйста, войдите еще раз',
+      className: 'notification-bar',
+    });
   };
 
   const deleteAuth = () => {
@@ -58,7 +69,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
             return;
           }
           //этот stopLoading отрабатывает в случае, если response не isOk
-          stopLoading();
+          handleNotAuth();
         } catch (err) {
           // eslint-disable-next-line no-console
           console.log(err);
@@ -104,6 +115,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
         deleteAuth,
       }}>
       {children}
+      {contextHolder}
     </AuthContext.Provider>
   );
 };
