@@ -4,6 +4,7 @@ import Confetti from 'react-confetti';
 import { ExitButton } from '@/components/exit-button';
 import React from 'react';
 import { GameStatus } from '@/components/game/types';
+import { useNavigate } from 'react-router-dom';
 
 interface GameEndScreenProps {
   status: GameStatus;
@@ -13,6 +14,10 @@ export const GameEndScreen: React.FC<GameEndScreenProps> = ({
   status,
   onRestartGame,
 }) => {
+  const navigate = useNavigate();
+  const handleExitGame = () => {
+    navigate('/');
+  };
   return (
     <>
       {status === GameStatus.WON && (
@@ -35,7 +40,7 @@ export const GameEndScreen: React.FC<GameEndScreenProps> = ({
           handleClick={onRestartGame}
         />
       )}
-      <ExitButton onClick={onRestartGame} />
+      <ExitButton onClick={handleExitGame} />
     </>
   );
 };
