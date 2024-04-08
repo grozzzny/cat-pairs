@@ -21,7 +21,7 @@ export const GameStartScreen: React.FC<GameStartScreenProps> = ({
     const storedLevel = localStorage.getItem('memory_game_level');
     if (storedLevel) {
       setLevel(parseInt(storedLevel));
-      level !== 1 ? setIsShowContinueGame(false) : setIsShowContinueGame(true);
+      setIsShowContinueGame(level === 1);
     } else {
       localStorage.setItem('memory_game_level', '1');
     }
