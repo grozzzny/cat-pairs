@@ -1,25 +1,25 @@
 import { YANDEX_API_HOST } from './constants/api';
 
 export interface FetchHelperParams {
-  url: string;
-  data?: object;
+  body?: string | FormData;
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  headers?: HeadersInit;
   signal?: AbortSignal | null | undefined;
 }
 
-export const fetchHelper = ({
-  url,
-  data,
-  method,
-  signal,
-}: FetchHelperParams) => {
+export const setHeaders = (contetType: string) => {
+  const requestHeaders: HeadersInit = new Headers();
+  requestHeaders.set('Content-Type', contetType);
+  return requestHeaders;
+};
+
+export const getString = (object: object) => {
+  return JSON.stringify(object);
+};
+
+export const fetchHelper = (url: string, options: FetchHelperParams) => {
   return fetch(`${YANDEX_API_HOST}${url}`, {
-    method,
-    body: JSON.stringify(data),
+    ...options,
     credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    signal,
   });
 };
