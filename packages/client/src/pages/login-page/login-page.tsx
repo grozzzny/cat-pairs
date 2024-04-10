@@ -42,52 +42,54 @@ export const LoginPage = () => {
 
   return (
     <PageWrapper withMenu={false}>
-      <AuthWrapper darkTheme={false} label='Вход'>
-        <Form
-          name='basic'
-          layout='horizontal'
-          initialValues={{}}
-          onFinish={onFinish}
-          autoComplete='off'
-          className='login-form'>
-          <Flex vertical gap={32}>
-            <Flex vertical className='login-form__top' align='center' gap={8}>
-              <Form.Item<LoginFieldType>
-                name='login'
-                rules={[
-                  { validator: validateLogin },
-                  { validator: validateRequired },
-                ]}>
-                <Input placeholder='Логин' />
-              </Form.Item>
-              <Form.Item<LoginFieldType>
-                name='password'
-                rules={[
-                  { validator: validatePassword },
-                  { validator: validateRequired },
-                ]}>
-                <Input placeholder='Пароль' type='password' />
-              </Form.Item>
+      <div className='container-vertical-center'>
+        <AuthWrapper darkTheme={false} label='Вход'>
+          <Form
+            name='basic'
+            layout='horizontal'
+            initialValues={{}}
+            onFinish={onFinish}
+            autoComplete='off'
+            className='login-form'>
+            <Flex vertical gap={32}>
+              <Flex vertical className='login-form__top' align='center' gap={8}>
+                <Form.Item<LoginFieldType>
+                  name='login'
+                  rules={[
+                    { validator: validateLogin },
+                    { validator: validateRequired },
+                  ]}>
+                  <Input placeholder='Логин' />
+                </Form.Item>
+                <Form.Item<LoginFieldType>
+                  name='password'
+                  rules={[
+                    { validator: validatePassword },
+                    { validator: validateRequired },
+                  ]}>
+                  <Input placeholder='Пароль' type='password' />
+                </Form.Item>
+              </Flex>
+              <Flex
+                vertical
+                className='login-form__bottom'
+                align='center'
+                gap={8}>
+                <div className='text'>
+                  Не зарегистрированы?&nbsp;
+                  <span
+                    className='text link'
+                    onClick={() => navigate('/registration')}>
+                    Регистрация
+                  </span>
+                </div>
+                {contextHolder}
+                <Button block label='Войти' htmlType='submit' />
+              </Flex>
             </Flex>
-            <Flex
-              vertical
-              className='login-form__bottom'
-              align='center'
-              gap={8}>
-              <div className='text'>
-                Не зарегистрированы?&nbsp;
-                <span
-                  className='text link'
-                  onClick={() => navigate('/registration')}>
-                  Регистрация
-                </span>
-              </div>
-              {contextHolder}
-              <Button block label='Войти' htmlType='submit' />
-            </Flex>
-          </Flex>
-        </Form>
-      </AuthWrapper>
+          </Form>
+        </AuthWrapper>
+      </div>
     </PageWrapper>
   );
 };
