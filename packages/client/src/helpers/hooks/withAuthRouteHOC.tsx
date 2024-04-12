@@ -31,11 +31,7 @@ export function withAuthRouteHOC<T extends JSX.IntrinsicAttributes>(
             style={authProviderStyles.spinWrapper}>
             <Spin
               indicator={
-                <LoadingOutlined
-                  rev={null}
-                  style={authProviderStyles.spin}
-                  spin
-                />
+                <LoadingOutlined style={authProviderStyles.spin} spin />
               }
             />
           </Flex>

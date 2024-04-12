@@ -1,0 +1,37 @@
+@import url('@/css/variables.css');
+@import url('@/css/form.css');
+@import url('@/css/text.css');
+@import url('@/css/link.css');
+@import url('@/css/common.css');
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  color: var(--dark);
+}
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --base-dark: #565a5d;
+  --base-light: #efe5cc;
+  --base-red: #ee2d39;
+}
+
+:not(:root):fullscreen::backdrop {
+  background: var(--light);
+}

@@ -3,7 +3,6 @@ import './main-page.css';
 import { setBodyScroll, setPageTitle } from '@/helpers';
 import { Col, Divider, Flex, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import Paragraph from 'antd/es/typography/Paragraph';
 import { useAppDispatch } from '@/helpers/hooks/storeHooks';
 import { setTheme } from '@/store/userSlice';
 import { Theme } from '@/helpers/constants/global';
@@ -50,37 +49,37 @@ const MainPage = () => {
         <Divider orientation='left' plain>
           <div className='text--dark-color'>Описание игры</div>
         </Divider>
-        <Paragraph>
+        <p>
           Игра 'CatCoders' - захватывающее приключение, где игроку предстоит
           найти все пары карт на игровом поле. В каждом ходе игрок открывает две
           карточки, и если они совпадают, они остаются открытыми. Если нет, они
           снова закрываются, а игрок продолжает поиск пары. Эта игра требует
           хорошей памяти и внимательности, и в то же время она предлагает
           моменты размышления и стратегические решения для максимального успеха.
-        </Paragraph>
-        <Paragraph>
+        </p>
+        <p>
           Постепенно открывая карточки, игрок развивает свои навыки концентрации
           и улучшает память. Благодаря разнообразию уровней сложности и тематик,
           игра 'CatCoders' остается захватывающим и вызывающим испытанием для
           игрока, где каждая новая игра приносит свежие впечатления и
           удовлетворение от достижения новых результатов.
-        </Paragraph>
+        </p>
         <Divider orientation='left' plain>
           <div className='text--dark-color'>Дополнительно:</div>
         </Divider>
         <LinkList />
         <Divider plain />
         <Flex align='center' vertical>
-          <Paragraph>
+          <p>
             &copy; {new Date().getFullYear()} CatCoders. Все права защищены.
-          </Paragraph>
-          <Paragraph>
+          </p>
+          <p>
             Для технической поддержки, пожалуйста, свяжитесь с нами по
             электронной почте:{' '}
             <a className='link' href='mailto:support@catCoders.ru'>
               support@catCoders.ru
             </a>
-          </Paragraph>
+          </p>
         </Flex>
         <br />
         <br />

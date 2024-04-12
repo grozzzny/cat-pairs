@@ -8,6 +8,8 @@ import {
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { memo } from 'react';
+import { AntdIconProps } from '@ant-design/icons/lib/components/AntdIcon';
+import * as React from 'react';
 
 interface NavigationBarProps {
   className?: string;
@@ -16,9 +18,8 @@ interface NavigationBarProps {
 export const NavigationBar = memo((props: NavigationBarProps) => {
   const { className } = props;
   const { token: theme } = antdTheme.useToken();
-  const iconProps = {
+  const iconProps: Omit<AntdIconProps, 'ref'> = {
     twoToneColor: theme.colorIcon,
-    rev: null,
     style: { fontSize: '30px' },
   };
   const navigate = useNavigate();

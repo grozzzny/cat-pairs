@@ -1,4 +1,3 @@
-import './game-end-screen.css';
 import { GameEndWrapper } from '@/components';
 import Confetti from 'react-confetti';
 import { ExitButton } from '@/components/exit-button';
