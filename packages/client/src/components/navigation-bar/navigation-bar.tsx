@@ -9,7 +9,6 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { memo } from 'react';
 import { AntdIconProps } from '@ant-design/icons/lib/components/AntdIcon';
-import * as React from 'react';
 
 interface NavigationBarProps {
   className?: string;
