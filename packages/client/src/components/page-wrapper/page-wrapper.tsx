@@ -16,7 +16,7 @@ export const PageWrapper = (props: PageWrapperProps): JSX.Element => {
   return (
     <div className='page-wrapper' style={{ background: theme.colorPrimary }}>
       <img
-        src='/public/cat-background.png'
+        src='/cat-background.png'
         alt='cat-background'
         className='page-wrapper__cat-background'
         onClick={() => navigate('/')}

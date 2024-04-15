@@ -1,4 +1,4 @@
-const CACHE_NAME= 'cat-coders-cache-offline-v1'; 
+const CACHE_NAME= 'cat-coders-cache-offline-v1';
 
 const URLS = [
   '/',
@@ -21,6 +21,7 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
+        // eslint-disable-next-line no-console
         console.log('[Service Worker] adding static files');
         cache.addAll(URLS);
       }));
@@ -38,10 +39,10 @@ self.addEventListener('fetch', event => {
       }
       try {
         const response = await fetch(event.request);
-  
+
         const cache = await caches.open(CACHE_NAME);
         await cache.put(event.request, response.clone());
-  
+
         return response;
       } catch (error) {
         const cachedResponse = await caches.match(event.request);

@@ -94,6 +94,7 @@ export class GameApi {
 
       this.timerRunning = true;
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to load images:', error);
     }
   };

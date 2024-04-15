@@ -1,7 +1,6 @@
 import { Input as AntInput, InputProps as AntInputProps } from 'antd';
 import './input.css';
 import React from 'react';
-import { TextAreaProps } from 'antd/es/input/TextArea';
 
 interface InputProps extends AntInputProps {
   type?: InputType;
@@ -24,7 +23,7 @@ export const Input: React.FC<InputProps> = props => {
     return (
       <AntInput.TextArea
         className='textarea'
-        {...(restProps as TextAreaProps)}
+        {...(restProps as unknown as Record<string, string>)}
       />
     );
   }
