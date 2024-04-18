@@ -28,6 +28,9 @@ export const VolumeControl: React.FC<VolumeControlProps> = ({ src }) => {
   }, [muted, volume]);
 
   const handleToggleMute = () => {
+    if (muted) {
+      audioRef.current?.play();
+    }
     setMuted(!muted);
   };
 
@@ -63,7 +66,7 @@ export const VolumeControl: React.FC<VolumeControlProps> = ({ src }) => {
       <button onClick={handleToggleMute} className={'volume-control__button'}>
         {muted ? <MutedOutlined /> : <SoundOutlined />}
       </button>
-      <audio ref={audioRef} src={src} autoPlay loop muted={muted}></audio>
+      <audio ref={audioRef} src={src} autoPlay loop></audio>
     </div>
   );
 };

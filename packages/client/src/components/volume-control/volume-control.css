@@ -10,6 +10,7 @@
   bottom: 5px;
   left: 0;
   width: 40px;
+  cursor: pointer;
 }
 .volume-control__button {
   width: 53px;
@@ -20,4 +21,5 @@
   border: none;
   font-size: 34px;
   color: inherit;
+  cursor: pointer;
 }
