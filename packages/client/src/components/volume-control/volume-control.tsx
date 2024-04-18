@@ -8,7 +8,7 @@ interface VolumeControlProps {
 
 export const VolumeControl: React.FC<VolumeControlProps> = ({ src }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [muted, setMuted] = useState(() => {
+  const [muted, setMuted] = useState<boolean>(() => {
     const storedMuted = localStorage.getItem('muted');
     return storedMuted ? JSON.parse(storedMuted) : false;
   });
