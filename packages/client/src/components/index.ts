@@ -29,3 +29,4 @@ export { BackgroundWrapper } from './background-wrapper';
 export { LinkList } from './links-list';
 export { LeadersTable } from './leaders-table';
 export { LeaderCard } from './leader-card';
+export { VolumeControl } from './volume-control';
