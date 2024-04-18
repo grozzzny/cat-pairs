@@ -14,6 +14,8 @@ export const GameEndScreen: React.FC<GameEndScreenProps> = ({
   onRestartGame,
 }) => {
   const navigate = useNavigate();
+  const VICTORY_SOUND_ID = 'victorySound';
+  const DEFEAT_SOUND_ID = 'defeatSound';
   const handleExitGame = () => {
     navigate('/');
   };
@@ -30,10 +32,10 @@ export const GameEndScreen: React.FC<GameEndScreenProps> = ({
 
   useEffect(() => {
     if (status === GameStatus.WON) {
-      playSound('victorySound');
+      playSound(VICTORY_SOUND_ID);
     }
     if (status === GameStatus.LOST) {
-      playSound('defeatSound');
+      playSound(DEFEAT_SOUND_ID);
     }
   }, [status]);
   return (
@@ -48,7 +50,7 @@ export const GameEndScreen: React.FC<GameEndScreenProps> = ({
             handleClick={onRestartGame}
             score={localStorage.getItem('memory_game_score')}
           />
-          <audio src='/media/win.mp3' id='victorySound'></audio>
+          <audio src='/media/win.mp3' id={VICTORY_SOUND_ID}></audio>
         </div>
       )}
       {status === GameStatus.LOST && (
@@ -59,7 +61,7 @@ export const GameEndScreen: React.FC<GameEndScreenProps> = ({
             buttonText='Играть'
             handleClick={onRestartGame}
           />
-          <audio src='/media/lost.mp3' id='defeatSound'></audio>
+          <audio src='/media/lost.mp3' id={DEFEAT_SOUND_ID}></audio>
         </>
       )}
       <ExitButton onClick={handleExitGame} />
