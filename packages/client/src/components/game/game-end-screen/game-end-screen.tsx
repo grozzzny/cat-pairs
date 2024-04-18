@@ -18,22 +18,22 @@ export const GameEndScreen: React.FC<GameEndScreenProps> = ({
     navigate('/');
   };
 
-  const playVictorySound = () => {
-    const audio = document.getElementById('victorySound') as HTMLAudioElement;
-    audio.play();
-  };
-
-  const playDefeatSound = () => {
-    const audio = document.getElementById('defeatSound') as HTMLAudioElement;
-    audio.play();
+  const playSound = (soundId: string) => {
+    const muted = localStorage.getItem('muted') === 'true';
+    const volume = parseFloat(localStorage.getItem('volume') || '0.5');
+    if (!muted) {
+      const audio = document.getElementById(soundId) as HTMLAudioElement;
+      audio.volume = volume;
+      audio.play();
+    }
   };
 
   useEffect(() => {
     if (status === GameStatus.WON) {
-      playVictorySound();
+      playSound('victorySound');
     }
     if (status === GameStatus.LOST) {
-      playDefeatSound();
+      playSound('defeatSound');
     }
   }, [status]);
   return (
