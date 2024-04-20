@@ -1,4 +1,5 @@
-export const YANDEX_API_HOST = 'https://ya-praktikum.tech/api/v2';
+export const SERVER_YANDEX_API_HOST = 'https://ya-praktikum.tech/api/v2';
+export const YANDEX_API_HOST = 'http://localhost:3000/api/v2';
 
 export const API_PARAMS = {
   headers: {

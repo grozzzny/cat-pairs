@@ -63,7 +63,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
           });
           if (response?.isOk) {
             if (response?.user) {
-              dispatch(setCurrentUser(response.user));
+              /*dispatch(setCurrentUser(response.user));*/
             }
             handleAuth();
             return;
@@ -91,7 +91,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
           });
           if (response?.isOk) {
             if (response?.user) {
-              dispatch(setCurrentUser(response.user));
+              /*dispatch(setCurrentUser(response.user));*/
             }
           }
         } catch (err) {

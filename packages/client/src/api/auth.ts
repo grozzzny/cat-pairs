@@ -1,4 +1,10 @@
-import { fetchHelper, getString, setHeaders } from '@/helpers';
+import {
+  fetchHelper,
+  getString,
+  setHeaders,
+  setHeadersWithCookei,
+} from '@/helpers';
+import { fetchHelperServer } from '@/helpers/fetch-helper';
 import { GetUserRequestDto, LoginRequestDto } from '@/helpers/types/api';
 
 export class AuthApi {
@@ -15,6 +21,22 @@ export class AuthApi {
       method: 'GET',
       signal,
       headers: setHeaders('application/json'),
+    });
+  }
+
+  static getUserProxy({ signal }: GetUserRequestDto) {
+    return fetchHelper('/auth/user', {
+      method: 'GET',
+      signal,
+      headers: setHeaders('application/json'),
+    });
+  }
+
+  static getUserWhithCookie({ signal }: GetUserRequestDto, ctx: string) {
+    return fetchHelperServer('/auth/user', {
+      method: 'GET',
+      signal,
+      headers: setHeadersWithCookei('application/json', ctx),
     });
   }
 

@@ -7,7 +7,6 @@ import { ExitButton } from '@/components/exit-button';
 
 export const LeaderboardPage = () => {
   setPageTitle('Таблица лидеров');
-
   return (
     <PageWrapper>
       <>

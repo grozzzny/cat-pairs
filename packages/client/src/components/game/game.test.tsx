@@ -6,8 +6,8 @@ import { Game } from '@/components/game/game';
 import '@testing-library/jest-dom';
 import { GameApi } from '@/components';
 import { Provider } from 'react-redux';
-import store from '@/store';
 import { useNavigate } from 'react-router-dom';
+import store from '@/store';
 
 jest.mock('react', () => ({
   ...jest.requireActual('react'),

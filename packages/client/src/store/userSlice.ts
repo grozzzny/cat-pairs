@@ -3,6 +3,8 @@ import { ProfileFieldType, User } from '@/helpers/types';
 import { UserService } from '@/services/user';
 import { Theme } from '@/helpers/constants/global';
 import { userNotAutn } from '@/helpers/constants/store';
+import { RootState } from '@/store';
+import { PageInitContext } from '@/routes';
 
 type CatPairsState = {
   currentUser: User;
@@ -15,21 +17,42 @@ const initialState: CatPairsState = {
   error: undefined,
   theme: Theme.Light,
 };
+
+export interface IUserService {
+  getCurrentUser(): Promise<User | undefined>;
+}
+
 const abortController = new AbortController();
 export const fetchGetCurrentUser = createAsyncThunk<
-  string | User | undefined,
+  string | User | PageInitContext | undefined,
   undefined,
   { rejectValue: string }
->('user/fetchGetCurrentUser', async (_, { rejectWithValue }) => {
+>('user/fetchGetCurrentUser', async (_, thinkApi) => {
+  /*const service: IUserService = thinkApi.extra as IUserService;
+  return service.getCurrentUser();*/
   const result = await UserService.getCurrentUser({
     signal: abortController.signal,
   });
   if (result?.isOk) {
     return result?.user;
   }
-  return result?.error && rejectWithValue(result?.error);
+  return result?.error && thinkApi.rejectWithValue(result?.error);
 });
 
+export const fetchGetCurrentUserServer = createAsyncThunk<
+  string | User | undefined,
+  string,
+  { rejectValue: string }
+>('user/fetchGetCurrentUserServer', async (ctx, { rejectWithValue }) => {
+  const result = await UserService.getCurrentUserWhithCookie(
+    { signal: abortController.signal },
+    ctx
+  );
+  if (result?.isOk) {
+    return result?.user;
+  }
+  return result?.error && rejectWithValue(result?.error);
+});
 export const fetchChangeCurrentUser = createAsyncThunk<
   string | User | undefined,
   ProfileFieldType,
@@ -65,6 +88,14 @@ const userSlice = createSlice({
         Object.assign(state.currentUser, action.payload);
         state.error = undefined;
       })
+      .addCase(fetchGetCurrentUser.fulfilled, (state, action) => {
+        Object.assign(state.currentUser, action.payload);
+        state.error = undefined;
+      })
+      .addCase(fetchGetCurrentUserServer.fulfilled, (state, action) => {
+        Object.assign(state.currentUser, action.payload);
+        state.error = undefined;
+      })
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
         state.error = action.payload;
       });
@@ -78,3 +109,5 @@ export default userSlice.reducer;
 function isError(action: { type: string }) {
   return action.type.endsWith('rejected');
 }
+
+export const selectUser = (state: RootState) => state.user.currentUser;

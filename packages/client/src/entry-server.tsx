@@ -1,15 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import { Provider } from 'react-redux';
-import store from '@/store';
+import { reducer } from '@/store';
 import {
+  StaticRouter,
   createStaticHandler,
   createStaticRouter,
 } from 'react-router-dom/server';
 import { Request as ExpressRequest } from 'express';
 import { routes } from '@/routes';
-import { createFetchRequest } from '@/entry-server.utils';
+import { createFetchRequest, createUrl } from '@/entry-server.utils';
 import App from '@/App';
+import { configureStore } from '@reduxjs/toolkit';
+import { matchRoutes } from 'react-router-dom';
 
 export const render = async (req: ExpressRequest) => {
   const { query, dataRoutes } = createStaticHandler(routes);
@@ -17,6 +20,32 @@ export const render = async (req: ExpressRequest) => {
   const context = await query(fetchRequest);
   if (context instanceof Response) {
     throw context;
+  }
+
+  const url = createUrl(req);
+  const store = configureStore({
+    reducer,
+  });
+
+  const foundRoutes = matchRoutes(routes, url);
+  if (!foundRoutes) {
+    throw new Error('Страница не найдена!');
+  }
+
+  const [
+    {
+      route: { fetchData },
+    },
+  ] = foundRoutes;
+
+  try {
+    await fetchData({
+      dispatch: store.dispatch,
+      state: store.getState(),
+      ctx: req.headers['cookie'] || 'noCookie',
+    });
+  } catch (e) {
+    console.log('Инициализация страницы произошла с ошибкой', e);
   }
   const staticRouter = createStaticRouter(dataRoutes, context);
 
