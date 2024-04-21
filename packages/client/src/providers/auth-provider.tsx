@@ -58,14 +58,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
     if (!isAuthRef.current) {
       isAuthRef.current = true;
 
-      // const checkOauthUser = async () => {
-      //   const serviceId = localStorage.getItem('serviceId');
-      //   if (!serviceId) {
-      //     return;
-      //   }
-      //   await AuthService.loginOauth({ code: serviceId });
-      // };
-      // checkOauthUser();
+      const handleOauth = async (code: string) => {
+        try {
+          setLoading(true);
+          const response = await AuthService.loginOauth({ code });
+          if (response?.isOk) {
+            handleAuth();
+          }
+          stopLoading();
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.log(e);
+        }
+      };
 
       const fetchUser = async () => {
         try {
@@ -86,6 +91,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
           console.log(err);
         }
       };
+
+      if (typeof window !== undefined) {
+        const code = new URL(window.location.href).searchParams.get('code');
+        if (code) {
+          handleOauth(code);
+          return;
+        }
+      }
+
       fetchUser();
     }
     return () => {
@@ -116,6 +130,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
       !isAuthRef.current && abortController.abort();
     };
   }, [isAuth]);
+
+  // useEffect(() => {
+
+  // }, []);
 
   return (
     <AuthContext.Provider
