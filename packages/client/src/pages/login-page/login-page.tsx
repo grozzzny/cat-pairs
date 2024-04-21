@@ -32,10 +32,8 @@ export const LoginPage = () => {
   const onOauth = async () => {
     const serviceId = await AuthService.getServiceId();
     if (!serviceId) {
-      // notify();
       return;
     }
-    // localStorage.setItem('serviceId', serviceId);
     window.open(
       `https://oauth.yandex.ru/authorize?response_type=code&client_id=${serviceId}&redirect_uri=${OAUTH_REDIRECT_ID}`,
       '_self'

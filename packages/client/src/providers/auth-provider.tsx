@@ -131,10 +131,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
     };
   }, [isAuth]);
 
-  // useEffect(() => {
-
-  // }, []);
-
   return (
     <AuthContext.Provider
       value={{
