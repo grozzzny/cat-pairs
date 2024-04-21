@@ -30,6 +30,11 @@ export const LoginPage = () => {
   const { setAuth } = useAuth();
 
   const onOauth = async () => {
+    notify.warning({
+      message: 'Загрузка',
+      description: 'Авторизация начнется через мгновение :)',
+      className: 'notification-bar',
+    });
     const serviceId = await AuthService.getServiceId();
     if (!serviceId) {
       return;
