@@ -3,6 +3,7 @@ import { useAppDispatch } from '@/helpers/hooks/storeHooks';
 import { setCurrentUser } from '@/store/userSlice';
 import { UserService } from '@/services/user';
 import React, { createContext, useEffect, useRef, useState } from 'react';
+import { AuthService } from '@/services';
 
 type AuthContextType = {
   isAuth: boolean;
@@ -56,6 +57,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
   useEffect(() => {
     if (!isAuthRef.current) {
       isAuthRef.current = true;
+
+      // const checkOauthUser = async () => {
+      //   const serviceId = localStorage.getItem('serviceId');
+      //   if (!serviceId) {
+      //     return;
+      //   }
+      //   await AuthService.loginOauth({ code: serviceId });
+      // };
+      // checkOauthUser();
+
       const fetchUser = async () => {
         try {
           const response = await UserService.getCurrentUser({

@@ -30,6 +30,38 @@ export class AuthService {
     }
   }
 
+  static async getServiceId() {
+    try {
+      const response = await AuthApi.getServiceId();
+      if (!response.ok) {
+        throw new Error('Error to get serviceId');
+      }
+      const { service_id } = await response.json();
+      return service_id;
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(e);
+    }
+  }
+
+  static async loginOauth({
+    code,
+  }: {
+    code: string;
+  }): Promise<LoginRequestResult | undefined> {
+    try {
+      const responseAuth = await AuthApi.loginOauth({ code });
+      if (responseAuth.ok && !isRequestError(responseAuth.status)) {
+        return { isOk: true, reason: '' };
+      }
+      const { reason } = await responseAuth.json();
+      return { isOk: false, reason: reason };
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
+  }
+
   static async getUser(props: GetUserRequestDto): Promise<boolean> {
     const response = await AuthApi.getUser(props);
     return response?.ok ?? false;

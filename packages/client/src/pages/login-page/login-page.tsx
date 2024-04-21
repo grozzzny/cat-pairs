@@ -1,4 +1,10 @@
-import { AuthWrapper, Button, Input, PageWrapper } from '@/components';
+import {
+  AuthWrapper,
+  Button,
+  IconButton,
+  Input,
+  PageWrapper,
+} from '@/components';
 import { AuthService } from '@/services';
 import { Flex, Form, FormProps, notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +16,7 @@ import {
   validateRequired,
 } from '@/helpers';
 import { useAuth } from '@/helpers/hooks/useAuth';
+import { OAUTH_REDIRECT_ID } from '@/helpers/constants/api';
 
 type LoginFieldType = {
   login: string;
@@ -21,6 +28,19 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   const [notify, contextHolder] = notification.useNotification();
   const { setAuth } = useAuth();
+
+  const onOauth = async () => {
+    const serviceId = await AuthService.getServiceId();
+    if (!serviceId) {
+      // notify();
+      return;
+    }
+    // localStorage.setItem('serviceId', serviceId);
+    window.open(
+      `https://oauth.yandex.ru/authorize?response_type=code&client_id=${serviceId}&redirect_uri=${OAUTH_REDIRECT_ID}`,
+      '_self'
+    );
+  };
 
   const onFinish: FormProps<LoginFieldType>['onFinish'] = async ({
     login,
@@ -85,6 +105,13 @@ export const LoginPage = () => {
                 </div>
                 {contextHolder}
                 <Button block label='Войти' htmlType='submit' />
+                <Flex align='center' gap={4}>
+                  <span>Войти с помощью</span>
+                  <IconButton
+                    icon={<img src='public/yandex-icon.svg' />}
+                    onClick={onOauth}
+                  />
+                </Flex>
               </Flex>
             </Flex>
           </Form>
