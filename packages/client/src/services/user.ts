@@ -60,23 +60,6 @@ export class UserService {
     }
   }
 
-  /*static async getCurrentUserProxy(
-    props: GetUserRequestDto
-  ): Promise<CurrentUserRequestResult | undefined> {
-    try {
-      const response = await AuthApi.getUserProxy(props);
-      if (response.status < 400) {
-        const user = await response.json();
-        return { isOk: true, user: user };
-      }
-      const error = await response.json();
-      return { isOk: false, error: error.reason };
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
-    }
-  }*/
-
   static async getCurrentUserWhithCookie(
     props: GetUserRequestDto,
     ctx: string

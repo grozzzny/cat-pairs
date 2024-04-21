@@ -12,6 +12,5 @@ export default {
     '@/(.*)$': '<rootDir>/src/$1',
     '\\.css$': 'identity-obj-proxy'
   },
-
   setupFilesAfterEnv: ['./setup-tests.tsx']
 };

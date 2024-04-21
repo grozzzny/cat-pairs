@@ -2,11 +2,6 @@ import * as Pages from '@/pages';
 import { AppDispatch, RootState } from './store';
 import * as init from '@/helpers/pagesInit';
 
-export type PageInitContext = {
-  authCookie?: string;
-  uuid?: string;
-};
-
 export type PageInitArgs = {
   dispatch: AppDispatch;
   state: RootState;
@@ -28,7 +23,7 @@ export const routes = [
   {
     path: '/login',
     element: <Pages.LoginPage />,
-    fetchData: init.initProfilePage,
+    fetchData: init.initLoginPage,
   },
   {
     path: '/registration',

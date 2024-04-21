@@ -12,19 +12,6 @@ export const reducer = combineReducers({
   user: userReduser,
 });
 
-/*function createStore(service: IUserService) {
-  return configureStore({
-    reducer,
-    preloadedState:
-      typeof window === 'undefined' ? undefined : window.APP_INITIAL_STATE,
-    middleware: getDefaultMiddleware => {
-      return getDefaultMiddleware({
-        thunk: { extraArgument: service, }
-      });
-    }
-  });
-}*/
-
 const store = configureStore({
   reducer,
   preloadedState:

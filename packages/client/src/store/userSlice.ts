@@ -4,7 +4,6 @@ import { UserService } from '@/services/user';
 import { Theme } from '@/helpers/constants/global';
 import { userNotAutn } from '@/helpers/constants/store';
 import { RootState } from '@/store';
-import { PageInitContext } from '@/routes';
 
 type CatPairsState = {
   currentUser: User;
@@ -24,7 +23,7 @@ export interface IUserService {
 
 const abortController = new AbortController();
 export const fetchGetCurrentUser = createAsyncThunk<
-  string | User | PageInitContext | undefined,
+  string | User | undefined,
   undefined,
   { rejectValue: string }
 >('user/fetchGetCurrentUser', async (_, thinkApi) => {

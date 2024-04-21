@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { reducer } from '@/store';
 import {
-  StaticRouter,
   createStaticHandler,
   createStaticRouter,
 } from 'react-router-dom/server';
@@ -45,6 +44,7 @@ export const render = async (req: ExpressRequest) => {
       ctx: req.headers['cookie'] || 'noCookie',
     });
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.log('Инициализация страницы произошла с ошибкой', e);
   }
   const staticRouter = createStaticRouter(dataRoutes, context);

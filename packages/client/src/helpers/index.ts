@@ -6,6 +6,5 @@ export {
   setHeaders,
   getString,
   setHeadersWithCookei,
-  /*fetchHelperProxy*/
 } from './fetch-helper';
 export { startServiceWorker } from './service-worker-helper';

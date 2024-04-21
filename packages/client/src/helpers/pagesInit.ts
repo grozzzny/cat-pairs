@@ -1,8 +1,4 @@
-import {
-  fetchGetCurrentUser,
-  fetchGetCurrentUserServer,
-  selectUser,
-} from '@/store/userSlice';
+import { fetchGetCurrentUserServer } from '@/store/userSlice';
 import { PageInitArgs } from '@/routes';
 
 export const initMainPage = () => Promise.resolve();
