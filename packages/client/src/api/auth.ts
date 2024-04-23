@@ -1,5 +1,5 @@
 import { fetchHelper, getString, setHeaders } from '@/helpers';
-import { OAUTH_REDIRECT_ID } from '@/helpers/constants/api';
+import { OAUTH_REDIRECT_URI } from '@/helpers/constants/api';
 import {
   GetUserRequestDto,
   LoginOauthRequestDto,
@@ -15,9 +15,9 @@ export class AuthApi {
     });
   }
 
-  static getServiceId() {
+  static fetchServiceId() {
     return fetchHelper(
-      `/oauth/yandex/service-id?redirect_uri=${OAUTH_REDIRECT_ID}`,
+      `/oauth/yandex/service-id?redirect_uri=${OAUTH_REDIRECT_URI}`,
       {
         method: 'GET',
         headers: setHeaders('application/json'),
@@ -28,12 +28,12 @@ export class AuthApi {
   static loginOauth({ code }: LoginOauthRequestDto) {
     return fetchHelper('/oauth/yandex', {
       method: 'POST',
-      body: getString({ code, redirect_uri: OAUTH_REDIRECT_ID }),
+      body: getString({ code, redirect_uri: OAUTH_REDIRECT_URI }),
       headers: setHeaders('application/json'),
     });
   }
 
-  static getUser({ signal }: GetUserRequestDto) {
+  static fetchUser({ signal }: GetUserRequestDto) {
     return fetchHelper('/auth/user', {
       method: 'GET',
       signal,

@@ -16,11 +16,18 @@ import {
   validateRequired,
 } from '@/helpers';
 import { useAuth } from '@/helpers/hooks/useAuth';
-import { OAUTH_REDIRECT_ID } from '@/helpers/constants/api';
+import { OAUTH_REDIRECT_URI } from '@/helpers/constants/api';
 
 type LoginFieldType = {
   login: string;
   password: string;
+};
+
+const navigateOauth = (serviceId: string, redirectUri: string) => {
+  window.open(
+    `https://oauth.yandex.ru/authorize?response_type=code&client_id=${serviceId}&redirect_uri=${redirectUri}`,
+    '_self'
+  );
 };
 
 export const LoginPage = () => {
@@ -37,12 +44,15 @@ export const LoginPage = () => {
     });
     const serviceId = await AuthService.getServiceId();
     if (!serviceId) {
+      notify.error({
+        message: 'Ошибка авторизации',
+        description:
+          'Невозможно подключиться к сервису Yandex, попробуйте чуть позже',
+        className: 'notification-bar',
+      });
       return;
     }
-    window.open(
-      `https://oauth.yandex.ru/authorize?response_type=code&client_id=${serviceId}&redirect_uri=${OAUTH_REDIRECT_ID}`,
-      '_self'
-    );
+    navigateOauth(serviceId, OAUTH_REDIRECT_URI);
   };
 
   const onFinish: FormProps<LoginFieldType>['onFinish'] = async ({
@@ -108,9 +118,10 @@ export const LoginPage = () => {
                 </div>
                 {contextHolder}
                 <Button block label='Войти' htmlType='submit' />
-                <Flex align='center' gap={4}>
-                  <span>Войти с помощью</span>
+                <Flex align='center' gap={8}>
+                  <span>Войти с помощью: </span>
                   <IconButton
+                    type='default'
                     icon={<img src='public/yandex-icon.svg' />}
                     onClick={onOauth}
                   />
