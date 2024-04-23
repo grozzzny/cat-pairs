@@ -5,7 +5,7 @@ interface LeaderCardProps {
   position: number;
   avatar?: string;
   name: string;
-  score: string;
+  score: number;
 }
 
 export const LeaderCard: React.FC<LeaderCardProps> = ({
