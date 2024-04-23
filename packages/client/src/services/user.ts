@@ -47,7 +47,7 @@ export class UserService {
     props: GetUserRequestDto
   ): Promise<CurrentUserRequestResult | undefined> {
     try {
-      const response = await AuthApi.getUser(props);
+      const response = await AuthApi.fetchUser(props);
       if (response.status < 400) {
         const user = await response.json();
         return { isOk: true, user: user };
