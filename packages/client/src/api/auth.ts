@@ -2,7 +2,7 @@ import {
   fetchHelper,
   getString,
   setHeaders,
-  setHeadersWithCookei,
+  setHeadersWithCookie,
 } from '@/helpers';
 import { fetchHelperServer } from '@/helpers/fetch-helper';
 import { GetUserRequestDto, LoginRequestDto } from '@/helpers/types/api';
@@ -36,7 +36,7 @@ export class AuthApi {
     return fetchHelperServer('/auth/user', {
       method: 'GET',
       signal,
-      headers: setHeadersWithCookei('application/json', ctx),
+      headers: setHeadersWithCookie('application/json', ctx),
     });
   }
 

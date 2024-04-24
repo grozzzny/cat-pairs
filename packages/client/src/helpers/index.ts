@@ -5,6 +5,6 @@ export {
   fetchHelper,
   setHeaders,
   getString,
-  setHeadersWithCookei,
+  setHeadersWithCookie,
 } from './fetch-helper';
 export { startServiceWorker } from './service-worker-helper';

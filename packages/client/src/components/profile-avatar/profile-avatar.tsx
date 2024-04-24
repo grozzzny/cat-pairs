@@ -21,7 +21,9 @@ export const ProfileAvatar = () => {
   };
 
   useEffect(() => {
-    setImage(`${YANDEX_API_HOST}/resources${avatar}`);
+    if (avatar) {
+      setImage(`${YANDEX_API_HOST}/resources${avatar}`);
+    }
   }, []);
 
   return (

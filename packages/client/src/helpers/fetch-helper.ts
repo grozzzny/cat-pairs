@@ -1,4 +1,4 @@
-import { SERVER_YANDEX_API_HOST, YANDEX_API_HOST } from './constants/api';
+import { OAUTH_REDIRECT_URI, YANDEX_API_HOST } from './constants/api';
 
 export interface FetchHelperParams {
   body?: string | FormData;
@@ -13,7 +13,7 @@ export const setHeaders = (contentType: string) => {
   return requestHeaders;
 };
 
-export const setHeadersWithCookei = (contetType: string, ctx: string) => {
+export const setHeadersWithCookie = (contetType: string, ctx: string) => {
   const requestHeaders: HeadersInit = new Headers();
   requestHeaders.set('Content-Type', contetType);
   requestHeaders.set('cookie', ctx);
@@ -25,14 +25,14 @@ export const getString = (object: object) => {
 };
 
 export const fetchHelper = (url: string, options: FetchHelperParams) => {
-  return fetch(`${YANDEX_API_HOST}${url}`, {
+  return fetch(`${OAUTH_REDIRECT_URI}${url}`, {
     ...options,
     credentials: 'include',
   });
 };
 
 export const fetchHelperServer = (url: string, options: FetchHelperParams) => {
-  return fetch(`${SERVER_YANDEX_API_HOST}${url}`, {
+  return fetch(`${YANDEX_API_HOST}${url}`, {
     ...options,
     credentials: 'include',
   });

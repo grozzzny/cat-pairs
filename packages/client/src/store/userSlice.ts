@@ -27,8 +27,6 @@ export const fetchGetCurrentUser = createAsyncThunk<
   undefined,
   { rejectValue: string }
 >('user/fetchGetCurrentUser', async (_, thinkApi) => {
-  /*const service: IUserService = thinkApi.extra as IUserService;
-  return service.getCurrentUser();*/
   const result = await UserService.getCurrentUser({
     signal: abortController.signal,
   });
