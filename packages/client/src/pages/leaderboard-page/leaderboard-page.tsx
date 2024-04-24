@@ -13,15 +13,6 @@ export const LeaderboardPage = () => {
   const [leadersList, setLeadersList] =
     useState<LeaderboardTeamRequestResult | null>(null);
 
-  // useEffect(() => {
-  //   LeaderboardService.getTeamLeaderboard({
-  //     ratingFieldName: 'scoreCatCoders',
-  //     cursor: 0,
-  //     limit: 6,
-  //   }).then(res => {
-  //     res && setLeadersList(res);
-  //   });
-  // }, []);
   useEffect(() => {
     const fetchLeaderboard = async ({
       ratingFieldName,
