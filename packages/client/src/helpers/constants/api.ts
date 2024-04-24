@@ -13,3 +13,5 @@ export const API_PARAMS_FORMDATA = {
 };
 
 export const VALID_AUTH_ERROR = 'User already in system';
+
+export const SCORE_CAT_CODERS = 'scoreCatCoders';
