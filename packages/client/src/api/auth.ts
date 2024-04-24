@@ -5,7 +5,12 @@ import {
   setHeadersWithCookie,
 } from '@/helpers';
 import { fetchHelperServer } from '@/helpers/fetch-helper';
-import { GetUserRequestDto, LoginRequestDto } from '@/helpers/types/api';
+import {
+  GetUserRequestDto,
+  LoginOauthRequestDto,
+  LoginRequestDto,
+} from '@/helpers/types/api';
+import { OAUTH_REDIRECT_URI } from '@/helpers/constants/api';
 
 export class AuthApi {
   static login(params: LoginRequestDto) {
@@ -16,7 +21,25 @@ export class AuthApi {
     });
   }
 
-  static getUser({ signal }: GetUserRequestDto) {
+  static fetchServiceId() {
+    return fetchHelper(
+      `/oauth/yandex/service-id?redirect_uri=${OAUTH_REDIRECT_URI}`,
+      {
+        method: 'GET',
+        headers: setHeaders('application/json'),
+      }
+    );
+  }
+
+  static loginOauth({ code }: LoginOauthRequestDto) {
+    return fetchHelper('/oauth/yandex', {
+      method: 'POST',
+      body: getString({ code, redirect_uri: OAUTH_REDIRECT_URI }),
+      headers: setHeaders('application/json'),
+    });
+  }
+
+  static fetchUser({ signal }: GetUserRequestDto) {
     return fetchHelper('/auth/user', {
       method: 'GET',
       signal,

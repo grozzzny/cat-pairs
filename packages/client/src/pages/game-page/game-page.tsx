@@ -3,6 +3,7 @@ import {
   GameLoader,
   GameStartScreen,
   PageWrapper,
+  VolumeControl,
 } from '@/components';
 import { Difficulty, GameStatus } from '@/components/game/types';
 import React, { useState } from 'react';
@@ -18,6 +19,7 @@ const GamePage = () => {
   return (
     <PageWrapper>
       <div className='game-page'>
+        <VolumeControl src='/media/song.mp3' />
         {gameStatus === GameStatus.PRE_GAME && (
           <GameStartScreen
             selectedDifficulty={selectedDifficulty}

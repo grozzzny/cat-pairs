@@ -1,4 +1,4 @@
-import { OAUTH_REDIRECT_URI, YANDEX_API_HOST } from './constants/api';
+import { YANDEX_API_HOST, YANDEX_API_HOST_REDIRECT } from './constants/api';
 
 export interface FetchHelperParams {
   body?: string | FormData;
@@ -25,7 +25,7 @@ export const getString = (object: object) => {
 };
 
 export const fetchHelper = (url: string, options: FetchHelperParams) => {
-  return fetch(`${OAUTH_REDIRECT_URI}${url}`, {
+  return fetch(`${YANDEX_API_HOST_REDIRECT}${url}`, {
     ...options,
     credentials: 'include',
   });

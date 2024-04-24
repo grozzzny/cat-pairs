@@ -1,0 +1,25 @@
+.volume-control {
+  position: absolute;
+  top: 10px;
+  right: 5px;
+  display: inline-block;
+}
+.volume-control__volume {
+  position: absolute;
+  z-index: 1;
+  bottom: 5px;
+  left: 0;
+  width: 40px;
+  cursor: pointer;
+}
+.volume-control__button {
+  width: 53px;
+  height: 63px;
+  padding-left: 0;
+  padding-bottom: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 34px;
+  color: inherit;
+  cursor: pointer;
+}

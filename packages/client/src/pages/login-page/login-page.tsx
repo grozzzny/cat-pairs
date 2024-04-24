@@ -1,4 +1,10 @@
-import { AuthWrapper, Button, Input, PageWrapper } from '@/components';
+import {
+  AuthWrapper,
+  Button,
+  IconButton,
+  Input,
+  PageWrapper,
+} from '@/components';
 import { AuthService } from '@/services';
 import { Flex, Form, FormProps, notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -11,10 +17,18 @@ import {
 } from '@/helpers';
 import { useAuth } from '@/helpers/hooks/useAuth';
 import { redirectToUrl } from '@/helpers/redirect-helper';
+import { OAUTH_REDIRECT_URI } from '@/helpers/constants/api';
 
 type LoginFieldType = {
   login: string;
   password: string;
+};
+
+const navigateOauth = (serviceId: string, redirectUri: string) => {
+  window.open(
+    `https://oauth.yandex.ru/authorize?response_type=code&client_id=${serviceId}&redirect_uri=${redirectUri}`,
+    '_self'
+  );
 };
 
 export const LoginPage = () => {
@@ -22,6 +36,25 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   const [notify, contextHolder] = notification.useNotification();
   const { setAuth } = useAuth();
+
+  const onOauth = async () => {
+    notify.warning({
+      message: 'Загрузка',
+      description: 'Авторизация начнется через мгновение :)',
+      className: 'notification-bar',
+    });
+    const serviceId = await AuthService.getServiceId();
+    if (!serviceId) {
+      notify.error({
+        message: 'Ошибка авторизации',
+        description:
+          'Невозможно подключиться к сервису Yandex, попробуйте чуть позже',
+        className: 'notification-bar',
+      });
+      return;
+    }
+    navigateOauth(serviceId, OAUTH_REDIRECT_URI);
+  };
 
   const onFinish: FormProps<LoginFieldType>['onFinish'] = async ({
     login,
@@ -87,6 +120,14 @@ export const LoginPage = () => {
                 </div>
                 {contextHolder}
                 <Button block label='Войти' htmlType='submit' />
+                <Flex align='center' gap={8}>
+                  <span>Войти с помощью: </span>
+                  <IconButton
+                    type='default'
+                    icon={<img src='public/yandex-icon.svg' />}
+                    onClick={onOauth}
+                  />
+                </Flex>
               </Flex>
             </Flex>
           </Form>
