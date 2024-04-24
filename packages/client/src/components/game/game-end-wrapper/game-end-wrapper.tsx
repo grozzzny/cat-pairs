@@ -1,7 +1,7 @@
 import './game-end-wrapper.css';
 import { Button } from '@/components/button';
 import { LeaderboardService } from '@/services/leaderboard';
-import { YANDEX_API_HOST } from '@/helpers/constants/api';
+import { SCORE_CAT_CODERS, YANDEX_API_HOST } from '@/helpers/constants/api';
 import { useAppSelector } from '@/helpers/hooks/storeHooks';
 import { useEffect } from 'react';
 
@@ -31,7 +31,7 @@ export const GameEndWrapper = ({
           avatar: userAvatar ? `${YANDEX_API_HOST}/resources${userAvatar}` : '',
           scoreCatCoders: Number(score),
         },
-        ratingFieldName: 'scoreCatCoders',
+        ratingFieldName: SCORE_CAT_CODERS,
       });
     }
   }, [score]);

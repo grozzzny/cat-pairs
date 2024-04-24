@@ -32,9 +32,7 @@ export class LeaderboardService {
   ): Promise<LeaderboardTeamRequestResult | undefined> {
     try {
       const response = await LeaderboardApi.getTeamLeaderboard(props);
-      const data = await response.json().then(data => {
-        return data;
-      });
+      const data = await response.json();
 
       if (response.ok && !isRequestError(response.status)) {
         return data;

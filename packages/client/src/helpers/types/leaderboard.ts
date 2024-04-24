@@ -1,9 +1,11 @@
+type LeaderboardUserData = {
+  avatar?: string;
+  name: string;
+  scoreCatCoders: number;
+};
+
 export type LeaderboardNewLeaderRequest = {
-  data: {
-    avatar?: string;
-    name: string;
-    scoreCatCoders: number;
-  };
+  data: LeaderboardUserData;
   ratingFieldName: string;
 };
 
@@ -19,9 +21,5 @@ export type LeaderboardNewLeaderRequestResult = {
 };
 
 export type LeaderboardTeamRequestResult = Array<{
-  data: {
-    avatar?: string;
-    name: string;
-    scoreCatCoders: number;
-  };
+  data: LeaderboardUserData;
 }>;
