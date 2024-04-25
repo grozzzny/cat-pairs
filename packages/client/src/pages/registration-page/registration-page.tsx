@@ -37,7 +37,6 @@ export const RegistrationPage = () => {
     () => {
       // code...
     };
-
   return (
     <PageWrapper withMenu={false}>
       <div className='container-vertical-center'>

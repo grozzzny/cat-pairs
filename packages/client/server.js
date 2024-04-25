@@ -3,7 +3,9 @@ import express from 'express';
 import path from 'path';
 import fs from 'fs/promises';
 dotenv.config();
-
+import serialize from 'serialize-javascript';
+import { createProxyMiddleware } from 'http-proxy-middleware';
+import cookieParser from 'cookie-parser';
 const port = process.env.PORT || 3000;
 const isDev = process.env.NODE_ENV === 'development';
 const base = process.env.BASE || '/';
@@ -17,6 +19,16 @@ async function createServer() {
     : undefined;
 
   const app = express();
+  app.use(cookieParser());
+  app.use('/api/v2',
+    createProxyMiddleware({
+      changeOrigin: true,
+      cookieDomainRewrite: {
+        '*': '',
+      },
+      target: 'https://ya-praktikum.tech/api/v2'
+    })
+  );
 
   let vite;
   if (isDev) {
@@ -33,7 +45,7 @@ async function createServer() {
     app.use(base, sirv('./dist/client', { extensions: [] }));
   }
 
-  app.use('*', async (req, res) => {
+  app.use('*', cookieParser(), async (req, res) => {
     try {
       const url = req.originalUrl.replace(base, '');
 
@@ -52,8 +64,10 @@ async function createServer() {
 
       const rendered = await render(req, ssrManifest);
 
-      const html = template.replace('<!--ssr-outlet-->', rendered.html ?? '');
-
+      const html = template.replace('<!--ssr-outlet-->', rendered.html ?? '').replace('<!--ssr-initial-state-->',
+        `<script>window.APP_INITIAL_STATE = ${serialize(rendered.initialState, {
+          isJSON: true,
+        })}</script>`);
       res.status(200).set({ 'Content-Type': 'text/html' }).send(html);
     } catch (e) {
       vite?.ssrFixStacktrace(e);
@@ -67,6 +81,7 @@ async function createServer() {
     // eslint-disable-next-line no-console
     console.log(`Client is listening on port: ${port}`);
   });
+
 }
 
 createServer();

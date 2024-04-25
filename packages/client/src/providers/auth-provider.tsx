@@ -1,9 +1,8 @@
 import { notification } from 'antd';
-import { useAppDispatch } from '@/helpers/hooks/storeHooks';
-import { setCurrentUser } from '@/store/userSlice';
 import { UserService } from '@/services/user';
 import React, { createContext, useEffect, useRef, useState } from 'react';
 import { AuthService } from '@/services';
+import { redirectToUrl } from '@/helpers/redirect-helper';
 
 type AuthContextType = {
   isAuth: boolean;
@@ -24,14 +23,11 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = props => {
-  const dispatch = useAppDispatch();
-
   const { children } = props;
   const [isAuth, setIsAuth] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const isAuthRef = useRef(false);
   const [notify, contextHolder] = notification.useNotification();
-
   const abortController = new AbortController();
 
   const stopLoading = () => setLoading(false);
@@ -64,6 +60,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
           const response = await AuthService.loginOauth({ code });
           if (response?.isOk) {
             handleAuth();
+            redirectToUrl('/');
           }
           stopLoading();
         } catch (e) {
@@ -78,9 +75,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
             signal: abortController.signal,
           });
           if (response?.isOk) {
-            if (response?.user) {
-              dispatch(setCurrentUser(response.user));
-            }
             handleAuth();
             return;
           }
@@ -114,14 +108,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
           const response = await UserService.getCurrentUser({
             signal: abortController.signal,
           });
-          if (response?.isOk) {
-            if (response?.user) {
-              dispatch(setCurrentUser(response.user));
-            }
-          }
         } catch (err) {
           // eslint-disable-next-line no-console
-          console.log(err);
         }
       };
       fetchUser();

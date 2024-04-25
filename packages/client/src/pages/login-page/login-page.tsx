@@ -16,6 +16,7 @@ import {
   validateRequired,
 } from '@/helpers';
 import { useAuth } from '@/helpers/hooks/useAuth';
+import { redirectToUrl } from '@/helpers/redirect-helper';
 import { OAUTH_REDIRECT_URI } from '@/helpers/constants/api';
 
 type LoginFieldType = {
@@ -63,6 +64,7 @@ export const LoginPage = () => {
     if (result?.isOk) {
       setAuth?.();
       navigate('/');
+      redirectToUrl('/');
       return;
     }
     const errorMessage = `Не удалось войти: ${result?.reason}`;

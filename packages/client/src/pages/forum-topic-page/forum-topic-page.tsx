@@ -13,7 +13,6 @@ const ForumTopicPage = () => {
   );
 
   setPageTitle(topic?.title ?? 'Форум');
-
   return (
     <PageWrapper>
       <>

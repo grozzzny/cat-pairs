@@ -38,7 +38,6 @@ export const LeaderboardPage = () => {
   }, []);
 
   setPageTitle('Таблица лидеров');
-
   return (
     <PageWrapper>
       <>

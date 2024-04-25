@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './profile-avatar.css';
 import { ProfilePopup } from '@/components/profile-popup';
-import { YANDEX_API_HOST } from '@/helpers/constants/api';
+import { YANDEX_API_HOST_REDIRECT } from '@/helpers/constants/api';
 import { useAppSelector } from '@/helpers/hooks/storeHooks';
 
 export const ProfileAvatar = () => {
@@ -17,11 +17,13 @@ export const ProfileAvatar = () => {
   };
 
   const handleSetAvatar = (val: string) => {
-    setImage(`${YANDEX_API_HOST}/resources${val}`);
+    setImage(`${YANDEX_API_HOST_REDIRECT}/resources${val}`);
   };
 
   useEffect(() => {
-    setImage(`${YANDEX_API_HOST}/resources${avatar}`);
+    if (avatar) {
+      setImage(`${YANDEX_API_HOST_REDIRECT}/resources${avatar}`);
+    }
   }, []);
 
   return (

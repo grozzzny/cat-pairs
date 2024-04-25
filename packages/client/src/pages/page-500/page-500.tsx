@@ -11,7 +11,6 @@ type Page500Props = {
 export const Page500 = ({ error = 'ошибка сервера', theme }: Page500Props) => {
   const withMenu = false;
   const errorCode = '500';
-
   return (
     <ConfigProvider theme={theme}>
       <PageWrapper withMenu={withMenu}>

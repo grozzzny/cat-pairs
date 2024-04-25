@@ -60,6 +60,24 @@ export class UserService {
     }
   }
 
+  static async getCurrentUserWhithCookie(
+    props: GetUserRequestDto,
+    ctx: string
+  ): Promise<CurrentUserRequestResult | undefined> {
+    try {
+      const response = await AuthApi.getUserWhithCookie(props, ctx);
+      if (response.status < 400) {
+        const user = await response.json();
+        return { isOk: true, user: user };
+      }
+      const error = await response.json();
+      return { isOk: false, error: error.reason };
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
+  }
+
   static async changeUser(
     props: ProfileFieldType
   ): Promise<CurrentUserRequestResult | undefined> {
