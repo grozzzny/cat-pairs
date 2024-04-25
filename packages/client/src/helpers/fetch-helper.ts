@@ -25,7 +25,7 @@ export const getString = (object: object) => {
 };
 
 export const fetchHelper = (url: string, options: FetchHelperParams) => {
-  return fetch(`${YANDEX_API_HOST_REDIRECT}${url}`, {
+  return fetch(`${YANDEX_API_HOST_REDIRECT}/${url}`, {
     ...options,
     credentials: 'include',
   });

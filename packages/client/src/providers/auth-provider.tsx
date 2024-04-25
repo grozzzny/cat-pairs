@@ -77,9 +77,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
             signal: abortController.signal,
           });
           if (response?.isOk) {
-            /*if (response?.user) {
-             
-            }*/
             handleAuth();
             return;
           }
@@ -113,10 +110,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
           const response = await UserService.getCurrentUser({
             signal: abortController.signal,
           });
-          if (response?.isOk) {
-            /*if (response?.user) {
-            }*/
-          }
         } catch (err) {
           // eslint-disable-next-line no-console
         }

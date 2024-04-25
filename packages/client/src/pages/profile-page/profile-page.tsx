@@ -3,9 +3,12 @@ import './profile-page.css';
 import { useNavigate } from 'react-router-dom';
 import { ExitButton } from '@/components/exit-button';
 import { withAuthRouteHOC } from '@/helpers/hooks/withAuthRouteHOC';
+import { useEffect, useState } from 'react';
+import { redirectToUrl } from '@/helpers/redirect-helper';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
+
   return (
     <PageWrapper>
       <div className='profile-page'>
