@@ -1,9 +1,8 @@
 import { notification } from 'antd';
-import { useAppDispatch } from '@/helpers/hooks/storeHooks';
-import { setCurrentUser } from '@/store/userSlice';
 import { UserService } from '@/services/user';
 import React, { createContext, useEffect, useRef, useState } from 'react';
 import { AuthService } from '@/services';
+import { redirectToUrl } from '@/helpers/redirect-helper';
 
 type AuthContextType = {
   isAuth: boolean;
@@ -24,8 +23,6 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = props => {
-  const dispatch = useAppDispatch();
-
   const { children } = props;
   const [isAuth, setIsAuth] = useState(false);
   const [isLoading, setLoading] = useState(true);
@@ -63,6 +60,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = props => {
           const response = await AuthService.loginOauth({ code });
           if (response?.isOk) {
             handleAuth();
+            redirectToUrl('/');
           }
           stopLoading();
         } catch (e) {

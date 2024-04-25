@@ -17,10 +17,7 @@ import {
 } from '@/helpers';
 import { useAuth } from '@/helpers/hooks/useAuth';
 import { redirectToUrl } from '@/helpers/redirect-helper';
-import {
-  OAUTH_REDIRECT_URI,
-  YANDEX_API_HOST_REDIRECT,
-} from '@/helpers/constants/api';
+import { OAUTH_REDIRECT_URI } from '@/helpers/constants/api';
 
 type LoginFieldType = {
   login: string;
@@ -57,7 +54,6 @@ export const LoginPage = () => {
       return;
     }
     navigateOauth(serviceId, OAUTH_REDIRECT_URI);
-    redirectToUrl('/');
   };
 
   const onFinish: FormProps<LoginFieldType>['onFinish'] = async ({
