@@ -25,8 +25,7 @@ type RegistrationFieldType = {
 
 const onFinishFailed: FormProps<RegistrationFieldType>['onFinishFailed'] =
   errorInfo => {
-    // eslint-disable-next-line no-console
-    console.log('Failed:', errorInfo);
+    console.error('Failed:', errorInfo);
   };
 
 export const NewPassword = () => {
@@ -38,17 +37,20 @@ export const NewPassword = () => {
     oldPassword,
     newPassword,
   }: DataChangePassword) => {
-    const result = await UserService.changePassword({
-      oldPassword,
-      newPassword,
-    });
-    if (result && result.isOk) {
-      setMessage('Пароль успешно изменен');
-      setIsPopupOpen(true);
-    } else {
-      setMessage('Не удалось поменять пароль');
-      setIsPopupOpen(true);
-    }
+    new UserService()
+      .changePassword({
+        oldPassword,
+        newPassword,
+      })
+      .then(() => {
+        setMessage('Пароль успешно изменен');
+        setIsPopupOpen(true);
+      })
+      .catch(err => {
+        console.error(err);
+        setMessage('Не удалось поменять пароль');
+        setIsPopupOpen(true);
+      });
   };
   const handleClosePopup = () => {
     setIsPopupOpen(false);

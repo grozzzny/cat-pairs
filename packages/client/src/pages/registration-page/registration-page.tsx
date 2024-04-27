@@ -13,27 +13,32 @@ import {
   validateSecondName,
 } from '@/helpers';
 import { useNavigate } from 'react-router-dom';
-
-type RegistrationFieldType = {
-  first_name?: string;
-  second_name?: string;
-  email?: string;
-  phone?: string;
-  login?: string;
-  password?: string;
-};
+import { redirectToUrl } from '@/helpers/redirect-helper';
+import { AuthService } from '@/services';
+import { useNotification } from '@/providers/notification-provider';
+import { RegistrationFieldDto } from '@/helpers/types';
 
 export const RegistrationPage = () => {
   const navigate = useNavigate();
+  const { notify } = useNotification();
   setPageTitle('Регистрация');
 
   const darkTheme = false;
 
-  const onFinish: FormProps<RegistrationFieldType>['onFinish'] = () => {
-    // code...
+  const onFinish: FormProps<RegistrationFieldDto>['onFinish'] = data => {
+    new AuthService()
+      .registration(data)
+      .then(() => redirectToUrl('/'))
+      .catch(err => {
+        notify(
+          'error',
+          'Ошибка регистрации',
+          `Не удалось зарегистрироваться: ${err?.message}`
+        );
+      });
   };
 
-  const onFinishFailed: FormProps<RegistrationFieldType>['onFinishFailed'] =
+  const onFinishFailed: FormProps<RegistrationFieldDto>['onFinishFailed'] =
     () => {
       // code...
     };
@@ -49,7 +54,7 @@ export const RegistrationPage = () => {
             onFinishFailed={onFinishFailed}
             autoComplete='off'
             className='registration-page__form'>
-            <Form.Item<RegistrationFieldType>
+            <Form.Item<RegistrationFieldDto>
               name='first_name'
               rules={[
                 { validator: validateFirstName },
@@ -57,7 +62,7 @@ export const RegistrationPage = () => {
               ]}>
               <Input placeholder='Имя' />
             </Form.Item>
-            <Form.Item<RegistrationFieldType>
+            <Form.Item<RegistrationFieldDto>
               name='second_name'
               rules={[
                 { validator: validateSecondName },
@@ -65,7 +70,7 @@ export const RegistrationPage = () => {
               ]}>
               <Input placeholder='Фамилия' />
             </Form.Item>
-            <Form.Item<RegistrationFieldType>
+            <Form.Item<RegistrationFieldDto>
               name='email'
               rules={[
                 { validator: validateEmail },
@@ -73,7 +78,7 @@ export const RegistrationPage = () => {
               ]}>
               <Input placeholder='Email' />
             </Form.Item>
-            <Form.Item<RegistrationFieldType>
+            <Form.Item<RegistrationFieldDto>
               name='phone'
               rules={[
                 { validator: validatePhone },
@@ -81,7 +86,7 @@ export const RegistrationPage = () => {
               ]}>
               <Input placeholder='Телефон' />
             </Form.Item>
-            <Form.Item<RegistrationFieldType>
+            <Form.Item<RegistrationFieldDto>
               name='login'
               rules={[
                 { validator: validateLogin },
@@ -89,7 +94,7 @@ export const RegistrationPage = () => {
               ]}>
               <Input placeholder='Логин' />
             </Form.Item>
-            <Form.Item<RegistrationFieldType>
+            <Form.Item<RegistrationFieldDto>
               name='password'
               rules={[
                 { validator: validatePassword },
@@ -104,7 +109,9 @@ export const RegistrationPage = () => {
             />
             <div className='registration-page__footer'>
               <span>Есть учетные данные? </span>
-              <a onClick={() => navigate('/login')}>Войти</a>
+              <span className='text link' onClick={() => navigate('/login')}>
+                Войти
+              </span>
             </div>
           </Form>
         </AuthWrapper>
