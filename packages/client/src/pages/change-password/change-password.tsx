@@ -18,7 +18,7 @@ import {
 import { withAuthRouteHOC } from '@/helpers/hooks/withAuthRouteHOC';
 
 type RegistrationFieldType = {
-  oldpasswod: string;
+  oldpassword: string;
   newpassword: string;
   newpassword2: string;
 };
@@ -58,7 +58,7 @@ export const NewPassword = () => {
 
   const onFinish: FormProps<RegistrationFieldType>['onFinish'] = values => {
     handleChangePassword({
-      oldPassword: values.oldpasswod,
+      oldPassword: values.oldpassword,
       newPassword: values.newpassword,
     });
   };
@@ -78,7 +78,7 @@ export const NewPassword = () => {
               autoComplete='off'
               className='new-password__form'>
               <Form.Item<RegistrationFieldType>
-                name='oldpasswod'
+                name='oldpassword'
                 rules={[
                   { validator: validatePassword },
                   { validator: validateRequired },
