@@ -5,7 +5,11 @@ import {
   LoginRequestDto,
   RegistrationFieldDto,
 } from '@/helpers/types/api';
-import { HOST, VALID_AUTH_ERROR } from '@/helpers/constants/api';
+import {
+  HOST,
+  REDIRECT_TO_LOGIN,
+  VALID_AUTH_ERROR,
+} from '@/helpers/constants/api';
 import { BaseApi } from '@/api/base';
 import { User } from '@/helpers/types';
 import { FetchError } from '@/helpers/fetch-helper';
@@ -43,14 +47,14 @@ export class AuthApi extends BaseApi {
 
   fetchServiceId() {
     return this.get<{ service_id: string }>('/oauth/yandex/service-id', {
-      redirect_uri: HOST,
+      redirect_uri: `${HOST}${REDIRECT_TO_LOGIN}`,
     });
   }
 
   loginOauth({ code }: LoginOauthRequestDto) {
     return this.post('/oauth/yandex', {
       code,
-      redirect_uri: HOST,
+      redirect_uri: `${HOST}${REDIRECT_TO_LOGIN}`,
     });
   }
 
