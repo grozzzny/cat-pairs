@@ -62,7 +62,7 @@ export class AuthApi extends BaseApi {
     return this.get<User>('/auth/user');
   }
 
-  getUserWhithCookie(ctx: string) {
+  getUserWithCookie(ctx: string) {
     return this.fetch<User>('/auth/user', {
       method: 'GET',
       headers: setHeadersWithCookie('application/json', ctx),

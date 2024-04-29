@@ -38,7 +38,7 @@ export const fetchGetCurrentUserServer = createAsyncThunk<
   { rejectValue: string }
 >('user/fetchGetCurrentUserServer', async (ctx, { rejectWithValue }) => {
   try {
-    return await new AuthService().getCurrentUserWhithCookie(ctx);
+    return await new AuthService().getCurrentUserWithCookie(ctx);
   } catch (e) {
     return rejectWithValue(e instanceof Error ? e.message : 'Unknown error');
   }

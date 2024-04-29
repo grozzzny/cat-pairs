@@ -25,8 +25,8 @@ export class AuthService {
     return this.api.fetchUser();
   }
 
-  getCurrentUserWhithCookie(ctx: string): Promise<User> {
-    return this.api.getUserWhithCookie(ctx);
+  getCurrentUserWithCookie(ctx: string): Promise<User> {
+    return this.api.getUserWithCookie(ctx);
   }
 
   logout() {
