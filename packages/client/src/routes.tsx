@@ -1,6 +1,7 @@
 import * as Pages from '@/pages';
 import { AppDispatch, RootState } from './store';
 import * as init from '@/helpers/pagesInit';
+import { REDIRECT_TO_LOGIN } from '@/helpers/constants/api';
 
 export type PageInitArgs = {
   dispatch: AppDispatch;
@@ -21,7 +22,7 @@ export const routes = [
     fetchData: init.initProfilePage,
   },
   {
-    path: '/login',
+    path: REDIRECT_TO_LOGIN,
     element: <Pages.LoginPage />,
   },
   {

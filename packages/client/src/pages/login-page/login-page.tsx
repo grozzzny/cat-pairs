@@ -15,7 +15,7 @@ import {
   validateRequired,
 } from '@/helpers';
 import { redirectToUrl } from '@/helpers/redirect-helper';
-import { HOST } from '@/helpers/constants/api';
+import { HOST, REDIRECT_TO_LOGIN } from '@/helpers/constants/api';
 import { useNotification } from '@/providers/notification-provider';
 
 type LoginFieldType = {
@@ -39,7 +39,9 @@ export const LoginPage = () => {
     notify('warning', 'Загрузка', 'Авторизация начнется через мгновение :)');
     new AuthService()
       .getServiceId()
-      .then(serviceId => navigateOauth(serviceId, HOST))
+      .then(serviceId =>
+        navigateOauth(serviceId, `${HOST}${REDIRECT_TO_LOGIN}`)
+      )
       .catch(err => {
         console.error(err);
         notify(

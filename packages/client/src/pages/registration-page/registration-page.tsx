@@ -17,6 +17,7 @@ import { redirectToUrl } from '@/helpers/redirect-helper';
 import { AuthService } from '@/services';
 import { useNotification } from '@/providers/notification-provider';
 import { RegistrationFieldDto } from '@/helpers/types';
+import { REDIRECT_TO_LOGIN } from '@/helpers/constants/api';
 
 export const RegistrationPage = () => {
   const navigate = useNavigate();
@@ -109,7 +110,9 @@ export const RegistrationPage = () => {
             />
             <div className='registration-page__footer'>
               <span>Есть учетные данные? </span>
-              <span className='text link' onClick={() => navigate('/login')}>
+              <span
+                className='text link'
+                onClick={() => navigate(REDIRECT_TO_LOGIN)}>
                 Войти
               </span>
             </div>

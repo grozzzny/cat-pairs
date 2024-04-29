@@ -9,6 +9,7 @@ import { useAppDispatch } from '@/helpers/hooks/storeHooks';
 import { useState } from 'react';
 import React from 'react';
 import { useAuth } from '@/helpers/hooks/useAuth';
+import { REDIRECT_TO_LOGIN } from '@/helpers/constants/api';
 
 interface ExitButtonProps extends JSX.IntrinsicAttributes {
   onClick?: () => void;
@@ -35,7 +36,7 @@ export const ExitButton: React.FC<ExitButtonProps> = props => {
       .then(() => {
         dispatch(deleteCurrentUser());
         deleteAuth?.();
-        navigate('/login');
+        navigate(REDIRECT_TO_LOGIN);
       })
       .catch(err => {
         console.error(err);
