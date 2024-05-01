@@ -8,6 +8,7 @@ WORKDIR /app
 FROM base as builder
 
 COPY package.json yarn.lock ./
+
 RUN yarn install --frozen-lockfile
 
 COPY . .
