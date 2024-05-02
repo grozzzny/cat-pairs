@@ -62,12 +62,12 @@ export class GameApi {
 
     try {
       const cardBackImagePromise = loadImage(
-        `public/images/cards/${this.cardBackImageName}`
+        `images/cards/${this.cardBackImageName}`
       );
       const cardImagesPromises = Array.from(
         { length: numPairs },
         (_, index) => {
-          return loadImage(`public/images/cards/card-${index + 1}.jpg`);
+          return loadImage(`images/cards/card-${index + 1}.jpg`);
         }
       );
 

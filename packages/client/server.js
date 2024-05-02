@@ -7,6 +7,7 @@ import serialize from 'serialize-javascript';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import cookieParser from 'cookie-parser';
 const port = process.env.PORT || 3000;
+const serverHost = process.env.SERVER_HOST;
 const isDev = process.env.NODE_ENV === 'development';
 const base = process.env.BASE || '/';
 
@@ -27,6 +28,15 @@ async function createServer() {
         '*': '',
       },
       target: 'https://ya-praktikum.tech/api/v2'
+    })
+  );
+  app.use('/api/server',
+    createProxyMiddleware({
+      changeOrigin: true,
+      cookieDomainRewrite: {
+        '*': '',
+      },
+      target: `${serverHost}/api/server`
     })
   );
 
