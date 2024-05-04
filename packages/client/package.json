@@ -15,7 +15,6 @@
   "dependencies": {
     "@ant-design/icons": "4.8.3",
     "@reduxjs/toolkit": "2.2.2",
-    "@types/jsonwebtoken": "^9.0.6",
     "antd": "5.15.1",
     "compression": "1.7.4",
     "cookie-parser": "1.4.6",

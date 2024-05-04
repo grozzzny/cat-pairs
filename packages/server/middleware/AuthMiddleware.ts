@@ -21,7 +21,7 @@ export const authMiddleware = (
       next(ApiError.forbidden('Пользователь не авторизован'));
     }
 
-    const decoder = jwt.verify(token, 'secret_key');
+    const decoder = jwt.verify(token, process.env.SECRET_KEY as string);
     const req = expressRequest as MyUserRequest;
     req.user = decoder as User;
 

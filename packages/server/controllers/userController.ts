@@ -5,9 +5,13 @@ import type { NextFunction, Request, Response } from 'express';
 import type { MyUserRequest } from '../helpers/types';
 
 const generateJwt = (id: number, userName: string) => {
-  return jwt.sign({ id: id, userName: userName }, 'secret_key', {
-    expiresIn: '24h',
-  });
+  return jwt.sign(
+    { id: id, userName: userName },
+    process.env.SECRET_KEY as string,
+    {
+      expiresIn: '24h',
+    }
+  );
 };
 
 class UserController {

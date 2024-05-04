@@ -12,7 +12,6 @@ app.use(express.json());
 app.use('/api/server', router);
 app.use(errorHandler as any);
 const port = Number(process.env.SERVER_PORT) || 3001;
-console.log(process.env);
 
 const start = async () => {
   try {

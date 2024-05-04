@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './useAuth';
 import { REDIRECT_TO_LOGIN } from '@/helpers/constants/api';
-import { setKeyInStorage } from '@/utils/localstorage';
 
 export function withAuthRouteHOC<T extends JSX.IntrinsicAttributes>(
   WrappedRoute: React.ComponentType<T>
