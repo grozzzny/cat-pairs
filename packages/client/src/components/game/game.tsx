@@ -31,17 +31,15 @@ export const Game: React.FC<GameProps> = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    return () => {
-      const gameApi = new GameApi(
-        gameRef,
-        canvasRef,
-        changeGameStatus,
-        gameStatus,
-        selectedDifficulty
-      );
-      gameApi.render();
-      setGame(gameApi);
-    };
+    const gameApi = new GameApi(
+      gameRef,
+      canvasRef,
+      changeGameStatus,
+      gameStatus,
+      selectedDifficulty
+    );
+    gameApi.render();
+    setGame(gameApi);
   }, [changeGameStatus, gameStatus, selectedDifficulty]);
 
   if (!game) return <div style={{ color: 'white' }}>Loading...</div>;
