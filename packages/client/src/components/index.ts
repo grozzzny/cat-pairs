@@ -30,3 +30,5 @@ export { LinkList } from './links-list';
 export { LeadersTable } from './leaders-table';
 export { LeaderCard } from './leader-card';
 export { VolumeControl } from './volume-control';
+export { EmojiBar } from './emoji-bar';
+export { EmojiButton } from './emoji-button';

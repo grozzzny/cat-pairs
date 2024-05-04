@@ -1,3 +1,4 @@
+import { EmojiBar } from '../emoji-bar/emoji-bar';
 import './forum-topic-feed-item.css';
 
 interface ForumTopicFeedItemProps {
@@ -16,6 +17,9 @@ export const ForumTopicFeedItem = ({
       <div className='forum-topic-feed-item__name'>{name}</div>
       <div className='forum-topic-feed-item__text'>{text}</div>
       <div className='forum-topic-feed-item__time'>{time}</div>
+      <div className='forum-topic-feed-item__emoji'>
+        <EmojiBar topicId={1} />
+      </div>
     </div>
   );
 };
