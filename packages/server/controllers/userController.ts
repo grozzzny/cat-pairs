@@ -4,8 +4,6 @@ import jwt from 'jsonwebtoken';
 import type { NextFunction, Request, Response } from 'express';
 import type { MyUserRequest } from '../helpers/types';
 
-const { SECRET_KEY } = process.env;
-
 const generateJwt = (id: number, userName: string) => {
   return jwt.sign({ id: id, userName: userName }, 'secret_key', {
     expiresIn: '24h',
@@ -44,7 +42,7 @@ class UserController {
           ApiError.forbidden('Пользователь с таким именем не найден')
         );
       }
-      console.log(SECRET_KEY);
+
       const token = generateJwt(user.id, user.userName);
 
       return res.json({ token });
