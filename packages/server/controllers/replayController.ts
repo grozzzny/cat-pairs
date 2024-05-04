@@ -23,5 +23,18 @@ class ReplyController {
     }
     return res.json(replys);
   }
+
+  async getReplyById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const reply = await Reply.findOne({ where: { id } });
+      if (!reply) {
+        return next(ApiError.internal('Не удалось получить ответ по этому id'));
+      }
+      return res.json(reply);
+    } catch (e: any) {
+      next(ApiError.internal(e.message));
+    }
+  }
 }
 export const replyController = new ReplyController();

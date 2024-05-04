@@ -27,5 +27,17 @@ class TopicController {
       next(ApiError.internal(e.message));
     }
   }
+  async getTopicById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const topic = await Topic.findOne({ where: { id } });
+      if (!topic) {
+        return next(ApiError.internal('Не удалось получить тему по этому id'));
+      }
+      return res.json(topic);
+    } catch (e: any) {
+      next(ApiError.internal(e.message));
+    }
+  }
 }
 export const topicController = new TopicController();

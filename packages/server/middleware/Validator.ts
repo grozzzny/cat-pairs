@@ -1,5 +1,11 @@
 import { Joi, celebrate } from 'celebrate';
 
+export const userNameValidator = celebrate({
+  body: Joi.object().keys({
+    userName: Joi.string().required().min(2).max(50),
+  }),
+});
+
 export const topicValidator = celebrate({
   body: Joi.object().keys({
     topicName: Joi.string().required().min(2).max(100),

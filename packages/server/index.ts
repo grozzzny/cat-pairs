@@ -1,12 +1,11 @@
 import dotenv from 'dotenv';
 import cors from 'cors';
-dotenv.config();
-
 import express from 'express';
 import sequelize from './db';
 import router from './routes/index';
 import { errorHandler } from './middleware/ErrorHandlingMiddleware';
 
+dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());

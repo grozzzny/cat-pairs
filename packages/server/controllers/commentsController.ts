@@ -30,6 +30,20 @@ class CommentController {
       next(ApiError.internal(e.message));
     }
   }
-}
 
+  async getCommentById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const comment = await Comment.findOne({ where: { id } });
+      if (!comment) {
+        return next(
+          ApiError.internal('Не удалось получить комметарии по этому id')
+        );
+      }
+      return res.json(comment);
+    } catch (e: any) {
+      next(ApiError.internal(e.message));
+    }
+  }
+}
 export const commentController = new CommentController();
