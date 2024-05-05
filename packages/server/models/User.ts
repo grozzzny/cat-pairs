@@ -1,11 +1,15 @@
 /* eslint-disable indent */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { Comment } from '../models/Comment';
+import { Topic } from '../models/Topic';
+import { Reply } from '../models/Reply';
 
 import {
   AllowNull,
   AutoIncrement,
   Column,
   DataType,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
@@ -28,4 +32,12 @@ export class User extends Model {
     type: DataType.STRING,
   })
   declare userName: string;
+  @HasMany(() => Topic)
+  declare topics: Topic[];
+
+  @HasMany(() => Comment)
+  declare comments: Comment[];
+
+  @HasMany(() => Reply)
+  declare replys: Reply[];
 }

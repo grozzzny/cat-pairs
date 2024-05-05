@@ -5,8 +5,8 @@ import type { NextFunction, Request, Response } from 'express';
 class ReplyController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const { commentId, text } = req.body;
-      const reply = await Reply.create({ commentId, text });
+      const { commentId, userId, text } = req.body;
+      const reply = await Reply.create({ commentId, userId, text });
       if (!reply) {
         return next(ApiError.internal('Ошибка сервера'));
       }

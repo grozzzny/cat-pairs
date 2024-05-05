@@ -12,6 +12,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 import { Comment } from '../models/Comment';
+import { User } from './User';
 
 @Table({
   timestamps: true,
@@ -29,6 +30,12 @@ export class Reply extends Model {
   declare commentId: number;
   @BelongsTo(() => Comment)
   comments!: Comment;
+
+  @ForeignKey(() => User)
+  @Column
+  declare userId: number;
+  @BelongsTo(() => User)
+  user!: User;
 
   @AllowNull(false)
   @Column({

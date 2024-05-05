@@ -83,6 +83,21 @@ class UserController {
       next(ApiError.forbidden(e.message));
     }
   }
+
+  async getUserById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const user = await User.findOne({ where: { id } });
+      if (!user) {
+        return next(
+          ApiError.internal('Не удалось получить пользователя по этому id')
+        );
+      }
+      return res.json(user);
+    } catch (e: any) {
+      next(ApiError.internal(e.message));
+    }
+  }
 }
 
 export const userController = new UserController();

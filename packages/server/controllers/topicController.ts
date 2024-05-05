@@ -5,8 +5,8 @@ import type { NextFunction, Request, Response } from 'express';
 class TopicController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const { topicName, description } = req.body;
-      const topic = await Topic.create({ topicName, description });
+      const { topicName, description, userId } = req.body;
+      const topic = await Topic.create({ topicName, description, userId });
       if (!topic) {
         return next(ApiError.internal('Ошибка сервера'));
       }

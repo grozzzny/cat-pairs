@@ -12,5 +12,6 @@ userRouter.post(
 userRouter.post('/login', userNameValidator, userController.login);
 userRouter.get('/check', authMiddleware, userController.check);
 userRouter.get('/me', authMiddleware, userController.getCurrentUser);
+userRouter.get('/getOne/:id', authMiddleware, userController.getUserById);
 
 export default userRouter;

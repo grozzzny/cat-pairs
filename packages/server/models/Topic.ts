@@ -3,14 +3,17 @@
 import {
   AllowNull,
   AutoIncrement,
+  BelongsTo,
   Column,
   DataType,
+  ForeignKey,
   HasMany,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
 import { Comment } from '../models/Comment';
+import { User } from './User';
 
 @Table({
   timestamps: true,
@@ -28,6 +31,12 @@ export class Topic extends Model {
     type: DataType.STRING,
   })
   declare topicName: string;
+
+  @ForeignKey(() => User)
+  @Column
+  declare userId: number;
+  @BelongsTo(() => User)
+  user!: User;
 
   @AllowNull(false)
   @Column({
