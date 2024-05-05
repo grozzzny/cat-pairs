@@ -6,6 +6,7 @@ class TopicController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
       const { topicName, description, userId } = req.body;
+      console.log(topicName, description, userId);
       const topic = await Topic.create({ topicName, description, userId });
       if (!topic) {
         return next(ApiError.internal('Ошибка сервера'));

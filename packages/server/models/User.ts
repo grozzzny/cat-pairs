@@ -32,6 +32,7 @@ export class User extends Model {
     type: DataType.STRING,
   })
   declare userName: string;
+
   @HasMany(() => Topic)
   declare topics: Topic[];
 
