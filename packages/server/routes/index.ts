@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import topicRouter from './topicRouter';
-import commentRouter from './commetRouter';
+import commentRouter from './commentRouter';
 import replyRouter from './replyRouter';
 import userRouter from './userRouter';
 
