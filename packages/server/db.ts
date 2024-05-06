@@ -1,29 +1,23 @@
-import { Client } from 'pg';
+import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
+import dotenv from 'dotenv';
+dotenv.config({ path: '../../.env' });
 
-const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
-  process.env;
+const {
+  POSTGRES_DB,
+  POSTGRES_PASSWORD,
+  POSTGRES_HOST,
+  POSTGRES_USER,
+  POSTGRES_PORT,
+} = process.env;
 
-export const createClientAndConnect = async (): Promise<Client | null> => {
-  try {
-    const client = new Client({
-      user: POSTGRES_USER,
-      host: 'localhost',
-      database: POSTGRES_DB,
-      password: POSTGRES_PASSWORD,
-      port: Number(POSTGRES_PORT),
-    });
-
-    await client.connect();
-
-    const res = await client.query('SELECT NOW()');
-    console.log('  ➜ 🎸 Connected to the database at:', res?.rows?.[0].now);
-    client.end();
-
-    return client;
-  } catch (e) {
-    console.log('Error:');
-    console.error(e);
-  }
-
-  return null;
+const sequelizeOptions: SequelizeOptions = {
+  host: POSTGRES_HOST,
+  port: Number(POSTGRES_PORT),
+  username: POSTGRES_USER,
+  password: POSTGRES_PASSWORD,
+  database: POSTGRES_DB,
+  dialect: 'postgres',
+  models: [__dirname + '/models'],
 };
+const sequelize = new Sequelize(sequelizeOptions);
+export default sequelize;
