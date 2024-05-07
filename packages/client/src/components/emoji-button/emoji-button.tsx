@@ -22,12 +22,22 @@ export const EmojiButton = ({
   const { emojiNumber, isActive } = reactionInfo;
   const service = new ForumService();
 
-  const handleEmojiClick = () => {
+  const handleEmojiClick = async () => {
     if (isActive) {
-      service.deleteReaction({ topicId, userId: currentUserId, emojiCode });
+      const result = await service.deleteReaction({
+        topicId,
+        userId: currentUserId,
+        emojiCode,
+      });
+      console.log(result);
       return;
     }
-    service.addReaction({ topicId, userId: currentUserId, emojiCode });
+    const result = await service.deleteReaction({
+      topicId,
+      userId: currentUserId,
+      emojiCode,
+    });
+    console.log(result);
   };
 
   return (

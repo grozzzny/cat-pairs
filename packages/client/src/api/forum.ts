@@ -17,10 +17,14 @@ export class ForumApi extends BaseApi {
   }
 
   addReaction(params: ForumUpdateReactionRequest) {
-    return this.post<DefaultResult>('/forum/reaction', params);
+    // TODO: временная заглушка на время отсутствия АПИ
+    // return this.post<DefaultResult>('/forum/reaction', params);
+    return new Promise<ForumUpdateReactionRequest>(resolve => resolve(params));
   }
 
   deleteReaction(params: ForumUpdateReactionRequest) {
-    return this.delete<DefaultResult>('/forum/reaction', params);
+    // TODO: временная заглушка на время отсутствия АПИ
+    // return this.delete<DefaultResult>('/forum/reaction', params);
+    return new Promise<ForumUpdateReactionRequest>(resolve => resolve(params));
   }
 }
