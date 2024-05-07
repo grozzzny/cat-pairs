@@ -11,6 +11,3 @@ export interface MyUserRequest extends Request {
 export interface CreateThemeRequest {
   theme: string;
 }
-/*export interface Request extends MyUserRequest {
-  user: User
-}*/

@@ -11,9 +11,7 @@ class ThemeController {
       const { theme } = req.body as CreateThemeRequest;
 
       const existingTheme = await SiteTheme.findOne({ where: { theme } });
-      if (existingTheme) {
-        return next(ApiError.internal('Тема уже существует'));
-      }
+      if (existingTheme) throw new Error('Тема уже существует');
 
       const newTheme = new SiteTheme();
       newTheme.theme = theme;
@@ -26,12 +24,11 @@ class ThemeController {
       next(ApiError.internal(error.message));
     }
   }
-  async getAllThemes(_: any, res: Response, next: NextFunction) {
+  async getAllThemes(_req: Request, res: Response, next: NextFunction) {
     try {
       const themes = await SiteTheme.findAll();
-      if (!themes) {
-        return next(ApiError.internal('Темы не найдены'));
-      }
+      if (themes.length === 0) throw new Error('Темы не найдены');
+
       res.status(200).json(themes);
     } catch (error: any) {
       next(ApiError.internal(error.message));
@@ -45,9 +42,10 @@ class ThemeController {
         include: [{ model: UserTheme, include: [SiteTheme] }],
       });
 
-      if (!user) throw new Error(`User #${req.params.userId} not found`);
+      if (!user)
+        throw new Error(`Пользователь #${req.params.userId} не найден`);
       if (!user.userTheme)
-        throw new Error(`User Theme of User #${req.params.userId} not found`);
+        throw new Error(`Тема пользователя #${req.params.userId} не найдена`);
       if (!user.userTheme.theme)
         throw new Error(`Тема #${user.userTheme.themeId} не найдена`);
 
