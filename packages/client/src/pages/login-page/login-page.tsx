@@ -58,7 +58,9 @@ export const LoginPage = () => {
   }) => {
     new AuthService()
       .login({ login, password })
-      .then(() => redirectToUrl('/'))
+      .then(() => {
+        redirectToUrl('/');
+      })
       .catch(err => {
         notify(
           'error',

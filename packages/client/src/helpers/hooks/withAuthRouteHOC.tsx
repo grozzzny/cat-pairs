@@ -13,6 +13,7 @@ export function withAuthRouteHOC<T extends JSX.IntrinsicAttributes>(
       setTimeout(() => navigate(REDIRECT_TO_LOGIN));
       return <></>;
     }
+
     return <WrappedRoute {...props} />;
   };
 
