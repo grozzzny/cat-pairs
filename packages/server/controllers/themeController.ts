@@ -3,11 +3,12 @@ import { SiteTheme } from '../models/SiteTheme';
 import { UserTheme } from '../models/UserTheme';
 import { ApiError } from '../error/ApiError';
 import type { CreateThemeRequest } from '../helpers/types';
+import { User } from '../models/User';
 
 class ThemeController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const { theme, description } = req.body as CreateThemeRequest;
+      const { theme } = req.body as CreateThemeRequest;
 
       const existingTheme = await SiteTheme.findOne({ where: { theme } });
       if (existingTheme) {
@@ -16,7 +17,6 @@ class ThemeController {
 
       const newTheme = new SiteTheme();
       newTheme.theme = theme;
-      newTheme.description = description;
       await newTheme.save();
 
       res
@@ -29,6 +29,9 @@ class ThemeController {
   async getAllThemes(_: any, res: Response, next: NextFunction) {
     try {
       const themes = await SiteTheme.findAll();
+      if (!themes) {
+        return next(ApiError.internal('Темы не найдены'));
+      }
       res.status(200).json(themes);
     } catch (error: any) {
       next(ApiError.internal(error.message));
@@ -37,18 +40,22 @@ class ThemeController {
 
   async getUserTheme(req: Request, res: Response, next: NextFunction) {
     try {
-      const userTheme = await UserTheme.findOne({
-        where: { userId: req.params.userId },
+      const user = await User.findOne({
+        where: { id: req.params.userId },
+        include: [{ model: UserTheme, include: [SiteTheme] }],
       });
-      const siteTheme = await SiteTheme.findOne({
-        where: { theme: userTheme?.theme || 'light' },
-      });
-      res.status(200).json(siteTheme);
+
+      if (!user) throw new Error(`User #${req.params.userId} not found`);
+      if (!user.userTheme)
+        throw new Error(`User Theme of User #${req.params.userId} not found`);
+      if (!user.userTheme.theme)
+        throw new Error(`Тема #${user.userTheme.themeId} не найдена`);
+
+      res.status(200).json(user.userTheme.theme);
     } catch (error: any) {
       next(ApiError.internal(error.message));
     }
   }
-
   async updateUserTheme(req: Request, res: Response, next: NextFunction) {
     try {
       const { theme } = req.body;
@@ -63,11 +70,14 @@ class ThemeController {
       const userTheme = await UserTheme.findOne({ where: { userId: id } });
 
       if (userTheme) {
-        await userTheme.update({ theme });
+        await userTheme.update({ themeId: themeExists.id });
         return res.status(200).json({ message: 'Тема успешно обновлена' });
       } else {
-        await UserTheme.create({ userId: id, theme } as UserTheme);
-        return res.status(200).json({ message: 'Тема успешно создана' });
+        await UserTheme.create({
+          userId: id,
+          themeId: themeExists.id,
+        } as UserTheme);
+        return res.status(200).json({ message: 'Тема успешно добавлена' });
       }
     } catch (error: any) {
       next(ApiError.internal(error.message));

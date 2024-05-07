@@ -5,12 +5,14 @@ import {
   AutoIncrement,
   Column,
   DataType,
+  HasOne,
   Index,
   Model,
   PrimaryKey,
   Table,
   Unique,
 } from 'sequelize-typescript';
+import { UserTheme } from './UserTheme';
 
 @Table({
   timestamps: true,
@@ -27,9 +29,8 @@ export class SiteTheme extends Model<SiteTheme> {
   @AllowNull(false)
   @Unique
   @Column(DataType.STRING)
-  theme!: string;
+  declare theme: string;
 
-  @AllowNull(false)
-  @Column(DataType.STRING)
-  description!: string;
+  @HasOne(() => UserTheme)
+  declare userTheme: UserTheme;
 }

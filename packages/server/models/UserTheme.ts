@@ -3,9 +3,11 @@
 import {
   AllowNull,
   AutoIncrement,
+  BelongsTo,
   Column,
   DataType,
   ForeignKey,
+  Index,
   Model,
   PrimaryKey,
   Table,
@@ -25,12 +27,19 @@ export class UserTheme extends Model<UserTheme> {
   declare id: number;
 
   @ForeignKey(() => SiteTheme)
-  @AllowNull(false)
-  @Column(DataType.STRING)
-  theme!: string;
+  @Index
+  @Column
+  declare themeId: number;
+
+  @BelongsTo(() => SiteTheme, 'themeId')
+  declare theme?: SiteTheme;
 
   @ForeignKey(() => User)
+  @Index
   @AllowNull(false)
   @Column(DataType.INTEGER)
   userId!: number;
+
+  @BelongsTo(() => User, 'userId')
+  declare user: User;
 }

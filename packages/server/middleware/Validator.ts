@@ -33,6 +33,5 @@ export const replyValidator = celebrate({
 export const themeValidator = celebrate({
   body: Joi.object().keys({
     theme: Joi.string().required().min(2).max(255),
-    description: Joi.string().required().min(2).max(1000),
   }),
 });

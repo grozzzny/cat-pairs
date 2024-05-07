@@ -21,7 +21,7 @@ import {
 @Table({
   timestamps: true,
   tableName: 'users',
-  modelName: 'Users',
+  modelName: 'User',
 })
 export class User extends Model {
   @AutoIncrement
@@ -45,5 +45,5 @@ export class User extends Model {
   declare replys: Reply[];
 
   @HasOne(() => UserTheme)
-  declare user_theme: string;
+  declare userTheme: UserTheme;
 }
