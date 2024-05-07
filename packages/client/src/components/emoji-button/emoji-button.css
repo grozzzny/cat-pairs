@@ -10,5 +10,6 @@
 .emoji-button--active:hover {
   background-color: var(--hint) !important;
   color: white !important;
+  border: none;
   transition: 0.5s;
 }

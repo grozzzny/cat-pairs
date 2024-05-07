@@ -8,9 +8,23 @@ export type ForumTopicReactionDto = {
   userId: number;
 };
 
+export type ForumGetReactionsResult = {
+  data: ForumTopicReactionDto[];
+};
+
 export type ReactionInfo = {
   emojiNumber: number;
   isActive: boolean;
 };
 
 export type ReactionList = Record<EmojiCodes, ReactionInfo>;
+
+export type ForumGetReactionsRequest = {
+  topicId: number;
+};
+
+export type ForumUpdateReactionRequest = {
+  topicId: number;
+  userId: number;
+  emojiCode: string;
+};
