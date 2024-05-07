@@ -14,8 +14,11 @@ class ThemeController {
         return next(ApiError.internal('Тема уже существует'));
       }
 
-      // @ts-ignore
-      const newTheme = await SiteTheme.create({ theme, description });
+      const newTheme = new SiteTheme();
+      newTheme.theme = theme;
+      newTheme.description = description;
+      await newTheme.save();
+
       res
         .status(201)
         .json({ message: 'Тема успешно добавлена', theme: newTheme });
