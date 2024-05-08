@@ -17,7 +17,7 @@ import { User } from './User';
 @Table({
   timestamps: true,
   tableName: 'reply',
-  modelName: 'Replys',
+  modelName: 'Reply',
 })
 export class Reply extends Model {
   @AutoIncrement

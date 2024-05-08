@@ -3,6 +3,7 @@
 import { Comment } from '../models/Comment';
 import { Topic } from '../models/Topic';
 import { Reply } from '../models/Reply';
+import { UserTheme } from '../models/UserTheme';
 
 import {
   AllowNull,
@@ -10,6 +11,7 @@ import {
   Column,
   DataType,
   HasMany,
+  HasOne,
   Model,
   PrimaryKey,
   Table,
@@ -19,7 +21,7 @@ import {
 @Table({
   timestamps: true,
   tableName: 'users',
-  modelName: 'Users',
+  modelName: 'User',
 })
 export class User extends Model {
   @AutoIncrement
@@ -41,4 +43,7 @@ export class User extends Model {
 
   @HasMany(() => Reply)
   declare replys: Reply[];
+
+  @HasOne(() => UserTheme)
+  declare userTheme: UserTheme;
 }
