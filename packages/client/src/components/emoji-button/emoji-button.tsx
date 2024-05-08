@@ -21,6 +21,7 @@ export const EmojiButton = ({
   const emojiImg = <img src={EMOJI[key]} alt={key} />;
   const { emojiNumber, isActive } = reactionInfo;
   const service = new ForumService();
+  const value = emojiNumber || '';
 
   const handleEmojiClick = async () => {
     if (isActive) {
@@ -32,7 +33,7 @@ export const EmojiButton = ({
       console.log(result);
       return;
     }
-    const result = await service.deleteReaction({
+    const result = await service.addReaction({
       topicId,
       userId: currentUserId,
       emojiCode,
@@ -43,7 +44,7 @@ export const EmojiButton = ({
   return (
     <Button
       className={`emoji-button ${isActive && 'emoji-button--active'}`}
-      label={String(emojiNumber)}
+      label={String(value)}
       icon={emojiImg}
       key={key}
       onClick={handleEmojiClick}

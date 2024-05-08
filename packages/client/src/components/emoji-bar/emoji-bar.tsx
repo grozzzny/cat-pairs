@@ -29,29 +29,34 @@ const mapRawReactions = (
 };
 
 export const EmojiBar = ({ topicId }: EmojiBarProps): JSX.Element => {
-  const [reactions, setReactions] = useState<ReactionList>();
+  const [reactions, setReactions] = useState<ReactionList>(
+    REACTION_LIST_DEFAULT
+  );
   const currentUserId = useAppSelector(store => store.user.currentUser.id);
   useEffect(() => {
-    const fetchReactions = async () => {
-      const service = new ForumService();
-      const rawReactions = await service.getReactions({ topicId });
-      setReactions(mapRawReactions(rawReactions.data, currentUserId));
+    const service = new ForumService();
+    service
+      .getReactions({ topicId })
+      .then(rawReactions => {
+        setReactions(mapRawReactions(rawReactions.data, currentUserId));
+      })
+      .catch(err => console.error(err));
+    return () => {
+      service.api.abortController.abort();
     };
-    fetchReactions();
   }, []);
 
   return (
     <Flex gap={4} key={topicId}>
-      {reactions &&
-        Object.keys(reactions).map(value => (
-          <EmojiButton
-            key={`${topicId}_${value}`}
-            emojiCode={value}
-            reactionInfo={reactions[value as EmojiCodes]}
-            currentUserId={currentUserId}
-            topicId={topicId}
-          />
-        ))}
+      {Object.entries(reactions).map(([key, value]) => (
+        <EmojiButton
+          key={`${topicId}_${key}`}
+          emojiCode={key}
+          reactionInfo={value}
+          currentUserId={currentUserId}
+          topicId={topicId}
+        />
+      ))}
     </Flex>
   );
 };
