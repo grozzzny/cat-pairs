@@ -20,14 +20,14 @@ class ThemeController {
       res
         .status(201)
         .json({ message: 'Тема успешно добавлена', theme: newTheme });
-    } catch (error: any) {
-      next(ApiError.internal(error.message));
+    } catch (error: unknown) {
+      next(ApiError.internal((error as Error).message));
     }
   }
   async getAllThemes(_req: Request, res: Response, next: NextFunction) {
     try {
       const themes = await SiteTheme.findAll();
-      if (themes.length === 0) throw new Error('Темы не найдены');
+      if (!themes.length) throw new Error('Темы не найдены');
 
       res.status(200).json(themes);
     } catch (error: any) {
@@ -59,7 +59,7 @@ class ThemeController {
       const { theme } = req.body;
       const { userId } = req.params;
       const id = Number(userId);
-      const themeExists = await SiteTheme.findOne({ where: { theme: theme } });
+      const themeExists = await SiteTheme.findOne({ where: { theme } });
 
       if (!themeExists) {
         return next(ApiError.internal('Тема не найдена'));
@@ -70,15 +70,15 @@ class ThemeController {
       if (userTheme) {
         await userTheme.update({ themeId: themeExists.id });
         return res.status(200).json({ message: 'Тема успешно обновлена' });
-      } else {
-        await UserTheme.create({
-          userId: id,
-          themeId: themeExists.id,
-        } as UserTheme);
-        return res.status(200).json({ message: 'Тема успешно добавлена' });
       }
-    } catch (error: any) {
-      next(ApiError.internal(error.message));
+
+      await UserTheme.create({
+        userId: id,
+        themeId: themeExists.id,
+      } as UserTheme);
+      return res.status(200).json({ message: 'Тема успешно добавлена' });
+    } catch (error: unknown) {
+      next(ApiError.internal((error as Error).message));
     }
   }
 }
