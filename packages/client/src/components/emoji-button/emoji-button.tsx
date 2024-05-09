@@ -46,7 +46,6 @@ export const EmojiButton = ({
       className={`emoji-button ${isActive && 'emoji-button--active'}`}
       label={String(value)}
       icon={emojiImg}
-      key={key}
       onClick={handleEmojiClick}
     />
   );

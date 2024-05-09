@@ -1,10 +1,6 @@
 import { REACTION_LIST_DEFAULT } from '@/helpers/constants/emoji';
 import { useAppSelector } from '@/helpers/hooks/storeHooks';
-import {
-  EmojiCodes,
-  ForumTopicReactionDto,
-  ReactionList,
-} from '@/helpers/types';
+import { ForumTopicReactionDto, ReactionList } from '@/helpers/types';
 import { ForumService } from '@/services/forum';
 import { Flex } from 'antd';
 import { useEffect, useState } from 'react';
@@ -18,7 +14,7 @@ const mapRawReactions = (
   rawReactions: ForumTopicReactionDto[],
   currentUserId: number
 ): ReactionList => {
-  const reactions = JSON.parse(JSON.stringify(REACTION_LIST_DEFAULT));
+  const reactions = structuredClone(REACTION_LIST_DEFAULT);
   rawReactions.forEach(value => {
     const emojiEntity = reactions[value.emojiCode];
     emojiEntity.emojiNumber += 1;
@@ -47,10 +43,10 @@ export const EmojiBar = ({ topicId }: EmojiBarProps): JSX.Element => {
   }, []);
 
   return (
-    <Flex gap={4} key={topicId}>
+    <Flex gap={4}>
       {Object.entries(reactions).map(([key, value]) => (
         <EmojiButton
-          key={`${topicId}_${key}`}
+          key={key}
           emojiCode={key}
           reactionInfo={value}
           currentUserId={currentUserId}

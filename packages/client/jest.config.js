@@ -12,5 +12,6 @@ export default {
     '@/(.*)$': '<rootDir>/src/$1',
     '\\.css$': 'identity-obj-proxy'
   },
+  setupFiles: ['<rootDir>/global.mock.js'],
   setupFilesAfterEnv: ['./setup-tests.tsx']
 };

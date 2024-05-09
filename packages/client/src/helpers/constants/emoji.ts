@@ -13,8 +13,8 @@ const REACTION_INFO_DEFAULT: ReactionInfo = {
 };
 
 export const REACTION_LIST_DEFAULT: ReactionList = {
-  grin: REACTION_INFO_DEFAULT,
-  cry: REACTION_INFO_DEFAULT,
-  pout: REACTION_INFO_DEFAULT,
-  smile: REACTION_INFO_DEFAULT,
+  grin: structuredClone(REACTION_INFO_DEFAULT),
+  cry: structuredClone(REACTION_INFO_DEFAULT),
+  pout: structuredClone(REACTION_INFO_DEFAULT),
+  smile: structuredClone(REACTION_INFO_DEFAULT),
 };
