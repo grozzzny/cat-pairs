@@ -1,0 +1,18 @@
+.emoji-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 35px;
+  width: auto !important;
+  min-width: 40px;
+  padding: 0 5px;
+  border-radius: 15px;
+}
+
+.emoji-button--active,
+.emoji-button--active:hover {
+  background-color: var(--hint) !important;
+  color: white !important;
+  border: none;
+  transition: 0.5s;
+}

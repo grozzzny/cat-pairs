@@ -30,6 +30,7 @@ export const ForumTopic = ({
           {feed.map(item => (
             <ForumTopicFeedItem
               key={item.messageId}
+              topicId={item.messageId}
               name={item.name}
               text={item.text}
               time={item.time}

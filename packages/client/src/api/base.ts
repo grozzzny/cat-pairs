@@ -46,6 +46,13 @@ export class BaseApi {
     });
   };
 
+  delete: HTTPMethod = (url: string, params?: object) => {
+    return this.fetch(url, {
+      method: 'DELETE',
+      body: params ? getString(params) : undefined,
+    });
+  };
+
   get = <ResponseData extends object>(
     url: string,
     params?: Record<string, string>
