@@ -1,13 +1,11 @@
 /* eslint-disable indent */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Comment } from '../models/Comment';
-import { Topic } from '../models/Topic';
-import { Reply } from '../models/Reply';
-import { UserTheme } from '../models/UserTheme';
+import { Comment } from './Comment';
+import { Topic } from './Topic';
+import { Reply } from './Reply';
+import { UserTheme } from './UserTheme';
 
 import {
-  AllowNull,
-  AutoIncrement,
   Column,
   DataType,
   HasMany,
@@ -24,16 +22,31 @@ import {
   modelName: 'User',
 })
 export class User extends Model {
-  @AutoIncrement
   @PrimaryKey
   @Column
   declare id: number;
-  @AllowNull(false)
+
+  @Column({ type: DataType.STRING })
+  declare first_name: string;
+
+  @Column({ type: DataType.STRING })
+  declare second_name: string;
+
+  @Column({ type: DataType.STRING })
+  declare display_name: string;
+
   @Unique
-  @Column({
-    type: DataType.STRING,
-  })
-  declare userName: string;
+  @Column({ type: DataType.STRING })
+  declare login: string;
+
+  @Column({ type: DataType.STRING })
+  declare avatar: string;
+
+  @Column({ type: DataType.STRING })
+  declare email: string;
+
+  @Column({ type: DataType.STRING })
+  declare phone: string;
 
   @HasMany(() => Topic)
   declare topics: Topic[];
@@ -46,4 +59,8 @@ export class User extends Model {
 
   @HasOne(() => UserTheme)
   declare userTheme: UserTheme;
+
+  static findById(id: number): Promise<User | null> {
+    return User.findOne({ where: { id } });
+  }
 }

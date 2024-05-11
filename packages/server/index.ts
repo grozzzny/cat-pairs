@@ -10,7 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/api/server', router);
-app.use(errorHandler as any);
+app.use(errorHandler);
 const port = Number(process.env.SERVER_PORT) || 3001;
 
 const start = async () => {

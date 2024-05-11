@@ -24,6 +24,7 @@ class ThemeController {
       next(ApiError.internal((error as Error).message));
     }
   }
+
   async getAllThemes(_req: Request, res: Response, next: NextFunction) {
     try {
       const themes = await SiteTheme.findAll();
@@ -37,15 +38,15 @@ class ThemeController {
 
   async getUserTheme(req: Request, res: Response, next: NextFunction) {
     try {
+      const userId = req.webUser.id;
       const user = await User.findOne({
-        where: { id: req.params.userId },
+        where: { id: userId },
         include: [{ model: UserTheme, include: [SiteTheme] }],
       });
 
-      if (!user)
-        throw new Error(`Пользователь #${req.params.userId} не найден`);
+      if (!user) throw new Error(`Пользователь #${userId} не найден`);
       if (!user.userTheme)
-        throw new Error(`Тема пользователя #${req.params.userId} не найдена`);
+        throw new Error(`Тема пользователя #${userId} не найдена`);
       if (!user.userTheme.theme)
         throw new Error(`Тема #${user.userTheme.themeId} не найдена`);
 
@@ -57,15 +58,14 @@ class ThemeController {
   async updateUserTheme(req: Request, res: Response, next: NextFunction) {
     try {
       const { theme } = req.body;
-      const { userId } = req.params;
-      const id = Number(userId);
+      const userId = req.webUser.id;
       const themeExists = await SiteTheme.findOne({ where: { theme } });
 
       if (!themeExists) {
         return next(ApiError.internal('Тема не найдена'));
       }
 
-      const userTheme = await UserTheme.findOne({ where: { userId: id } });
+      const userTheme = await UserTheme.findOne({ where: { userId } });
 
       if (userTheme) {
         await userTheme.update({ themeId: themeExists.id });
@@ -73,7 +73,7 @@ class ThemeController {
       }
 
       await UserTheme.create({
-        userId: id,
+        userId,
         themeId: themeExists.id,
       } as UserTheme);
       return res.status(200).json({ message: 'Тема успешно добавлена' });

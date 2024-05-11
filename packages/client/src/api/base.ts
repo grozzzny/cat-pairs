@@ -9,11 +9,15 @@ type HTTPMethod = <ResponseData extends object>(
 export class BaseApi {
   constructor(public readonly abortController = new AbortController()) {}
 
+  getFetch(url: string, options: FetchHelperParams) {
+    return fetchHelper(url, options);
+  }
+
   async fetch<ResponseData extends object>(
     url: string,
     options: FetchHelperParams
   ): Promise<ResponseData | never> {
-    const response: Response = await fetchHelper(url, {
+    const response: Response = await this.getFetch(url, {
       headers: setHeaders('application/json'),
       ...options,
       signal: this.abortController.signal,

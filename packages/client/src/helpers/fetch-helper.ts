@@ -31,12 +31,17 @@ export const fetchHelper = (url: string, options: FetchHelperParams) => {
   });
 };
 
+export const fetchServerHelper = (url: string, options: FetchHelperParams) => {
+  return fetch(`${HOST}/api/server${url}`, {
+    ...options,
+    credentials: 'include',
+  });
+};
+
 export class FetchError extends Error {
   statusCode: number;
-  //eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
 
-  //eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(message: string, statusCode: number, data: any) {
     super(message);
     this.statusCode = statusCode;
