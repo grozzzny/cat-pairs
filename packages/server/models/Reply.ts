@@ -11,7 +11,7 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { Comment } from '../models/Comment';
+import { Comment } from './Comment';
 import { User } from './User';
 
 @Table({

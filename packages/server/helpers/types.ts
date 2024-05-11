@@ -1,13 +1,23 @@
-import type { Request } from 'express';
-
-export interface User {
+export interface WebUser {
   id: number;
-  userName: string;
+  first_name: string;
+  second_name: string;
+  display_name: string;
+  login: string;
+  avatar: string;
+  email: string;
+  phone: string;
 }
 
-export interface MyUserRequest extends Request {
-  user: User;
-}
 export interface CreateThemeRequest {
   theme: string;
+}
+
+declare global {
+  /* eslint-disable @typescript-eslint/no-namespace */
+  namespace Express {
+    interface Request {
+      webUser: WebUser;
+    }
+  }
 }
