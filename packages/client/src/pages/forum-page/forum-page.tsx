@@ -1,39 +1,33 @@
+import { useEffect, useState } from 'react';
+import { ForumService } from '@/services/forum';
 import { setPageTitle } from '@/helpers/helper';
 import { PageWrapper } from '@/components';
 import { ForumTopicsList } from '@/components';
-import { FORUM_TOPICS_LIST } from '@/helpers/constants/forum';
 import { ExitButton } from '@/components';
 import { withAuthRouteHOC } from '@/helpers/hooks/withAuthRouteHOC';
 
 const ForumPage = () => {
-  setPageTitle('Форум');
-  //тестовый запрос
-  const handleTestCreateTopic = async () => {
-    const response = await fetch(
-      'http://localhost:3001/api/server/topic/create',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInVzZXJOYW1lIjoidGVzdDIwIiwiaWF0IjoxNzE0Nzk3MDkzLCJleHAiOjE3MTQ4ODM0OTN9.To_WYDVb0fP3aHfm0wLTvqZmpqMCq5Ky72xRfO5u53g',
-        },
-        body: JSON.stringify({
-          topicName: 'тестовая тема',
-          description: 'описание тестовой темы',
-        }),
-      }
-    );
+  const [forumTopicsList, setForumTopicsList] = useState(null);
 
-    const result = await response.json();
-    console.log(result);
-  };
+  setPageTitle('Форум');
+  useEffect(() => {
+    const service = new ForumService();
+    const fetchForumTopics = async () => {
+      service
+        .getAllTopics()
+        .then(data => setForumTopicsList(data as any))
+        .catch(err => console.warn(err));
+    };
+
+    fetchForumTopics();
+
+    return () => service.api.abortController.abort();
+  }, []);
 
   return (
     <PageWrapper>
       <>
-        <button onClick={handleTestCreateTopic}>создать тему</button>
-        <ForumTopicsList list={FORUM_TOPICS_LIST} />
+        {forumTopicsList && <ForumTopicsList list={forumTopicsList} />}
         <ExitButton />
       </>
     </PageWrapper>

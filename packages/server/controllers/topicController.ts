@@ -1,12 +1,17 @@
 import { Topic } from '../models/Topic';
+import { Comment } from '../models/Comment';
 import { ApiError } from '../error/ApiError';
 import type { NextFunction, Request, Response } from 'express';
 
 class TopicController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const { topicName, description, userId } = req.body;
-      const topic = await Topic.create({ topicName, description, userId });
+      const { topicName, description } = req.body;
+      const topic = await Topic.create({
+        topicName,
+        description,
+        userId: req.webUser.id,
+      });
       if (!topic) {
         return next(ApiError.internal('Ошибка сервера'));
       }
@@ -18,7 +23,7 @@ class TopicController {
 
   async getAllTopics(_req: Request, res: Response, next: NextFunction) {
     try {
-      const topics = await Topic.findAll();
+      const topics = await Topic.findAll({ include: [{ model: Comment }] });
       if (!topics) {
         return next(ApiError.internal('Ошибка сервера'));
       }
@@ -30,7 +35,10 @@ class TopicController {
   async getTopicById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const topic = await Topic.findOne({ where: { id } });
+      const topic = await Topic.findOne({
+        where: { id },
+        include: [{ model: Comment }],
+      });
       if (!topic) {
         return next(ApiError.internal('Не удалось получить тему по этому id'));
       }

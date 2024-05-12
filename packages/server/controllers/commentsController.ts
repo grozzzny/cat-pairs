@@ -5,8 +5,12 @@ import type { NextFunction, Request, Response } from 'express';
 class CommentController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const { topicId, text, userId } = req.body;
-      const comment = await Comment.create({ topicId, userId, text });
+      const { topicId, text } = req.body;
+      const comment = await Comment.create({
+        topicId,
+        userId: req.webUser.id,
+        text,
+      });
       if (!comment) {
         return next(ApiError.internal('Ошибка сервера'));
       }

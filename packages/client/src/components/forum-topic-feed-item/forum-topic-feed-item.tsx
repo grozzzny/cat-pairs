@@ -1,24 +1,27 @@
 import { EmojiBar } from '../emoji-bar/emoji-bar';
+// import { ForumTopicComment } from '@/helpers/types';
 import './forum-topic-feed-item.css';
 
 interface ForumTopicFeedItemProps {
-  name: string;
+  // id: number;
+  // name: string;
   text: string;
-  time: string;
+  createdAt: string | undefined;
   topicId: number;
 }
 
 export const ForumTopicFeedItem = ({
-  name,
+  // id,
+  // name,
   text,
-  time,
+  createdAt,
   topicId,
 }: ForumTopicFeedItemProps): JSX.Element => {
   return (
     <div className='forum-topic-feed-item'>
-      <div className='forum-topic-feed-item__name'>{name}</div>
+      {/* <div className='forum-topic-feed-item__name'>{name}</div> */}
       <div className='forum-topic-feed-item__text'>{text}</div>
-      <div className='forum-topic-feed-item__time'>{time}</div>
+      <div className='forum-topic-feed-item__time'>{createdAt}</div>
       <div className='forum-topic-feed-item__emoji'>
         <EmojiBar topicId={topicId} />
       </div>
