@@ -4,12 +4,12 @@
 module.exports = {
   up: function (migration, DataTypes) {
     return migration
-      .createTable('Emoji', {
+      .createTable('emoji', {
         id: DataTypes.INTEGER,
         emojiCode: DataTypes.STRING,
       })
       .then(function () {
-        migration.bulkInsert('Emoji', [
+        migration.bulkInsert('emoji', [
           {
             id: 1, 
             emojiCode: 'grin',
@@ -27,7 +27,7 @@ module.exports = {
       });
   },
   down: function (migration, _, done) {
-    return migration.dropTable('Emoji').then(function () {
+    return migration.dropTable('emoji').then(function () {
       done();
     });
   },
