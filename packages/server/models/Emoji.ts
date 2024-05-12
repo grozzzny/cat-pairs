@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   AllowNull,
-  AutoIncrement,
   Column,
   DataType,
   Index,
@@ -13,12 +12,11 @@ import {
 } from 'sequelize-typescript';
 
 @Table({
-  timestamps: true,
+  timestamps: false,
   tableName: 'emoji',
   modelName: 'Emoji',
 })
 export class Emoji extends Model {
-  @AutoIncrement
   @PrimaryKey
   @Column
   declare id: number;
