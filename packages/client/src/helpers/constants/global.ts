@@ -2,6 +2,7 @@ import { ThemeConfig } from 'antd/es/config-provider/context';
 
 export const enum Color {
   Dark = '#565A5D',
+  Black = '#2e2f30',
   Light = '#EFE5CC',
 }
 

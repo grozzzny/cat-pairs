@@ -9,6 +9,10 @@
   color: var(--light);
 }
 
+.leader-card--dark {
+  background-color: var(--black);
+}
+
 .leader-card__icon {
   position: absolute;
   top: 10px;

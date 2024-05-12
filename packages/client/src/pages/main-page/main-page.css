@@ -1,6 +1,9 @@
 .main-page {
   background-color: var(--light);
 }
+.main-page--dark {
+  background-color: var(--black);
+}
 .main-page__button-theme {
   width: 280px;
   max-width: 100%;

@@ -19,7 +19,9 @@
 
 .game-end-wrapper button {
   margin-top: 50px;
-  background-color: var(--dark);
+}
+
+.game-end-wrapper--dark .game-end-wrapper__title,
+.game-end-wrapper--dark .game-end-wrapper__text {
   color: var(--light);
-  width: 285px;
 }

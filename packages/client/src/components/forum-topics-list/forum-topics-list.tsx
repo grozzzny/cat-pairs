@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components';
 import { Color } from '@/helpers';
 import './forum-topics-list.css';
+import { useAppSelector } from '@/helpers/hooks/storeHooks';
+import { Theme } from '@/helpers/constants/global';
 
 interface ForumTopic {
   id: number;
@@ -18,6 +20,7 @@ interface ForumTopicsListProps {
 export const ForumTopicsList = ({
   list,
 }: ForumTopicsListProps): JSX.Element => {
+  const theme = useAppSelector(state => state.user.theme);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -31,7 +34,12 @@ export const ForumTopicsList = ({
   };
 
   return (
-    <Flex className='forum-topics-list' justify='center'>
+    <Flex
+      className={[
+        'forum-topics-list',
+        theme === Theme.Dark ? 'forum-topics-list--dark' : null,
+      ].join(' ')}
+      justify='center'>
       <table className='forum-topics-list__table'>
         <thead>
           <tr>

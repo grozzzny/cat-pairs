@@ -10,13 +10,13 @@ export class AuthService {
 
   async login(props: LoginRequestDto) {
     const res = await this.api.login(props);
-    await this.userService.create();
+    await this.userService.createUser();
     return res;
   }
 
   async registration(props: RegistrationFieldDto) {
     const user = await this.api.registration(props);
-    await this.userService.create();
+    await this.userService.createUser();
     return user;
   }
 
@@ -27,16 +27,12 @@ export class AuthService {
 
   async loginOauth({ code }: { code: string }) {
     const res = await this.api.loginOauth({ code });
-    await this.userService.create();
+    await this.userService.createUser();
     return res;
   }
 
   getCurrentUser(): Promise<User> {
     return this.api.fetchUser();
-  }
-
-  getCurrentUserWithCookie(ctx: string): Promise<User> {
-    return this.api.getUserWithCookie(ctx);
   }
 
   logout() {

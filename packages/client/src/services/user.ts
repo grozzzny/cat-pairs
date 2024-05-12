@@ -1,5 +1,10 @@
 import { UserApi } from '@/api';
-import { DataChangePassword, ProfileFieldType, User } from '@/helpers/types';
+import {
+  DataChangePassword,
+  ProfileFieldType,
+  User,
+  UserServer,
+} from '@/helpers/types';
 import { ServerUserApi } from '@/api/server-user';
 
 export class UserService {
@@ -14,21 +19,25 @@ export class UserService {
 
   async changeAvatar(formData: FormData): Promise<{ avatar: string }> {
     const user = await this.api.changeAvatar(formData);
-    await this.update();
+    await this.updateUser();
     return { avatar: user.avatar };
   }
 
   async changeUser(props: ProfileFieldType): Promise<User> {
     const user = await this.api.changeUser(props);
-    await this.update();
+    await this.updateUser();
     return user;
   }
 
-  async create(): Promise<User> {
-    return this.serverApi.create();
+  createUser(): Promise<User> {
+    return this.serverApi.createUser();
   }
 
-  async update(): Promise<User> {
-    return this.serverApi.update();
+  updateUser(): Promise<User> {
+    return this.serverApi.updateUser();
+  }
+
+  getCurrentUserWithCookie(ctx: string): Promise<UserServer> {
+    return this.serverApi.getUserWithCookie(ctx);
   }
 }

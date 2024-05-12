@@ -12,6 +12,15 @@ class UserController {
     }
   }
 
+  async getUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const user = await User.findById(req.webUser.id, true);
+      res.json(user);
+    } catch (e: any) {
+      next(ApiError.internal(e.message));
+    }
+  }
+
   async update(req: Request, res: Response, next: NextFunction) {
     try {
       const user = await User.findById(req.webUser.id);

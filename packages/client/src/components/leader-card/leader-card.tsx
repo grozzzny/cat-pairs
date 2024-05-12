@@ -1,9 +1,11 @@
 import { Flex } from 'antd';
 import './leader-card.css';
 import { HOST, PREFIX_RESOURCES } from '@/helpers/constants/api';
+import { Theme } from '@/helpers/constants/global';
 
 interface LeaderCardProps {
   position: number;
+  theme?: Theme;
   avatar?: string;
   name: string;
   score: number;
@@ -11,6 +13,7 @@ interface LeaderCardProps {
 
 export const LeaderCard: React.FC<LeaderCardProps> = ({
   position,
+  theme = Theme.Light,
   avatar,
   name,
   score,
@@ -29,7 +32,13 @@ export const LeaderCard: React.FC<LeaderCardProps> = ({
 
   const avatarUser = getAvatar(avatar);
   return (
-    <Flex align='center' justify='center' className='leader-card'>
+    <Flex
+      align='center'
+      justify='center'
+      className={[
+        'leader-card',
+        theme === Theme.Dark ? 'leader-card--dark' : null,
+      ].join(' ')}>
       <div className='leader-card__icon'></div>
       <div className='leader-card__position'>{position}</div>
       <img

@@ -12,7 +12,7 @@ import {
   PAIR_CARDS,
 } from '@/components/game/constants';
 import { drawCards } from '@/utils/graw-cards';
-const THEME = 'light';
+import { Theme } from '@/helpers/constants/global';
 
 export class GameApi {
   cards: Card[] = [];
@@ -34,10 +34,10 @@ export class GameApi {
     private changeGameStatus: (status: GameStatus) => void,
     private readonly gameStatus: GameStatus = GameStatus.PRE_GAME,
     private selectedDifficulty: Difficulty = Difficulty.EASY,
-    private readonly theme: 'light' | 'dark' = THEME
+    private readonly theme: Theme = Theme.Light
   ) {
     this.cardBackImageName =
-      theme === THEME ? 'card-back-light.jpg' : 'card-back-dark.jpg';
+      theme === Theme.Light ? 'card-back-light.jpg' : 'card-back-dark.jpg';
     this.setLevel();
     this.initGame();
   }

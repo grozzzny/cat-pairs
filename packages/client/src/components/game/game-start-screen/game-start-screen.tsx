@@ -1,17 +1,20 @@
-import { Button, ConfigProvider, Select } from 'antd';
-import { Color } from '@/helpers/constants/global';
+import { ConfigProvider, Select } from 'antd';
+import { Color, Theme } from '@/helpers/constants/global';
 import { Difficulty } from '@/components/game/types';
 import React, { useEffect, useState } from 'react';
 import './game-start-screen.css';
+import { Button } from '@/components';
 
 interface GameStartScreenProps {
   selectedDifficulty: Difficulty;
+  theme: Theme;
   onStartGame: () => void;
   onDifficultyChange: (difficulty: Difficulty) => void;
 }
 
 export const GameStartScreen: React.FC<GameStartScreenProps> = ({
   selectedDifficulty,
+  theme = Theme.Light,
   onStartGame,
   onDifficultyChange,
 }) => {
@@ -38,12 +41,12 @@ export const GameStartScreen: React.FC<GameStartScreenProps> = ({
     <div className='game-start-screen'>
       {level !== 1 && !isShowContinueGame && (
         <Button
-          type='primary'
           size='large'
-          className='game-start-screen__button'
-          onClick={handleContinueGame}>
-          Продолжить игру на уровне {level}
-        </Button>
+          block
+          darkTheme={theme !== Theme.Dark}
+          onClick={handleContinueGame}
+          label={`Продолжить игру на уровне ${level}`}
+        />
       )}
       {isShowContinueGame && (
         <>
@@ -51,14 +54,16 @@ export const GameStartScreen: React.FC<GameStartScreenProps> = ({
           <ConfigProvider
             theme={{
               token: {
-                colorPrimary: Color.Dark,
-                colorBorder: Color.Dark,
-                colorText: Color.Dark,
+                colorPrimary: theme == Theme.Light ? Color.Dark : Color.Light,
+                colorBorder: theme === Theme.Light ? Color.Dark : Color.Light,
+                colorText: theme === Theme.Light ? Color.Dark : Color.Light,
               },
               components: {
                 Select: {
-                  selectorBg: 'transparent',
-                  optionSelectedBg: Color.Light,
+                  selectorBg:
+                    theme === Theme.Light ? 'transparent' : Color.Dark,
+                  optionSelectedBg:
+                    theme === Theme.Light ? Color.Light : Color.Dark,
                 },
               },
             }}>
@@ -73,23 +78,23 @@ export const GameStartScreen: React.FC<GameStartScreenProps> = ({
             />
           </ConfigProvider>
           <Button
-            type='primary'
             size='large'
-            className='game-start-screen__button'
-            onClick={onStartGame}>
-            Играть!
-          </Button>
+            block
+            darkTheme={theme !== Theme.Dark}
+            onClick={onStartGame}
+            label={'Играть!'}
+          />
         </>
       )}
 
       {level !== 1 && (
         <Button
-          type='primary'
           size='large'
-          className='game-start-screen__button'
-          onClick={handleResetGame}>
-          Начать заново
-        </Button>
+          block
+          darkTheme={theme !== Theme.Dark}
+          onClick={handleResetGame}
+          label={'Начать заново'}
+        />
       )}
     </div>
   );
