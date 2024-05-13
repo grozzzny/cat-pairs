@@ -68,9 +68,7 @@ class CommentController {
 
   async addReaction(req: Request, res: Response, next: NextFunction) {
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const userId = req.user.id;
+      const userId = req.webUser.id;
       const { commentId, emojiId } = req.body;
       const reaction = await CommentEmojiUserXRef.create({
         userId,
@@ -88,10 +86,7 @@ class CommentController {
 
   async deleteReaction(req: Request, res: Response, next: NextFunction) {
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const userId = req.user.id;
-      console.log(userId);
+      const userId = req.webUser.id;
       const { commentId, emojiId } = req.body;
       const reaction = await CommentEmojiUserXRef.destroy({
         where: { userId, commentId, emojiId },
