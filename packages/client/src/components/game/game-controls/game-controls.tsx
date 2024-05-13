@@ -1,5 +1,6 @@
 import React from 'react';
 import './game-controls.css';
+import { Theme } from '@/helpers/constants/global';
 
 interface GameControlsProps {
   paused: boolean;
@@ -7,6 +8,7 @@ interface GameControlsProps {
   handlePause: () => void;
   handleRestartGame: () => void;
   handleFullscreen: () => void;
+  theme: Theme;
 }
 
 export const GameControls: React.FC<GameControlsProps> = ({
@@ -15,9 +17,14 @@ export const GameControls: React.FC<GameControlsProps> = ({
   handlePause,
   handleRestartGame,
   handleFullscreen,
+  theme = Theme.Light,
 }) => {
   return (
-    <div className='game-controls'>
+    <div
+      className={[
+        'game-controls',
+        theme === Theme.Dark ? 'game-controls--dark' : null,
+      ].join(' ')}>
       <button
         role='pause'
         className={`game-controls__button ${

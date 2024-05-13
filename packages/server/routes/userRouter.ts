@@ -1,17 +1,10 @@
 import { Router } from 'express';
 import { userController } from '../controllers/userController';
-import { userNameValidator } from '../middleware/Validator';
 import { authMiddleware } from '../middleware/AuthMiddleware';
 
 const userRouter = Router();
-userRouter.post(
-  '/registration',
-  userNameValidator,
-  userController.registration
-);
-userRouter.post('/login', userNameValidator, userController.login);
-userRouter.get('/check', authMiddleware, userController.check);
-userRouter.get('/me', authMiddleware, userController.getCurrentUser);
-userRouter.get('/getOne/:id', authMiddleware, userController.getUserById);
+userRouter.get('/create', authMiddleware, userController.create);
+userRouter.get('/getUser', authMiddleware, userController.getUser);
+userRouter.get('/update', authMiddleware, userController.update);
 
 export default userRouter;

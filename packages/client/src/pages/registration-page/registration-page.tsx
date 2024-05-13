@@ -18,13 +18,14 @@ import { AuthService } from '@/services';
 import { useNotification } from '@/providers/notification-provider';
 import { RegistrationFieldDto } from '@/helpers/types';
 import { REDIRECT_TO_LOGIN } from '@/helpers/constants/api';
+import { useAppSelector } from '@/helpers/hooks/storeHooks';
+import { Theme } from '@/helpers/constants/global';
 
 export const RegistrationPage = () => {
+  const theme = useAppSelector(state => state.user.theme);
   const navigate = useNavigate();
   const { notify } = useNotification();
   setPageTitle('Регистрация');
-
-  const darkTheme = false;
 
   const onFinish: FormProps<RegistrationFieldDto>['onFinish'] = data => {
     new AuthService()
@@ -46,7 +47,7 @@ export const RegistrationPage = () => {
   return (
     <PageWrapper withMenu={false}>
       <div className='container-vertical-center'>
-        <AuthWrapper darkTheme={darkTheme} label='Регистрация'>
+        <AuthWrapper darkTheme={theme === Theme.Dark} label='Регистрация'>
           <Form
             name='basic'
             layout='horizontal'
@@ -104,7 +105,7 @@ export const RegistrationPage = () => {
               <Input placeholder='Пароль' type='password' />
             </Form.Item>
             <Button
-              darkTheme={darkTheme}
+              darkTheme={theme === Theme.Dark}
               label='Зарегистрироваться'
               htmlType='submit'
             />

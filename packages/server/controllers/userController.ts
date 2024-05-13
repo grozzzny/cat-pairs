@@ -1,99 +1,31 @@
-import { User } from '../models/User';
 import { ApiError } from '../error/ApiError';
-import jwt from 'jsonwebtoken';
 import type { NextFunction, Request, Response } from 'express';
-import type { MyUserRequest } from '../helpers/types';
-
-const generateJwt = (id: number, userName: string) => {
-  return jwt.sign(
-    { id: id, userName: userName },
-    process.env.SECRET_KEY as string,
-    {
-      expiresIn: '24h',
-    }
-  );
-};
+import { User } from '../models/User';
 
 class UserController {
-  async registration(req: Request, res: Response, next: NextFunction) {
+  async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const { userName } = req.body;
-      if (!userName) {
-        return next(ApiError.badRequest('Некорректное имя'));
-      }
-      const candidate = await User.findOne({ where: { userName } });
-      if (candidate) {
-        return next(
-          ApiError.badRequest('Пользователь с таким именнем уже существует')
-        );
-      } else {
-        const user = await User.create({ userName });
-
-        const token = generateJwt(user.id, user.userName);
-        return res.json({ token });
-      }
+      const user = await User.findById(req.webUser.id);
+      res.json(user ? user : await User.create(req.webUser as Partial<User>));
     } catch (e: any) {
       next(ApiError.internal(e.message));
     }
   }
 
-  async login(req: Request, res: Response, next: NextFunction) {
+  async getUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const { userName } = req.body;
-      const user = await User.findOne({ where: { userName } });
-      if (!user) {
-        return next(
-          ApiError.forbidden('Пользователь с таким именем не найден')
-        );
-      }
-
-      const token = generateJwt(user.id, user.userName);
-
-      return res.json({ token });
+      const user = await User.findById(req.webUser.id, true);
+      res.json(user);
     } catch (e: any) {
-      next(ApiError.forbidden(e.message));
+      next(ApiError.internal(e.message));
     }
   }
 
-  async check(expressRequest: Request, res: Response, next: NextFunction) {
+  async update(req: Request, res: Response, next: NextFunction) {
     try {
-      const req = expressRequest as MyUserRequest;
-      if (!req.user) {
-        return next(ApiError.forbidden('Некорректное имя'));
-      }
-      const token = generateJwt(req.user.id, req.user.userName);
-      return res.json({ token });
-    } catch (e: any) {
-      next(ApiError.forbidden(e.message));
-    }
-  }
-
-  async getCurrentUser(
-    expressRequest: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    try {
-      const req = expressRequest as MyUserRequest;
-      if (!req.user) {
-        return next(ApiError.badRequest('Не удалось найти пользователя'));
-      }
-      return res.json(req.user);
-    } catch (e: any) {
-      next(ApiError.forbidden(e.message));
-    }
-  }
-
-  async getUserById(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { id } = req.params;
-      const user = await User.findOne({ where: { id } });
-      if (!user) {
-        return next(
-          ApiError.internal('Не удалось получить пользователя по этому id')
-        );
-      }
-      return res.json(user);
+      const user = await User.findById(req.webUser.id);
+      if (!user) throw new Error('Пользователь не найден');
+      res.json(await user.update(req.webUser));
     } catch (e: any) {
       next(ApiError.internal(e.message));
     }

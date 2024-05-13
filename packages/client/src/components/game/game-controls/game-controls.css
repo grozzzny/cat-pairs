@@ -36,3 +36,7 @@
 .game-controls__button_exit-fullscreen {
   background-image: url('/exit-fullscreen.svg');
 }
+
+.game-controls--dark button {
+  filter: invert(100);
+}

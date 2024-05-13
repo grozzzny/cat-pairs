@@ -9,16 +9,19 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { memo } from 'react';
 import { AntdIconProps } from '@ant-design/icons/lib/components/AntdIcon';
+import { useAppSelector } from '@/helpers/hooks/storeHooks';
+import { Color, Theme } from '@/helpers/constants/global';
 
 interface NavigationBarProps {
   className?: string;
 }
 
 export const NavigationBar = memo((props: NavigationBarProps) => {
+  const theme = useAppSelector(state => state.user.theme);
   const { className } = props;
-  const { token: theme } = antdTheme.useToken();
+  const { token: themeAntd } = antdTheme.useToken();
   const iconProps: Omit<AntdIconProps, 'ref'> = {
-    twoToneColor: theme.colorIcon,
+    twoToneColor: theme === Theme.Dark ? Color.Black : themeAntd.colorIcon,
     style: { fontSize: '30px' },
   };
   const navigate = useNavigate();

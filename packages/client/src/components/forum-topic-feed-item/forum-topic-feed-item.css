@@ -27,3 +27,13 @@
   bottom: 10px;
   right: 10px;
 }
+
+.forum-topic--dark .forum-topic-feed-item {
+  border: 1px solid var(--black);
+  color: var(--light);
+}
+
+.forum-topic--dark .forum-topic-feed-item:nth-child(even) {
+  background-color: var(--black);
+  color: var(--light);
+}

@@ -12,7 +12,7 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { Topic } from '../models/Topic';
+import { Topic } from './Topic';
 import { Reply } from './Reply';
 import { User } from './User';
 

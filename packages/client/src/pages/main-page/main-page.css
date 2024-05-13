@@ -1,6 +1,9 @@
 .main-page {
   background-color: var(--light);
 }
+.main-page--dark {
+  background-color: var(--black);
+}
 .main-page__button-theme {
   width: 280px;
   max-width: 100%;
@@ -23,6 +26,10 @@
   padding-right: 15px;
   padding-left: 15px;
   color: var(--dark);
+}
+.main-page--dark .main-page__container,
+.main-page--dark .text--dark-color {
+  color: var(--light);
 }
 @media (max-width: 480px) {
   .main-page__button-theme {

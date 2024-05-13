@@ -1,6 +1,8 @@
 import { Flex } from 'antd';
 import React, { ReactNode } from 'react';
 import './background-wrapper.css';
+import { useAppSelector } from '@/helpers/hooks/storeHooks';
+import { Theme } from '@/helpers/constants/global';
 
 interface BackgroundProps {
   title: string;
@@ -11,8 +13,13 @@ export const BackgroundWrapper: React.FC<BackgroundProps> = ({
   title,
   children,
 }) => {
+  const theme = useAppSelector(state => state.user.theme);
   return (
-    <div className='background-wrapper'>
+    <div
+      className={[
+        'background-wrapper',
+        theme === Theme.Dark ? 'background-wrapper--dark' : null,
+      ].join(' ')}>
       <Flex
         className='background-wrapper__container'
         vertical

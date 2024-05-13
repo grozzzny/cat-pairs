@@ -5,13 +5,12 @@ export const errorHandler = (
   err: { status: number; message: string },
   _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   if (err instanceof ApiError) {
     res.status(err.status).json({ message: err.message });
-    next();
+  } else {
+    console.error(err);
+    res.status(500).json({ message: 'Непредвиденная ошибка' });
   }
-
-  res.status(500).json({ message: 'Непредвиденная ошибка' });
-  next();
 };
