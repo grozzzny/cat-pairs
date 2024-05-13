@@ -1,5 +1,6 @@
 import { Topic } from '../models/Topic';
 import { Comment } from '../models/Comment';
+import { User } from '../models/User';
 import { ApiError } from '../error/ApiError';
 import type { NextFunction, Request, Response } from 'express';
 
@@ -37,7 +38,7 @@ class TopicController {
       const { id } = req.params;
       const topic = await Topic.findOne({
         where: { id },
-        include: [{ model: Comment }],
+        include: [{ model: Comment, include: [User] }],
       });
       if (!topic) {
         return next(ApiError.internal('Не удалось получить тему по этому id'));

@@ -53,7 +53,7 @@ export const ForumTopic = ({
             <ForumTopicFeedItem
               key={item.id}
               topicId={item.topicId}
-              // name={item.name}
+              name={`${item.user.first_name} ${item.user.second_name}`}
               text={item.text}
               createdAt={timeFormatConverter(item.createdAt)}
             />

@@ -20,7 +20,6 @@ const ForumTopicPage = () => {
         .getTopic(id as string)
         .then(data => setTopic(data as any))
         .catch(err => console.warn(err));
-      console.log(topic);
     };
 
     fetchTopicContent();

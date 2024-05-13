@@ -1,3 +1,5 @@
+import { User } from '@/helpers/types';
+
 export type EmojiCodes = 'grin' | 'cry' | 'pout' | 'smile';
 
 export type ForumTopicReactionDto = {
@@ -36,6 +38,7 @@ export type ForumTopicComment = {
   text: string;
   createdAt: string;
   updatedAt: string;
+  user: User;
 };
 
 export type ForumTopicRequestResult = {

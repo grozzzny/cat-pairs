@@ -16,6 +16,7 @@ class CommentController {
       if (!comment) {
         return next(ApiError.internal('Ошибка сервера'));
       }
+      comment.setDataValue('user', req.webUser);
       return res.json(comment);
     } catch (e: any) {
       next(ApiError.internal(e.message));
