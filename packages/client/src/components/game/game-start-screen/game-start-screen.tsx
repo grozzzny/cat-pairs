@@ -96,6 +96,7 @@ export const GameStartScreen: React.FC<GameStartScreenProps> = ({
           block
           darkTheme={theme !== Theme.Dark}
           onClick={handleResetGame}
+          style={{ marginTop: '15px' }}
           label={'Начать заново'}
         />
       )}
