@@ -51,7 +51,7 @@ class CommentController {
   async getReactions(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const reactions = await CommentEmojiUserXRef.findOne({
+      const reactions = await CommentEmojiUserXRef.findAll({
         where: { commentId: id },
         include: [{ model: Emoji, required: true }],
       });

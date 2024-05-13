@@ -1,16 +1,21 @@
 export type EmojiCodes = 'grin' | 'cry' | 'pout' | 'smile';
 
-export type ForumTopicReactionDto = {
+export type EmojiDto = {
   id: number;
-  emojiId: number;
   emojiCode: EmojiCodes;
-  topicId: number;
-  userId: number;
 };
 
-export type ForumGetReactionsResult = {
-  data: ForumTopicReactionDto[];
+export type ForumTopicReactionDto = {
+  id: number;
+  userId: number;
+  commentId: number;
+  emojiId: number;
+  createdAt: string;
+  updatedAt: string;
+  emoji: EmojiDto;
 };
+
+export type ForumGetReactionsResult = ForumTopicReactionDto[];
 
 export type ReactionInfo = {
   emojiNumber: number;
@@ -20,11 +25,10 @@ export type ReactionInfo = {
 export type ReactionList = Record<EmojiCodes, ReactionInfo>;
 
 export type ForumGetReactionsRequest = {
-  topicId: number;
+  commentId: number;
 };
 
 export type ForumUpdateReactionRequest = {
-  topicId: number;
-  userId: number;
-  emojiCode: string;
+  emojiId: number;
+  commentId: number;
 };

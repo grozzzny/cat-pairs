@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { EmojiButton } from '..';
 
 interface EmojiBarProps {
-  topicId: number;
+  commentId: number;
 }
 
 const mapRawReactions = (
@@ -16,7 +16,7 @@ const mapRawReactions = (
 ): ReactionList => {
   const reactions = structuredClone(REACTION_LIST_DEFAULT);
   rawReactions.forEach(value => {
-    const emojiEntity = reactions[value.emojiCode];
+    const emojiEntity = reactions[value.emoji.emojiCode];
     emojiEntity.emojiNumber += 1;
     emojiEntity.isActive =
       emojiEntity.isActive || value.userId === currentUserId;
@@ -24,7 +24,7 @@ const mapRawReactions = (
   return reactions;
 };
 
-export const EmojiBar = ({ topicId }: EmojiBarProps): JSX.Element => {
+export const EmojiBar = ({ commentId }: EmojiBarProps): JSX.Element => {
   const [reactions, setReactions] = useState<ReactionList>(
     REACTION_LIST_DEFAULT
   );
@@ -32,11 +32,13 @@ export const EmojiBar = ({ topicId }: EmojiBarProps): JSX.Element => {
   useEffect(() => {
     const service = new ForumService();
     service
-      .getReactions({ topicId })
+      .getReactions({ commentId })
       .then(rawReactions => {
-        setReactions(mapRawReactions(rawReactions.data, currentUserId));
+        setReactions(mapRawReactions(rawReactions, currentUserId));
       })
-      .catch(err => console.error(err));
+      .catch(() => {
+        setReactions(REACTION_LIST_DEFAULT);
+      });
     return () => {
       service.api.abortController.abort();
     };
@@ -49,8 +51,7 @@ export const EmojiBar = ({ topicId }: EmojiBarProps): JSX.Element => {
           key={key}
           emojiCode={key}
           reactionInfo={value}
-          currentUserId={currentUserId}
-          topicId={topicId}
+          commentId={commentId}
         />
       ))}
     </Flex>
