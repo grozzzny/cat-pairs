@@ -27,6 +27,10 @@
   padding-left: 15px;
   color: var(--dark);
 }
+.main-page--dark .main-page__container,
+.main-page--dark .text--dark-color {
+  color: var(--light);
+}
 @media (max-width: 480px) {
   .main-page__button-theme {
     width: 160px;

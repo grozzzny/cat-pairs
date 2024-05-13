@@ -75,6 +75,9 @@ export const GameStartScreen: React.FC<GameStartScreenProps> = ({
                 { value: Difficulty.HARD, label: <span>Хардкор</span> },
               ]}
               onChange={onDifficultyChange}
+              popupClassName={
+                theme === Theme.Light ? 'light-dropdown' : 'dark-dropdown'
+              }
             />
           </ConfigProvider>
           <Button

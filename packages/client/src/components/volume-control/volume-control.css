@@ -23,3 +23,6 @@
   color: inherit;
   cursor: pointer;
 }
+.volume-control--dark {
+  filter: invert(100);
+}
