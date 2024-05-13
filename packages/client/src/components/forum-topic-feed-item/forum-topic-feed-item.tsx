@@ -4,7 +4,7 @@ import './forum-topic-feed-item.css';
 interface ForumTopicFeedItemProps {
   name: string;
   text: string;
-  createdAt: string | undefined;
+  createdAt?: string;
   topicId: number;
 }
 
@@ -18,7 +18,9 @@ export const ForumTopicFeedItem = ({
     <div className='forum-topic-feed-item'>
       <div className='forum-topic-feed-item__name'>{name}</div>
       <div className='forum-topic-feed-item__text'>{text}</div>
-      <div className='forum-topic-feed-item__time'>{createdAt}</div>
+      {createdAt && (
+        <div className='forum-topic-feed-item__time'>{createdAt}</div>
+      )}
       <div className='forum-topic-feed-item__emoji'>
         <EmojiBar topicId={topicId} />
       </div>

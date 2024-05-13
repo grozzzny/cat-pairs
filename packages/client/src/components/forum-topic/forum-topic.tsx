@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ForumService } from '@/services/forum';
 import { Button, ForumTopicFeedItem } from '@/components';
 import { Form, type FormProps } from 'antd';
@@ -21,23 +21,28 @@ export const ForumTopic = ({
   const theme = useAppSelector(state => state.user.theme);
   const [actualComments, setActualComments] = useState(comments);
   const [form] = Form.useForm();
-  const onFinish: FormProps<ForumCreateCommentDto>['onFinish'] = values => {
-    const service = new ForumService();
-    const addComment = async () => {
-      service
-        .createComment({
-          topicId: id,
-          text: values.text,
-        })
-        .then(data => setActualComments([...actualComments, data]))
-        .catch(err => console.warn(err));
-    };
+  const onFinish: FormProps<ForumCreateCommentDto>['onFinish'] = useCallback(
+    (values: ForumCreateCommentDto) => {
+      const service = new ForumService();
+      const addComment = () => {
+        service
+          .createComment({
+            topicId: id,
+            text: values.text,
+          })
+          .then(data => {
+            setActualComments(actualComments => [...actualComments, data]);
+            form.resetFields();
+          })
+          .catch(err => console.warn(err));
+      };
 
-    addComment();
-    form.resetFields();
+      addComment();
 
-    return () => service.api.abortController.abort();
-  };
+      return () => service.api.abortController.abort();
+    },
+    [form, id, setActualComments]
+  );
 
   return (
     <div

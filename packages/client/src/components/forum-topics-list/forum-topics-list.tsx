@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import {
   Button,
   ConfigProvider,
@@ -40,19 +40,22 @@ export const ForumTopicsList = ({
     setIsModalOpen(false);
   };
 
-  const onFinish: FormProps<ForumCreateTopicDto>['onFinish'] = values => {
-    const service = new ForumService();
-    const createNewTopic = async () => {
-      service
-        .createTopic(values)
-        .then(data => navigate(`/forum/${data.id}`))
-        .catch(err => console.warn(err));
-    };
+  const onFinish: FormProps<ForumCreateTopicDto>['onFinish'] = useCallback(
+    (values: ForumCreateTopicDto) => {
+      const service = new ForumService();
+      const createNewTopic = async () => {
+        service
+          .createTopic(values)
+          .then(data => navigate(`/forum/${data.id}`))
+          .catch(err => console.warn(err));
+      };
 
-    createNewTopic();
+      createNewTopic();
 
-    return () => service.api.abortController.abort();
-  };
+      return () => service.api.abortController.abort();
+    },
+    []
+  );
 
   return (
     <Flex
