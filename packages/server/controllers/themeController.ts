@@ -39,10 +39,7 @@ class ThemeController {
   async getUserTheme(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.webUser.id;
-      const user = await User.findOne({
-        where: { id: userId },
-        include: [{ model: UserTheme, include: [SiteTheme] }],
-      });
+      const user = await User.findById(req.webUser.id, true);
 
       if (!user) throw new Error(`Пользователь #${userId} не найден`);
       if (!user.userTheme)
@@ -55,28 +52,29 @@ class ThemeController {
       next(ApiError.internal(error.message));
     }
   }
+
   async updateUserTheme(req: Request, res: Response, next: NextFunction) {
     try {
       const { theme } = req.body;
       const userId = req.webUser.id;
       const themeExists = await SiteTheme.findOne({ where: { theme } });
-
       if (!themeExists) {
-        return next(ApiError.internal('Тема не найдена'));
+        const siteTheme = await SiteTheme.create({ theme } as SiteTheme);
+        await UserTheme.create({ themeId: siteTheme.id, userId } as UserTheme);
+        res.json({ message: 'Тема успешно добавлена' });
+      } else {
+        const userTheme = await UserTheme.findOne({ where: { userId } });
+        if (userTheme) {
+          await userTheme.update({ themeId: themeExists.id });
+          res.json({ message: 'Тема успешно обновлена' });
+        } else {
+          await UserTheme.create({
+            userId,
+            themeId: themeExists.id,
+          } as UserTheme);
+          res.status(200).json({ message: 'Тема успешно добавлена' });
+        }
       }
-
-      const userTheme = await UserTheme.findOne({ where: { userId } });
-
-      if (userTheme) {
-        await userTheme.update({ themeId: themeExists.id });
-        return res.status(200).json({ message: 'Тема успешно обновлена' });
-      }
-
-      await UserTheme.create({
-        userId,
-        themeId: themeExists.id,
-      } as UserTheme);
-      return res.status(200).json({ message: 'Тема успешно добавлена' });
     } catch (error: unknown) {
       next(ApiError.internal((error as Error).message));
     }

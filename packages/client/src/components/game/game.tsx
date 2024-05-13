@@ -8,16 +8,17 @@ import {
 } from '@/components';
 import { Difficulty, GameStatus } from '@/components/game/types';
 import { useNavigate } from 'react-router-dom';
+import { Color, Theme } from '@/helpers/constants/global';
 
 interface GameProps {
-  theme: 'light' | 'dark';
+  theme: Theme;
   gameStatus: GameStatus;
   selectedDifficulty: Difficulty;
   changeGameStatus: (status: GameStatus) => void;
 }
 
 export const Game: React.FC<GameProps> = ({
-  theme = 'light',
+  theme = Theme.Light,
   gameStatus,
   selectedDifficulty,
   changeGameStatus,
@@ -36,7 +37,8 @@ export const Game: React.FC<GameProps> = ({
       canvasRef,
       changeGameStatus,
       gameStatus,
-      selectedDifficulty
+      selectedDifficulty,
+      theme
     );
     gameApi.render();
     setGame(gameApi);
@@ -52,10 +54,11 @@ export const Game: React.FC<GameProps> = ({
         game={game}
         paused={paused}
         isResetGame={isGameReset}
-        themeColor={theme === 'light' ? '#565A5D' : '#EFE5CC'}
+        themeColor={theme === Theme.Light ? Color.Dark : Color.Light}
       />
       <div className='game__wrapper'>
         <GameControls
+          theme={theme}
           handlePause={() => {
             setPaused(game.handlePauseGame());
           }}

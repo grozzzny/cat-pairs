@@ -1,3 +1,5 @@
+import { Theme } from '@/helpers/constants/global';
+
 export interface DataChangePassword {
   oldPassword: string;
   newPassword: string;
@@ -17,6 +19,22 @@ export interface User {
   login: string;
   avatar: string;
   email: string;
+}
+
+export interface UserServer extends User {
+  userTheme: {
+    id: number;
+    themeId: number;
+    userId: number;
+    createdAt: string;
+    updatedAt: string;
+    theme: {
+      id: number;
+      theme: Theme;
+      createdAt: string;
+      updatedAt: string;
+    };
+  };
 }
 
 export type ProfileFieldType = {

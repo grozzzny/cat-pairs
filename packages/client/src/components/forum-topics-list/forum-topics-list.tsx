@@ -15,6 +15,8 @@ import { ForumCreateTopicDto, ForumTopicRequestResult } from '@/helpers/types';
 import { ForumService } from '@/services/forum';
 import { redirectToUrl } from '@/helpers/redirect-helper';
 import './forum-topics-list.css';
+import { useAppSelector } from '@/helpers/hooks/storeHooks';
+import { Theme } from '@/helpers/constants/global';
 
 interface ForumTopicsListProps {
   list: ForumTopicRequestResult[];
@@ -23,6 +25,7 @@ interface ForumTopicsListProps {
 export const ForumTopicsList = ({
   list,
 }: ForumTopicsListProps): JSX.Element => {
+  const theme = useAppSelector(state => state.user.theme);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const formRef = useRef<FormInstance<ForumCreateTopicDto> | null>(null);
@@ -53,7 +56,12 @@ export const ForumTopicsList = ({
   };
 
   return (
-    <Flex className='forum-topics-list' justify='center'>
+    <Flex
+      className={[
+        'forum-topics-list',
+        theme === Theme.Dark ? 'forum-topics-list--dark' : null,
+      ].join(' ')}
+      justify='center'>
       <table className='forum-topics-list__table'>
         <thead>
           <tr>

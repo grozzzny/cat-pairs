@@ -2,10 +2,16 @@ import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import { LoginPage } from '@/pages';
 import '@testing-library/jest-dom';
+import { Provider } from 'react-redux';
+import store from '@/store';
 
 describe('Тестируем страницу LoginPage.', () => {
   test('проверяем рендер полей формы', () => {
-    const { getByPlaceholderText } = render(<LoginPage />);
+    const { getByPlaceholderText } = render(
+      <Provider store={store}>
+        <LoginPage />
+      </Provider>
+    );
     const loginInput = getByPlaceholderText('Логин');
     const passwordInput = getByPlaceholderText('Пароль');
 
@@ -14,7 +20,11 @@ describe('Тестируем страницу LoginPage.', () => {
   });
 
   test('проверяем валидацию ввода пароля', async () => {
-    const { getByPlaceholderText, getByText } = render(<LoginPage />);
+    const { getByPlaceholderText, getByText } = render(
+      <Provider store={store}>
+        <LoginPage />
+      </Provider>
+    );
 
     const loginInput = getByPlaceholderText('Логин');
     const passwordInput = getByPlaceholderText('Пароль');

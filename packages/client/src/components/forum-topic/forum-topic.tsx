@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ForumService } from '@/services/forum';
-import { ForumTopicFeedItem } from '@/components';
-import { Button, Form, type FormProps } from 'antd';
+import { Button, ForumTopicFeedItem } from '@/components';
+import { Form, type FormProps } from 'antd';
 import {
   ForumCreateCommentDto,
   ForumTopicRequestResult,
@@ -9,6 +9,8 @@ import {
 import { timeFormatConverter } from '@/helpers';
 import { Input } from '@/components';
 import './forum-topic.css';
+import { useAppSelector } from '@/helpers/hooks/storeHooks';
+import { Theme } from '@/helpers/constants/global';
 
 export const ForumTopic = ({
   id,
@@ -16,6 +18,7 @@ export const ForumTopic = ({
   description,
   comments,
 }: ForumTopicRequestResult): JSX.Element => {
+  const theme = useAppSelector(state => state.user.theme);
   const [actualComments, setActualComments] = useState(comments);
   const [form] = Form.useForm();
   const onFinish: FormProps<ForumCreateCommentDto>['onFinish'] = values => {
@@ -35,8 +38,13 @@ export const ForumTopic = ({
 
     return () => service.api.abortController.abort();
   };
+
   return (
-    <div className='forum-topic'>
+    <div
+      className={[
+        'forum-topic',
+        theme === Theme.Dark ? 'forum-topic--dark' : null,
+      ].join(' ')}>
       <h1>{topicName}</h1>
       <div className='forum-topic__description'>{description}</div>
       {actualComments.length > 0 && (
@@ -61,9 +69,10 @@ export const ForumTopic = ({
         <Button
           className='forum-topic__send-message-button'
           type='primary'
-          htmlType='submit'>
-          Отправить
-        </Button>
+          darkTheme={theme !== Theme.Dark}
+          label={'Отправить'}
+          htmlType='submit'
+        />
       </Form>
     </div>
   );

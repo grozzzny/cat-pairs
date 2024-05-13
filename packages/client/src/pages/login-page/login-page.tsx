@@ -17,6 +17,8 @@ import {
 import { redirectToUrl } from '@/helpers/redirect-helper';
 import { HOST, REDIRECT_TO_LOGIN } from '@/helpers/constants/api';
 import { useNotification } from '@/providers/notification-provider';
+import { useAppSelector } from '@/helpers/hooks/storeHooks';
+import { Theme } from '@/helpers/constants/global';
 
 type LoginFieldType = {
   login: string;
@@ -34,6 +36,7 @@ export const LoginPage = () => {
   setPageTitle('Войти');
   const { notify } = useNotification();
   const navigate = useNavigate();
+  const theme = useAppSelector(state => state.user.theme);
 
   const onOauth = async () => {
     notify('warning', 'Загрузка', 'Авторизация начнется через мгновение :)');
@@ -73,7 +76,7 @@ export const LoginPage = () => {
   return (
     <PageWrapper withMenu={false}>
       <div className='container-vertical-center'>
-        <AuthWrapper darkTheme={false} label='Вход'>
+        <AuthWrapper darkTheme={theme === Theme.Dark} label='Вход'>
           <Form
             name='basic'
             layout='horizontal'
@@ -113,7 +116,12 @@ export const LoginPage = () => {
                     Регистрация
                   </span>
                 </div>
-                <Button block label='Войти' htmlType='submit' />
+                <Button
+                  darkTheme={theme === Theme.Dark}
+                  block
+                  label='Войти'
+                  htmlType='submit'
+                />
                 <Flex align='center' gap={8}>
                   <span>Войти с помощью: </span>
                   <IconButton

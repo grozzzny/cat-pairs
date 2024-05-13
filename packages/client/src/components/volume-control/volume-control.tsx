@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { MutedOutlined, SoundOutlined } from '@ant-design/icons';
 import './volume-control.css';
 import { localStorageGetItem, localStorageSetItem } from '@/helpers';
+import { useAppSelector } from '@/helpers/hooks/storeHooks';
+import { Theme } from '@/helpers/constants/global';
 
 interface VolumeControlProps {
   src: string;
@@ -9,6 +11,8 @@ interface VolumeControlProps {
 
 export const VolumeControl: React.FC<VolumeControlProps> = ({ src }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
+  const theme = useAppSelector(state => state.user.theme);
+
   const [muted, setMuted] = useState<boolean>(() => {
     const storedMuted = localStorageGetItem('muted');
     return storedMuted ? JSON.parse(storedMuted) : true;
@@ -50,7 +54,10 @@ export const VolumeControl: React.FC<VolumeControlProps> = ({ src }) => {
 
   return (
     <div
-      className='volume-control'
+      className={[
+        'volume-control',
+        theme === Theme.Dark ? 'volume-control--dark' : null,
+      ].join(' ')}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}>
       {hovered && (

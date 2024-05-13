@@ -12,5 +12,10 @@ themeRouter.post(
 );
 themeRouter.get('/getAll', authMiddleware, themeController.getAllThemes);
 themeRouter.get('/', authMiddleware, themeController.getUserTheme);
-themeRouter.put('/', authMiddleware, themeController.updateUserTheme);
+themeRouter.put(
+  '/',
+  authMiddleware,
+  themeValidator,
+  themeController.updateUserTheme
+);
 export default themeRouter;

@@ -14,9 +14,11 @@ import { useAppDispatch, useAppSelector } from '@/helpers/hooks/storeHooks';
 import { fetchChangeCurrentUser } from '@/store/userSlice';
 import { ProfileFieldType } from '@/helpers/types/user';
 import { useNotification } from '@/providers/notification-provider';
+import { Theme } from '@/helpers/constants/global';
 
 export const ProfileForm = () => {
   const dispatch = useAppDispatch();
+  const theme = useAppSelector(state => state.user.theme);
   const currentUser = useAppSelector(state => state.user.currentUser);
   const error = useAppSelector(state => state.user.error);
   const { notify } = useNotification();
@@ -102,7 +104,11 @@ export const ProfileForm = () => {
             <Input className='profile-form__input' />
           </Form.Item>
         </div>
-        <Button htmlType='submit' label={'Редактировать'} />
+        <Button
+          darkTheme={theme === Theme.Dark}
+          htmlType='submit'
+          label={'Редактировать'}
+        />
       </Form>
     </>
   );

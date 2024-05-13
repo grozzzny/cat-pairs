@@ -1,11 +1,11 @@
 import { LogoutOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import './exit-button.css';
-import { Color } from '@/helpers/constants/global';
+import { Color, Theme } from '@/helpers/constants/global';
 import { AuthService } from '@/services/auth';
 import { MessagePopup } from '@/components';
 import { deleteCurrentUser } from '@/store/userSlice';
-import { useAppDispatch } from '@/helpers/hooks/storeHooks';
+import { useAppDispatch, useAppSelector } from '@/helpers/hooks/storeHooks';
 import { useState } from 'react';
 import React from 'react';
 import { useAuth } from '@/helpers/hooks/useAuth';
@@ -17,6 +17,7 @@ interface ExitButtonProps extends JSX.IntrinsicAttributes {
 
 export const ExitButton: React.FC<ExitButtonProps> = props => {
   const navigate = useNavigate();
+  const theme = useAppSelector(state => state.user.theme);
   const dispatch = useAppDispatch();
   const { deleteAuth } = useAuth();
 
@@ -51,7 +52,12 @@ export const ExitButton: React.FC<ExitButtonProps> = props => {
         isPopupOpen={isPopupOpen}
         handleClosePopup={handleClosePopup}
       />
-      <div className='exit-button' onClick={props.onClick ?? handleExit}>
+      <div
+        className={[
+          'exit-button',
+          theme === Theme.Dark ? 'exit-button--dark' : null,
+        ].join(' ')}
+        onClick={props.onClick ?? handleExit}>
         <button role='exit' className='exit-button__button'>
           <p className='exit-button__button-text'>выход из игры</p>
           <LogoutOutlined

@@ -26,8 +26,7 @@ describe('Тестируем игровой движок компонента Ga
       null as unknown as React.RefObject<HTMLCanvasElement>,
       null as unknown as (status: GameStatus) => void,
       null as unknown as GameStatus,
-      null as unknown as Difficulty,
-      null as unknown as 'light' | 'dark'
+      null as unknown as Difficulty
     );
 
     (useState as jest.Mock).mockImplementation((init: never) => [
@@ -40,7 +39,7 @@ describe('Тестируем игровой движок компонента Ga
     const { getByText } = render(
       <Provider store={store}>
         <Game
-          theme='light'
+          theme={Theme.Light}
           gameStatus={GameStatus.PLAYING}
           selectedDifficulty={Difficulty.EASY}
           changeGameStatus={jest.fn()}

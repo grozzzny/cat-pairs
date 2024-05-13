@@ -1,21 +1,34 @@
 import { BackgroundWrapper, Button, LinkList } from '@/components';
 import './main-page.css';
-import { setBodyScroll, setPageTitle } from '@/helpers';
+import { setPageTitle } from '@/helpers';
 import { Col, Divider, Flex, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '@/helpers/hooks/storeHooks';
+import { useAppDispatch, useAppSelector } from '@/helpers/hooks/storeHooks';
 import { setTheme } from '@/store/userSlice';
 import { Theme } from '@/helpers/constants/global';
 import { withAuthRouteHOC } from '@/helpers/hooks/withAuthRouteHOC';
+import { ThemeService } from '@/services/theme';
+import { useNotification } from '@/providers/notification-provider';
 
 const MainPage = () => {
+  const theme = useAppSelector(state => state.user.theme);
+  const { notify } = useNotification();
   const navigate = useNavigate();
   setPageTitle('CatCoders');
-  // На уровне layouts установлен запрет на скроллинг страницы, поэтому этот метод отменяет эти действия. MainPage - это лендинг страница.
-  setBodyScroll();
   const dispatch = useAppDispatch();
+  const handlerTheme = (theme: Theme) => {
+    new ThemeService()
+      .updateUserTheme(theme)
+      .then(() => dispatch(setTheme(theme)))
+      .catch(err => notify('error', err.message));
+  };
+
   return (
-    <div className='main-page'>
+    <div
+      className={[
+        'main-page',
+        theme === Theme.Dark ? 'main-page--dark' : null,
+      ].join(' ')}>
       <BackgroundWrapper title={'CatCoders'}>
         <Row gutter={24} justify='space-between'>
           <Col sm={24} md={12}>
@@ -24,20 +37,20 @@ const MainPage = () => {
                 className='main-page__button-theme'
                 darkTheme={true}
                 label='Темная тема'
-                onClick={() => dispatch(setTheme(Theme.Dark))}
+                onClick={() => handlerTheme(Theme.Dark)}
               />
               <Button
                 className='main-page__button-theme'
                 label='Светлая тема'
-                onClick={() => dispatch(setTheme(Theme.Light))}
+                onClick={() => handlerTheme(Theme.Light)}
               />
             </Flex>
           </Col>
           <Col sm={24} md={12}>
             <Flex vertical justify='right'>
               <Button
-                className='main-page__button-play'
-                darkTheme={true}
+                block
+                darkTheme={theme !== Theme.Dark}
                 label='Играть'
                 onClick={() => navigate('/game')}
               />
