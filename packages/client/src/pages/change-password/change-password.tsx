@@ -16,6 +16,8 @@ import {
   validateRequired,
 } from '@/helpers';
 import { withAuthRouteHOC } from '@/helpers/hooks/withAuthRouteHOC';
+import { useAppSelector } from '@/helpers/hooks/storeHooks';
+import { Theme } from '@/helpers/constants/global';
 
 type RegistrationFieldType = {
   oldpassword: string;
@@ -31,6 +33,7 @@ const onFinishFailed: FormProps<RegistrationFieldType>['onFinishFailed'] =
 export const NewPassword = () => {
   const [message, setMessage] = useState<string>('');
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+  const theme = useAppSelector(state => state.user.theme);
   const [form] = Form.useForm();
 
   const handleChangePassword = async ({
@@ -62,11 +65,10 @@ export const NewPassword = () => {
       newPassword: values.newpassword,
     });
   };
-  const darkTheme = false;
   return (
     <PageWrapper withMenu={false}>
       <div className='container-vertical-center'>
-        <AuthWrapper darkTheme={darkTheme} label=''>
+        <AuthWrapper darkTheme={theme === Theme.Dark} label=''>
           <>
             <Form
               form={form}
@@ -112,7 +114,7 @@ export const NewPassword = () => {
                 />
               </Form.Item>
               <Button
-                darkTheme={darkTheme}
+                darkTheme={theme === Theme.Dark}
                 label='Поменять пароль'
                 htmlType='submit'
                 size='large'

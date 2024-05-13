@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import './start-timer.css';
 import { GameStatus } from '@/components/game/types';
+import { Theme } from '@/helpers/constants/global';
 interface StartTimerProps {
   changeGameStatus: (status: GameStatus) => void;
+  theme: Theme;
 }
-export const StartTimer: React.FC<StartTimerProps> = ({ changeGameStatus }) => {
+export const StartTimer: React.FC<StartTimerProps> = ({
+  changeGameStatus,
+  theme = Theme.Light,
+}) => {
   const [time, setTime] = useState(3);
 
   useEffect(() => {
@@ -18,5 +23,13 @@ export const StartTimer: React.FC<StartTimerProps> = ({ changeGameStatus }) => {
     }
   }, [time, changeGameStatus]);
 
-  return <p className='start-timer'>{time}</p>;
+  return (
+    <p
+      className={[
+        'start-timer',
+        theme === Theme.Dark ? 'start-timer--dark' : null,
+      ].join(' ')}>
+      {time}
+    </p>
+  );
 };

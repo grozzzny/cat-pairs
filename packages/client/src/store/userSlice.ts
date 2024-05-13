@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { ProfileFieldType, User } from '@/helpers/types';
+import { ProfileFieldType, User, UserServer } from '@/helpers/types';
 import { UserService } from '@/services/user';
 import { Theme } from '@/helpers/constants/global';
 import { userNotAutn } from '@/helpers/constants/store';
@@ -33,12 +33,12 @@ export const fetchGetCurrentUser = createAsyncThunk<
 });
 
 export const fetchGetCurrentUserServer = createAsyncThunk<
-  string | User | undefined,
+  string | UserServer | undefined,
   string,
   { rejectValue: string }
 >('user/fetchGetCurrentUserServer', async (ctx, { rejectWithValue }) => {
   try {
-    return await new AuthService().getCurrentUserWithCookie(ctx);
+    return await new UserService().getCurrentUserWithCookie(ctx);
   } catch (e) {
     return rejectWithValue(e instanceof Error ? e.message : 'Unknown error');
   }
@@ -83,7 +83,9 @@ const userSlice = createSlice({
         state.error = undefined;
       })
       .addCase(fetchGetCurrentUserServer.fulfilled, (state, action) => {
-        Object.assign(state.currentUser, action.payload);
+        const userServer = action.payload as UserServer;
+        Object.assign(state.currentUser, userServer);
+        state.theme = userServer.userTheme?.theme?.theme || Theme.Light;
         state.error = undefined;
       })
       .addMatcher(isError, (state, action: PayloadAction<string>) => {

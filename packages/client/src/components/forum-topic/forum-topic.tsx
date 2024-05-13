@@ -1,7 +1,9 @@
-import { ForumTopicFeedItem } from '@/components';
-import { Button, Form } from 'antd';
+import { Button, ForumTopicFeedItem } from '@/components';
+import { Form } from 'antd';
 import { Input } from '@/components';
 import './forum-topic.css';
+import { useAppSelector } from '@/helpers/hooks/storeHooks';
+import { Theme } from '@/helpers/constants/global';
 
 interface Message {
   messageId: number;
@@ -21,8 +23,14 @@ export const ForumTopic = ({
   description,
   feed,
 }: ForumTopicProps): JSX.Element => {
+  const theme = useAppSelector(state => state.user.theme);
+
   return (
-    <div className='forum-topic'>
+    <div
+      className={[
+        'forum-topic',
+        theme === Theme.Dark ? 'forum-topic--dark' : null,
+      ].join(' ')}>
       <h1>{title}</h1>
       <div className='forum-topic__description'>{description}</div>
       {feed.length > 0 && (
@@ -41,11 +49,10 @@ export const ForumTopic = ({
       <Form>
         <Input type='textarea' placeholder='Написать сообщение' />
         <Button
-          className='forum-topic__send-message-button'
-          type='primary'
-          htmlType='submit'>
-          Отправить
-        </Button>
+          darkTheme={theme !== Theme.Dark}
+          label={'Отправить'}
+          htmlType='submit'
+        />
       </Form>
     </div>
   );

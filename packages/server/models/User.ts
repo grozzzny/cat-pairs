@@ -15,6 +15,8 @@ import {
   Table,
   Unique,
 } from 'sequelize-typescript';
+import { SiteTheme } from './SiteTheme';
+import type { Attributes, FindOptions } from 'sequelize/types/model';
 
 @Table({
   timestamps: true,
@@ -60,7 +62,11 @@ export class User extends Model {
   @HasOne(() => UserTheme)
   declare userTheme: UserTheme;
 
-  static findById(id: number): Promise<User | null> {
-    return User.findOne({ where: { id } });
+  static findById(id: number, includeTheme = false): Promise<User | null> {
+    const options: FindOptions<Attributes<User>> = { where: { id } };
+    if (includeTheme) {
+      options['include'] = { model: UserTheme, include: [SiteTheme] };
+    }
+    return User.findOne(options);
   }
 }

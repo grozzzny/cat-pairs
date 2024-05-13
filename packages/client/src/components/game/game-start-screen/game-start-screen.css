@@ -17,3 +17,10 @@
   color: var(--light);
   opacity: 0.8;
 }
+.dark-dropdown {
+  background: var(--light);
+}
+.dark-dropdown [aria-selected] {
+  background: var(--light);
+  color: var(--dark);
+}

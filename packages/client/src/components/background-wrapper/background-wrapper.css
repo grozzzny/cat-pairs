@@ -9,6 +9,9 @@
   width: 100vw;
   height: 100vh;
 }
+.background-wrapper--dark .background-wrapper__container {
+  background-image: url('/bg-dark.svg');
+}
 .background-wrapper__title {
   color: var(--light);
   font-size: 64px;

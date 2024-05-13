@@ -35,8 +35,8 @@
   margin-top: 61px;
 }
 .auth-wrapper--dark {
-  background-color: var(--light);
+  background-color: var(--black);
 }
 .auth-wrapper--dark .auth-wrapper__title {
-  color: var(--dark);
+  color: var(--light);
 }

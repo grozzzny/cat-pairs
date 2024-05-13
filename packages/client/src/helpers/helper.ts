@@ -21,13 +21,3 @@ export const localStorageSetItem = (key: string, value: string) => {
     return undefined;
   }
 };
-
-export const setBodyScroll = () => {
-  useEffect(() => {
-    return () => {
-      document.body.style.overflowY = 'auto';
-      const root = document.getElementById('root');
-      if (root) root.style.overflowY = 'auto';
-    };
-  }, []);
-};
