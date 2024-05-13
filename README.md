@@ -28,6 +28,21 @@ https://www.loom.com/share/7741b60e60ba4e629a7ba7e8110ef4be?sid=5ccc711c-a367-4c
 Если вы хотите добавить dev зависимость, проделайте то же самое, но с флагом `dev`
 ```yarn lerna add {your_dep} --dev --scope server```
 
+### Миграции
+
+Чтобы запустить миграцию для записей таблицы Emoji, нужно выполнить следующие шаги:
+1. Добавить следующую переменную окружения в .env
+```POSTGRES_HOST=localhost```
+2. Запустить команду:
+- если находитесь в корне проекта: ```yarn migrate-db```
+- если находитесь в папке /server:``` npx sequelize db:migrate```
+
+Обязательными для миграций являются следующие переменные:
+- ```POSTGRES_HOST=postgresdb || localhost```
+- ```POSTGRES_USER=postgres```
+- ```POSTGRES_PASSWORD=postgres```
+- ```POSTGRES_DB=postgres```
+- ```POSTGRES_PORT=5432```
 
 ### Тесты
 

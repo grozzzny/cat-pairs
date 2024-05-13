@@ -35,3 +35,10 @@ export const themeValidator = celebrate({
     theme: Joi.string().required().min(2).max(255),
   }),
 });
+
+export const commentEmojiUserXRefValidator = celebrate({
+  body: Joi.object().keys({
+    commentId: Joi.number().required(),
+    emojiId: Joi.number().required(),
+  }),
+});
