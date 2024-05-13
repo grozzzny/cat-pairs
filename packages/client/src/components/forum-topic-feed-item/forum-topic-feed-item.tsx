@@ -1,9 +1,7 @@
 import { EmojiBar } from '../emoji-bar/emoji-bar';
-// import { ForumTopicComment } from '@/helpers/types';
 import './forum-topic-feed-item.css';
 
 interface ForumTopicFeedItemProps {
-  // id: number;
   name: string;
   text: string;
   createdAt: string | undefined;
@@ -11,7 +9,6 @@ interface ForumTopicFeedItemProps {
 }
 
 export const ForumTopicFeedItem = ({
-  // id,
   name,
   text,
   createdAt,

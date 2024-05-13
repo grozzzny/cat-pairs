@@ -44,10 +44,7 @@ export type ForumTopicComment = {
 export type ForumTopicRequestResult = {
   id: number;
   topicName: string;
-  // userId: number;
   description: string;
-  // createdAt: string;
-  // updatedAt: string;
   comments: ForumTopicComment[];
 };
 

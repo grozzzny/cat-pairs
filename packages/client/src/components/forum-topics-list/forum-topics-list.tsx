@@ -13,7 +13,6 @@ import { Input } from '@/components';
 import { Color } from '@/helpers';
 import { ForumCreateTopicDto, ForumTopicRequestResult } from '@/helpers/types';
 import { ForumService } from '@/services/forum';
-import { redirectToUrl } from '@/helpers/redirect-helper';
 import './forum-topics-list.css';
 import { useAppSelector } from '@/helpers/hooks/storeHooks';
 import { Theme } from '@/helpers/constants/global';
@@ -46,7 +45,7 @@ export const ForumTopicsList = ({
     const createNewTopic = async () => {
       service
         .createTopic(values)
-        .then(data => redirectToUrl(`/forum/${data.id}`))
+        .then(data => navigate(`/forum/${data.id}`))
         .catch(err => console.warn(err));
     };
 
