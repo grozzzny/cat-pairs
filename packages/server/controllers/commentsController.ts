@@ -7,11 +7,16 @@ import { Emoji } from '../models/Emoji';
 class CommentController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const { topicId, text, userId } = req.body;
-      const comment = await Comment.create({ topicId, userId, text });
+      const { topicId, text } = req.body;
+      const comment = await Comment.create({
+        topicId,
+        userId: req.webUser.id,
+        text,
+      });
       if (!comment) {
         return next(ApiError.internal('Ошибка сервера'));
       }
+      comment.setDataValue('user', req.webUser);
       return res.json(comment);
     } catch (e: any) {
       next(ApiError.internal(e.message));

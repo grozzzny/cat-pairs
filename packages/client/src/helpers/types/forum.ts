@@ -1,3 +1,5 @@
+import { User } from '@/helpers/types';
+
 export type EmojiCodes = 'grin' | 'cry' | 'pout' | 'smile';
 
 export type ForumTopicReactionDto = {
@@ -27,4 +29,33 @@ export type ForumUpdateReactionRequest = {
   topicId: number;
   userId: number;
   emojiCode: string;
+};
+
+export type ForumTopicComment = {
+  id: number;
+  topicId: number;
+  userId: number;
+  text: string;
+  createdAt: string;
+  updatedAt: string;
+  user: User;
+};
+
+export type ForumTopicRequestResult = {
+  id: number;
+  topicName: string;
+  description: string;
+  comments: ForumTopicComment[];
+};
+
+export type ForumTopics = ForumTopicRequestResult[];
+
+export type ForumCreateTopicDto = {
+  topicName: string;
+  description: string;
+};
+
+export type ForumCreateCommentDto = {
+  topicId: number;
+  text: string;
 };

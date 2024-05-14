@@ -1,20 +1,24 @@
-import { useState } from 'react';
-import { Button, ConfigProvider, Flex, Form, Modal } from 'antd';
+import { useCallback, useRef, useState } from 'react';
+import {
+  Button,
+  ConfigProvider,
+  Flex,
+  Form,
+  type FormInstance,
+  type FormProps,
+  Modal,
+} from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components';
 import { Color } from '@/helpers';
+import { ForumCreateTopicDto, ForumTopicRequestResult } from '@/helpers/types';
+import { ForumService } from '@/services/forum';
 import './forum-topics-list.css';
 import { useAppSelector } from '@/helpers/hooks/storeHooks';
 import { Theme } from '@/helpers/constants/global';
 
-interface ForumTopic {
-  id: number;
-  title: string;
-  messages: string;
-}
-
 interface ForumTopicsListProps {
-  list: ForumTopic[];
+  list: ForumTopicRequestResult[];
 }
 
 export const ForumTopicsList = ({
@@ -23,15 +27,35 @@ export const ForumTopicsList = ({
   const theme = useAppSelector(state => state.user.theme);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const formRef = useRef<FormInstance<ForumCreateTopicDto> | null>(null);
   const showModal = () => {
     setIsModalOpen(true);
   };
   const handleOk = () => {
-    setIsModalOpen(false);
+    if (formRef.current) {
+      formRef.current.submit();
+    }
   };
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+  const onFinish: FormProps<ForumCreateTopicDto>['onFinish'] = useCallback(
+    (values: ForumCreateTopicDto) => {
+      const service = new ForumService();
+      const createNewTopic = async () => {
+        service
+          .createTopic(values)
+          .then(data => navigate(`/forum/${data.id}`))
+          .catch(err => console.warn(err));
+      };
+
+      createNewTopic();
+
+      return () => service.api.abortController.abort();
+    },
+    []
+  );
 
   return (
     <Flex
@@ -48,14 +72,14 @@ export const ForumTopicsList = ({
           </tr>
         </thead>
         <tbody>
-          {list.map(({ id, title, messages }) => (
+          {list.map(({ id, topicName, comments }) => (
             <tr key={id}>
               <td>
                 <Flex
                   className='forum-topics-list__item-title'
                   align='center'
                   onClick={() => navigate(`/forum/${id}`)}>
-                  {title}
+                  {topicName}
                 </Flex>
               </td>
               <td>
@@ -63,7 +87,7 @@ export const ForumTopicsList = ({
                   className='forum-topics-list__item-messages-count'
                   align='center'
                   justify='center'>
-                  {messages}
+                  {comments.length}
                 </Flex>
               </td>
             </tr>
@@ -79,9 +103,17 @@ export const ForumTopicsList = ({
         okText='Создать тему'
         cancelText='Закрыть'
         className='forum-topics-list__modal'>
-        <Form>
-          <Input placeholder='Название темы' />
-          <Input type='textarea' placeholder='Описание' />
+        <Form ref={formRef} onFinish={onFinish}>
+          <Form.Item<ForumCreateTopicDto>
+            name='topicName'
+            rules={[{ required: true, message: 'Пожалуйста, заполните поле' }]}>
+            <Input placeholder='Название темы' />
+          </Form.Item>
+          <Form.Item<ForumCreateTopicDto>
+            name='description'
+            rules={[{ required: true, message: 'Пожалуйста, заполните поле' }]}>
+            <Input type='textarea' placeholder='Описание' />
+          </Form.Item>
         </Form>
       </Modal>
       <div className='forum-topics-list__right-column'>

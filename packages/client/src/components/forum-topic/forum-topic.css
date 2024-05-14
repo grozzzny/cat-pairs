@@ -12,3 +12,17 @@
   width: 100%;
   margin-bottom: 10px;
 }
+
+.forum-topic__send-message-button {
+  height: 40px;
+  background-color: var(--dark);
+  padding-top: 0;
+  padding-bottom: 0;
+  color: var(--light);
+}
+
+.forum-topic .ant-btn.forum-topic__send-message-button:hover {
+  background-color: var(--dark);
+  color: var(--light);
+  opacity: 0.8;
+}
