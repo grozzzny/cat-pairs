@@ -30,8 +30,10 @@ export const Game: React.FC<GameProps> = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isGameReset, setIsGameReset] = useState<boolean>(false);
   const navigate = useNavigate();
+  const initialized = useRef(false);
 
   useEffect(() => {
+    if (initialized.current) return;
     const gameApi = new GameApi(
       gameRef,
       canvasRef,
@@ -42,6 +44,9 @@ export const Game: React.FC<GameProps> = ({
     );
     gameApi.render();
     setGame(gameApi);
+    return () => {
+      initialized.current = true;
+    };
   }, [changeGameStatus, gameStatus, selectedDifficulty]);
 
   if (!game) return <div style={{ color: 'white' }}>Loading...</div>;
