@@ -1,29 +1,48 @@
+import { useCallback, useState } from 'react';
+import { ForumService } from '@/services/forum';
 import { Button, ForumTopicFeedItem } from '@/components';
-import { Form } from 'antd';
+import { Form, type FormProps } from 'antd';
+import {
+  ForumCreateCommentDto,
+  ForumTopicRequestResult,
+} from '@/helpers/types';
+import { timeFormatConverter } from '@/helpers';
 import { Input } from '@/components';
 import './forum-topic.css';
 import { useAppSelector } from '@/helpers/hooks/storeHooks';
 import { Theme } from '@/helpers/constants/global';
 
-interface Message {
-  messageId: number;
-  name: string;
-  text: string;
-  time: string;
-}
-
-interface ForumTopicProps {
-  title: string;
-  description: string;
-  feed: Message[];
-}
-
 export const ForumTopic = ({
-  title,
+  id,
+  topicName,
   description,
-  feed,
-}: ForumTopicProps): JSX.Element => {
+  comments,
+}: ForumTopicRequestResult): JSX.Element => {
   const theme = useAppSelector(state => state.user.theme);
+  const [actualComments, setActualComments] = useState(comments);
+  const [form] = Form.useForm();
+  const onFinish: FormProps<ForumCreateCommentDto>['onFinish'] = useCallback(
+    (values: ForumCreateCommentDto) => {
+      const service = new ForumService();
+      const addComment = () => {
+        service
+          .createComment({
+            topicId: id,
+            text: values.text,
+          })
+          .then(data => {
+            setActualComments(actualComments => [...actualComments, data]);
+            form.resetFields();
+          })
+          .catch(err => console.warn(err));
+      };
+
+      addComment();
+
+      return () => service.api.abortController.abort();
+    },
+    [form, id, setActualComments]
+  );
 
   return (
     <div
@@ -31,24 +50,30 @@ export const ForumTopic = ({
         'forum-topic',
         theme === Theme.Dark ? 'forum-topic--dark' : null,
       ].join(' ')}>
-      <h1>{title}</h1>
+      <h1>{topicName}</h1>
       <div className='forum-topic__description'>{description}</div>
-      {feed.length > 0 && (
+      {actualComments.length > 0 && (
         <div className='forum-topic__feed'>
-          {feed.map(item => (
+          {actualComments.map(item => (
             <ForumTopicFeedItem
-              key={item.messageId}
-              commentId={item.messageId}
-              name={item.name}
+              commentId={item.id}
+              key={item.id}
+              name={`${item.user.first_name} ${item.user.second_name}`}
               text={item.text}
-              time={item.time}
+              createdAt={timeFormatConverter(item.createdAt)}
             />
           ))}
         </div>
       )}
-      <Form>
-        <Input type='textarea' placeholder='Написать сообщение' />
+      <Form form={form} onFinish={onFinish}>
+        <Form.Item<ForumCreateCommentDto>
+          name='text'
+          rules={[{ required: true, message: 'Пожалуйста, заполните поле' }]}>
+          <Input type='textarea' placeholder='Написать сообщение' />
+        </Form.Item>
         <Button
+          className='forum-topic__send-message-button'
+          type='primary'
           darkTheme={theme !== Theme.Dark}
           label={'Отправить'}
           htmlType='submit'

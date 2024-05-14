@@ -1,26 +1,40 @@
+import { useEffect, useState } from 'react';
+import { ForumService } from '@/services/forum';
 import { useParams } from 'react-router-dom';
 import { setPageTitle } from '@/helpers/helper';
 import { PageWrapper } from '@/components';
-import { FORUM_TOPICS_LIST } from '@/helpers/constants/forum';
+import { ForumTopicRequestResult } from '@/helpers/types';
 import { ForumTopic } from '@/components';
 import { ExitButton } from '@/components';
 import { withAuthRouteHOC } from '@/helpers/hooks/withAuthRouteHOC';
 
 const ForumTopicPage = () => {
   const { id } = useParams();
-  const topic = FORUM_TOPICS_LIST.find(
-    topic => topic.id === parseInt(id as string)
-  );
+  const [topic, setTopic] = useState<ForumTopicRequestResult | null>(null);
 
-  setPageTitle(topic?.title ?? 'Форум');
+  setPageTitle(topic?.topicName ?? 'Форум');
+  useEffect(() => {
+    const service = new ForumService();
+    const fetchTopicContent = async () => {
+      service
+        .getTopic(id as string)
+        .then(data => setTopic(data as any))
+        .catch(err => console.warn(err));
+    };
+
+    fetchTopicContent();
+
+    return () => service.api.abortController.abort();
+  }, []);
   return (
     <PageWrapper>
       <>
         {topic ? (
           <ForumTopic
-            title={topic.title}
+            id={topic.id}
+            topicName={topic.topicName}
             description={topic.description}
-            feed={topic.feed}
+            comments={topic.comments}
           />
         ) : (
           <h1>Тема ещё не создана или удалена</h1>

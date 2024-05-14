@@ -1,5 +1,7 @@
 import { ForumApi } from '@/api';
 import {
+  ForumCreateCommentDto,
+  ForumCreateTopicDto,
   ForumGetReactionsRequest,
   ForumGetReactionsResult,
   ForumUpdateReactionRequest,
@@ -7,6 +9,22 @@ import {
 
 export class ForumService {
   constructor(public readonly api: ForumApi = new ForumApi()) {}
+
+  getAllTopics() {
+    return this.api.getAllTopics();
+  }
+
+  getTopic(topicId: string) {
+    return this.api.getTopic(topicId);
+  }
+
+  createTopic(props: ForumCreateTopicDto) {
+    return this.api.createTopic(props);
+  }
+
+  createComment(props: ForumCreateCommentDto) {
+    return this.api.createComment(props);
+  }
 
   getReactions(
     props: ForumGetReactionsRequest
