@@ -1,6 +1,5 @@
 import { BaseApi } from '@/api/base';
 import { FetchHelperParams, fetchServerHelper } from '@/helpers/fetch-helper';
-import { FORUM_REACTIONS_LIST } from '@/helpers/constants/forum';
 import {
   DefaultResult,
   ForumCreateCommentDto,
@@ -34,23 +33,15 @@ export class ForumApi extends BaseApi {
     return this.post<ForumTopicComment>('/comment/create', params);
   }
 
-  getReactions({ topicId }: ForumGetReactionsRequest) {
-    // TODO: временная заглушка на время отсутствия АПИ
-    // return this.get<ForumGetReactionsResult>(`/forum/reaction?id=${topicId}`);
-    return new Promise<ForumGetReactionsResult>(resolve =>
-      resolve({ data: FORUM_REACTIONS_LIST })
-    );
+  getReactions({ commentId }: ForumGetReactionsRequest) {
+    return this.get<ForumGetReactionsResult>(`/comment/reaction/${commentId}`);
   }
 
   addReaction(params: ForumUpdateReactionRequest) {
-    // TODO: временная заглушка на время отсутствия АПИ
-    // return this.post<DefaultResult>('/forum/reaction', params);
-    return new Promise<ForumUpdateReactionRequest>(resolve => resolve(params));
+    return this.post<DefaultResult>('/comment/reaction', params);
   }
 
   deleteReaction(params: ForumUpdateReactionRequest) {
-    // TODO: временная заглушка на время отсутствия АПИ
-    // return this.delete<DefaultResult>('/forum/reaction', params);
-    return new Promise<ForumUpdateReactionRequest>(resolve => resolve(params));
+    return this.delete<DefaultResult>('/comment/reaction', params);
   }
 }

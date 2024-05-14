@@ -1,43 +1,61 @@
 import { EMOJI } from '@/helpers/constants/emoji';
 import { EmojiCodes, ReactionInfo } from '@/helpers/types';
 import { ForumService } from '@/services/forum';
+import { useEffect, useState } from 'react';
 import { Button } from '..';
 import './emoji-button.css';
 
 interface EmojiButtonProps {
   emojiCode: string;
   reactionInfo: ReactionInfo;
-  currentUserId: number;
-  topicId: number;
+  commentId: number;
 }
 
 export const EmojiButton = ({
   emojiCode,
   reactionInfo,
-  currentUserId,
-  topicId,
+  commentId,
 }: EmojiButtonProps) => {
+  const [isActive, setIsActive] = useState(false);
+  const [emojiNumber, setEmojiNumber] = useState(0);
   const key = emojiCode as EmojiCodes;
-  const emojiImg = <img src={EMOJI[key]} alt={key} />;
-  const { emojiNumber, isActive } = reactionInfo;
+  const emojiEntity = EMOJI[key];
+  const emojiImg = <img src={emojiEntity.avatarHref} alt={key} />;
+  const { emojiNumber: initialEmojiNumber, isActive: initialIsActive } =
+    reactionInfo;
   const service = new ForumService();
   const value = emojiNumber || '';
+
+  const addReaction = () => {
+    setIsActive(true);
+    setEmojiNumber(prevState => prevState + 1);
+  };
+
+  const deleteReaction = () => {
+    setIsActive(false);
+    setEmojiNumber(prevState => prevState - 1);
+  };
+
+  useEffect(() => {
+    setIsActive(initialIsActive);
+    setEmojiNumber(initialEmojiNumber);
+  }, [initialIsActive, initialEmojiNumber]);
 
   const handleEmojiClick = async () => {
     if (isActive) {
       const result = await service.deleteReaction({
-        topicId,
-        userId: currentUserId,
-        emojiCode,
+        commentId,
+        emojiId: emojiEntity.id,
       });
+      deleteReaction();
       console.log(result);
       return;
     }
     const result = await service.addReaction({
-      topicId,
-      userId: currentUserId,
-      emojiCode,
+      commentId,
+      emojiId: emojiEntity.id,
     });
+    addReaction();
     console.log(result);
   };
 

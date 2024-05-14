@@ -4,15 +4,15 @@ import './forum-topic-feed-item.css';
 interface ForumTopicFeedItemProps {
   name: string;
   text: string;
+  commentId: number;
   createdAt?: string;
-  topicId: number;
 }
 
 export const ForumTopicFeedItem = ({
   name,
   text,
+  commentId,
   createdAt,
-  topicId,
 }: ForumTopicFeedItemProps): JSX.Element => {
   return (
     <div className='forum-topic-feed-item'>
@@ -22,7 +22,7 @@ export const ForumTopicFeedItem = ({
         <div className='forum-topic-feed-item__time'>{createdAt}</div>
       )}
       <div className='forum-topic-feed-item__emoji'>
-        <EmojiBar topicId={topicId} />
+        <EmojiBar commentId={commentId} />
       </div>
     </div>
   );

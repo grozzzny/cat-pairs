@@ -56,8 +56,8 @@ export const ForumTopic = ({
         <div className='forum-topic__feed'>
           {actualComments.map(item => (
             <ForumTopicFeedItem
+              commentId={item.id}
               key={item.id}
-              topicId={item.topicId}
               name={`${item.user.first_name} ${item.user.second_name}`}
               text={item.text}
               createdAt={timeFormatConverter(item.createdAt)}
