@@ -24,6 +24,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Display CLIENT_HOST value
+        run: echo "CLIENT_HOST=${{ env.CLIENT_HOST }}"
+
       - name: Build and push client image
         uses: docker/build-push-action@v2
         with:
@@ -31,6 +34,8 @@ jobs:
           file: Dockerfile.client
           push: true
           tags: ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/client:${{ github.sha }}
+        build-args: |
+          CLIENT_HOST=${{ env.CLIENT_HOST }}
 
       - name: Build and push server image
         uses: docker/build-push-action@v2
