@@ -33,7 +33,7 @@ jobs:
           context: .
           file: Dockerfile.client
           push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/client:${{ github.ref }}
+          tags: ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/client:${{ github.GITHUB_REF_NAME }}
           build-args: |
             CLIENT_HOST=${{ vars.CLIENT_HOST }}
 
@@ -43,7 +43,7 @@ jobs:
           context: .
           file: Dockerfile.server
           push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/server:${{ github.ref }}
+          tags: ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/server:${{ github.GITHUB_REF_NAME }}
 
   deploy:
     needs: build-and-push
@@ -89,13 +89,13 @@ jobs:
           POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
           PGADMIN_EMAIL: ${{ vars.PGADMIN_EMAIL }}
           PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
-          TAG: ${{ github.ref }}
+          TAG: ${{ github.GITHUB_REF_NAME }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           envs: CLIENT_HOST,SERVER_HOST,SERVER_PORT,POSTGRES_HOST,POSTGRES_USER,POSTGRES_PASSWORD,POSTGRES_DB,POSTGRES_PORT,PGADMIN_EMAIL,PGADMIN_PASSWORD,TAG
           script: |
-            docker pull ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/client:${{ github.ref }}
-            docker pull ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/server:${{ github.ref }}
+            docker pull ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/client:${{ github.GITHUB_REF_NAME }}
+            docker pull ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/server:${{ github.GITHUB_REF_NAME }}
             docker compose -f /home/admin/docker-compose-prod.yml -p ${{ github.event.repository.name }} up -d
