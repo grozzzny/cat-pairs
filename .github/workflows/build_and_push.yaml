@@ -76,8 +76,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          script: whoami
-#          script: |
-#            docker pull ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/client:dev
-#            docker pull ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/server:dev
-#            docker compose -f /path/to/your/docker-compose-prod.yml -p ${{ github.event.repository.name }} up -d
+          script: |
+            docker pull ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/client:dev
+            docker pull ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/server:dev
+            docker compose -f /path/to/your/docker-compose-prod.yml -p ${{ github.event.repository.name }} up -d
