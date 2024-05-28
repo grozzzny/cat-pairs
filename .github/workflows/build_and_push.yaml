@@ -43,7 +43,7 @@ jobs:
           context: .
           file: Dockerfile.server
           push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/server:${{ env.BRANCH_NAME }}
+          tags: ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/server:dev
 
   deploy:
     needs: build-and-push
@@ -65,7 +65,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Docker image
-        run: docker pull ${{ secrets.CI_REGISTRY_IMAGE }}:${{ env.BRANCH_NAME }}
+        run: docker pull ${{ secrets.CI_REGISTRY_IMAGE }}:dev
 
       - name: Set up Docker Compose
         uses: docker/setup-qemu-action@v2
