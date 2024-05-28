@@ -88,4 +88,4 @@ jobs:
           script: |
             docker pull ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/client:dev
             docker pull ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/server:dev
-            docker compose -f docker-compose-prod.yml -p ${{ github.event.repository.name }} up -d
+            docker compose -f /home/admin/docker-compose-prod.yml -p ${{ github.event.repository.name }} up -d
