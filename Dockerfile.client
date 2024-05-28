@@ -1,16 +1,12 @@
 ARG NODE_VERSION=20.11.0
-ARG CLIENT_HOST=http://51.250.22.214:3000
-ARG SERVER_HOST=http://practicum-server:3001
 
 FROM node:$NODE_VERSION-buster as production
 
 ARG CLIENT_HOST
-ARG SERVER_HOST
 
 WORKDIR /app
 
 RUN echo $CLIENT_HOST
-RUN echo $SERVER_HOST
 
 COPY package.json yarn.lock ./
 

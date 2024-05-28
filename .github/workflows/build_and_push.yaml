@@ -36,7 +36,6 @@ jobs:
           tags: ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/client:${{ github.sha }}
           build-args: |
             CLIENT_HOST=${{ vars.CLIENT_HOST }}
-            SERVER_HOST=${{ vars.SERVER_HOST }}
 
       - name: Build and push server image
         uses: docker/build-push-action@v4
@@ -45,11 +44,3 @@ jobs:
           file: Dockerfile.server
           push: true
           tags: ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/server:${{ github.sha }}
-          build-args: |
-            SERVER_PORT=${{ vars.SERVER_PORT }}
-            POSTGRES_HOST=${{ vars.POSTGRES_HOST }}
-            POSTGRES_USER=${{ vars.POSTGRES_USER }}
-            POSTGRES_PASSWORD=${{ vars.POSTGRES_PASSWORD }}
-            POSTGRES_DB=${{ vars.POSTGRES_DB }}
-            POSTGRES_PORT=${{ vars.POSTGRES_PORT }}
-            SECRET_KEY=${{ vars.SECRET_KEY }}

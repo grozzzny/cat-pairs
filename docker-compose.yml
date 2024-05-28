@@ -9,7 +9,6 @@ services:
       dockerfile: Dockerfile.client
       args:
         CLIENT_HOST: ${CLIENT_HOST}
-        SERVER_HOST: ${SERVER_HOST}
         NODE_ENV: production
     restart: always
     ports:
