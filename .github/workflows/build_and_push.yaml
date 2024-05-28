@@ -28,10 +28,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Display CLIENT_HOST value secrets
-        run: echo ${{ toJson(secrets) }}
+        run: echo ${{ secrets.CLIENT_HOST }}
 
       - name: Display CLIENT_HOST value vars
-        run: echo ${{ toJson(vars) }}
+        run: echo ${{ vars.CLIENT_HOST }}
 
       - name: Build and push client image
         uses: docker/build-push-action@v4
