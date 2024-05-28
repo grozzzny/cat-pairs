@@ -70,7 +70,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           source: docker-compose-prod.yml
-          target: ~
+          target: /home/admin
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
