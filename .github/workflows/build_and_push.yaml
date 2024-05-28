@@ -43,7 +43,7 @@ jobs:
           docker_build_args: |
             CLIENT_HOST
         env:
-          CLIENT_HOST: ${{vars.CLIENT_HOST}}
+          CLIENT_HOST: http://51.250.22.214:3000
 
       - name: Build and push server image
         uses: docker/build-push-action@v2
