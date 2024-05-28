@@ -78,5 +78,5 @@ jobs:
           envs: CLIENT_HOST,SERVER_HOST,SERVER_PORT,POSTGRES_HOST,POSTGRES_USER,POSTGRES_PASSWORD,POSTGRES_DB,POSTGRES_PORT,PGADMIN_EMAIL,PGADMIN_PASSWORD,TAG
           script: |
             docker compose -f /home/admin/docker-compose-prod.yml pull
-            docker compose -f /home/admin/docker-compose-prod.yml -p ${{ github.event.repository.name }} up -d
             docker image prune -f
+            docker compose -f /home/admin/docker-compose-prod.yml -p ${{ github.event.repository.name }} up -d
