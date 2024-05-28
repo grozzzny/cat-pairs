@@ -6,6 +6,9 @@ FROM node:$NODE_VERSION-buster as production
 
 WORKDIR /app
 
+RUN echo $CLIENT_HOST
+RUN echo $SERVER_HOST
+
 COPY package.json yarn.lock ./
 
 RUN yarn install --frozen-lockfile

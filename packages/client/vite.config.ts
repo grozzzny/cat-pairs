@@ -11,7 +11,7 @@ export default defineConfig({
   },
   define: {
     __CLIENT_HOST__: JSON.stringify(
-      process.env.CLIENT_HOST || 'http://localhost:3000'
+      process.env.CLIENT_HOST || 'http://51.250.22.214:3000'
     ),
   },
   plugins: [react()],
