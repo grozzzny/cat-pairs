@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-push:
-#    environment: production
+    environment: production
     runs-on: ubuntu-latest
 
     steps:
@@ -41,7 +41,7 @@ jobs:
           push: true
           tags: ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/client:${{ github.sha }}
           build-args: |
-            CLIENT_HOST=${{ env.CLIENT_HOST }}
+            CLIENT_HOST=http://51.250.22.214:3000
         env:
           CLIENT_HOST: "http://51.250.22.214:3000"
 
