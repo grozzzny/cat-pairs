@@ -27,12 +27,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Display CLIENT_HOST value secrets
-        run: echo ${{ secrets.CLIENT_HOST }}
-
-      - name: Display CLIENT_HOST value vars
-        run: echo ${{ vars.CLIENT_HOST }}
-
       - name: Build and push client image
         uses: docker/build-push-action@v4
         with:
@@ -41,8 +35,8 @@ jobs:
           push: true
           tags: ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}/client:${{ github.sha }}
           build-args: |
-            CLIENT_HOST=http://51.250.22.214:3000
-            SERVER_HOST=http://practicum-server:3001
+            CLIENT_HOST='http://51.250.22.214:3000'
+            SERVER_HOST='http://practicum-server:3001'
 
       - name: Build and push server image
         uses: docker/build-push-action@v4
