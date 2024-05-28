@@ -4,6 +4,9 @@ ARG SERVER_HOST=http://practicum-server:3001
 
 FROM node:$NODE_VERSION-buster as production
 
+ARG CLIENT_HOST
+ARG SERVER_HOST
+
 WORKDIR /app
 
 RUN echo $CLIENT_HOST
