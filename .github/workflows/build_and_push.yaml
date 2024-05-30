@@ -78,8 +78,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           envs: CLIENT_HOST,SERVER_HOST,SERVER_PORT,POSTGRES_HOST,POSTGRES_USER,POSTGRES_PASSWORD,POSTGRES_DB,POSTGRES_PORT,PGADMIN_EMAIL,PGADMIN_PASSWORD,TAG,ID_REGISTRY
           script: |
-            echo "oauth" | docker secret create registry_user -
-            echo "${{ secrets.YA_TOKEN_REGISTRY }}" | docker secret create registry_password -
+            docker login --username oauth --password ${{ secrets.YA_TOKEN_REGISTRY }} cr.yandex
             docker compose -f /home/admin/docker-compose-prod.yml pull
             docker image prune -f
             docker compose -f /home/admin/docker-compose-prod.yml -p ${{ github.event.repository.name }} up -d

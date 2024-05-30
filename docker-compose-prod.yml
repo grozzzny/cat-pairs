@@ -87,8 +87,3 @@ volumes:
   nginxproxymanager:
   letsencrypt:
   pgadmin:
-secrets:
-  registry_user:
-    external: true
-  registry_password:
-    external: true
