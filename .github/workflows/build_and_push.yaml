@@ -17,7 +17,7 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
-          registry: ghcr.io
+          registry: mirror.gcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -27,7 +27,7 @@ jobs:
           context: .
           file: Dockerfile.client
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/client:${{ github.ref_name }}
+          tags: mirror.gcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/client:${{ github.ref_name }}
           build-args: |
             CLIENT_HOST=${{ vars.CLIENT_HOST }}
 
@@ -37,7 +37,7 @@ jobs:
           context: .
           file: Dockerfile.server
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/server:${{ github.ref_name }}
+          tags: mirror.gcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/server:${{ github.ref_name }}
 
   deploy:
     needs: build-and-push
