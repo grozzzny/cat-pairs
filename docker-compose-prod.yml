@@ -14,7 +14,7 @@ services:
       - letsencrypt:/etc/letsencrypt
   client:
     container_name: practicum-client
-    image: ghcr.io/grozzzny/cat-pairs/client:${TAG}
+    image: cr.yandex/${ID_REGISTRY}/grozzzny/cat-pairs/client:${TAG}
     restart: always
     ports:
       - '3000:3000'
@@ -29,7 +29,7 @@ services:
         condition: service_healthy
   server:
     container_name: practicum-server
-    image: ghcr.io/grozzzny/cat-pairs/server:${TAG}
+    image: cr.yandex/${ID_REGISTRY}/grozzzny/cat-pairs/server:${TAG}
     restart: always
     ports:
       - '3001:3001'
